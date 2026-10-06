@@ -1818,7 +1818,7 @@ const projectDatabase = {
       }
     },
     githubUrl: "https://github.com/seou-cyubic/Japanese-Ningendokku",
-    presentationVideoUrl: "./20260929_올인반_프레젠테이션.mp4",
+    presentationVideoUrl: "./hospital_presentation.mp4",   // 서버 업로드 시 한글 파일명이 깨지지 않도록 영문 이름
     // 화면은 프로토타입 단계. 공개 가능한 캡처가 나오면 아래에 추가.
     //   { type: "image", src: "./project_images/hospital_xxx.png" }
     media: [

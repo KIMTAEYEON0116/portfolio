@@ -2,7 +2,7 @@
 
 ## 0. 준비물
 - 공개용 폴더 `Desktop\취업양성\portfolio_public` (작업 폴더 SAMPLE 은 올리지 않는다)
-- 발표 영상 2개 (`presentation.mp4`, `20260929_올인반_프레젠테이션.mp4`) — 공개 폴더에는 빠져 있다
+- 발표 영상 2개 (`presentation.mp4`, `hospital_presentation.mp4`) — 공개 폴더에는 빠져 있다
 - EC2 키 파일 (`*.pem`)
 
 ## 1. EC2 만들기 (AWS 콘솔)
@@ -22,7 +22,7 @@ icacls "C:\경로\내키.pem" /inheritance:r /grant:r "$($env:USERNAME):(R)"
 ## 3. 파일 올리기 (PowerShell)
 ```powershell
 scp -i "C:\경로\내키.pem" -r "C:\Users\USER\Desktop\취업양성\portfolio_public" ubuntu@<공인IP>:/home/ubuntu/portfolio
-scp -i "C:\경로\내키.pem" "<영상 폴더>\presentation.mp4" "<영상 폴더>\20260929_올인반_프레젠테이션.mp4" ubuntu@<공인IP>:/home/ubuntu/portfolio/
+scp -i "C:\경로\내키.pem" "<영상 폴더>\presentation.mp4" "<영상 폴더>\hospital_presentation.mp4" ubuntu@<공인IP>:/home/ubuntu/portfolio/
 ```
 GitHub 에 올렸다면 서버에서 `git clone https://github.com/KIMTAEYEON0116/portfolio.git ~/portfolio` 로 받아도 된다(영상은 따로 scp).
 
