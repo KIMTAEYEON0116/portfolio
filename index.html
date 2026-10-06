@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="page_title">金兌衍（キム・テヨン） | ポートフォリオ</title>
+  <meta name="description" content="2026年3月から開発を学び、これまでに4つのプロジェクトを手がけ、11月までに2件目の企業案件に取り組みます。利用者視点で課題を捉え、利用者体験を設計するものづくりに携わりたいと考えています。JLPT N1。">
+  <meta name="keywords" content="ポートフォリオ, 金兌衍, フロントエンド, UI/UX, FastAPI, Python, JavaScript, JLPT N1, 新卒, エンジニア">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="金兌衍（キム・テヨン） | ポートフォリオ">
+  <meta property="og:description" content="2026年3月から開発を学び、これまでに4つのプロジェクトを手がけ、11月までに2件目の企業案件に取り組みます。利用者視点で課題を捉え、利用者体験を設計するものづくりに携わりたいと考えています。JLPT N1。">
+  <!-- og:image 는 서버(main.py _index)가 접속 도메인으로 절대 URL 을 채운다. 고정하려면 .env 의 SITE_URL -->
+  <meta property="og:image" content="og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="金兌衍（キム・テヨン） | ポートフォリオ">
+  <meta name="twitter:description" content="2026年3月から開発を学び、これまでに4つのプロジェクトを手がけ、11月までに2件目の企業案件に取り組みます。利用者視点で課題を捉え、利用者体験を設計するものづくりに携わりたいと考えています。JLPT N1。">
+  <meta name="twitter:image" content="og-image.png">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <!-- Google Fonts & Bootstrap Icons CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="style.css?v=14.8">
+</head>
+
+<body>
+
+  <!-- ====== 스크롤 진행 바 ====== -->
+  <div id="scroll-progress-bar"></div>
+
+  <!-- ====== 로딩 스크린 ====== -->
+  <div id="loading-screen" role="status" aria-label="Loading">
+    <div class="loading-logo">ようこそ！👋</div>
+    <div class="loading-bar-wrapper">
+      <div class="loading-bar-fill"></div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ====== 상단 바 (다국어 선택) ====== -->
+    <div class="top-bar">
+      <div class="lang-selector">
+        <button class="lang-btn" id="btn-lang-ja" onclick="setLanguage('ja')">日本語</button>
+        <button class="lang-btn" id="btn-lang-ko" onclick="setLanguage('ko')">한국어</button>
+      </div>
+    </div>
+
+    <!-- ==========================================================================
+         1. 메인 페이지 (Main Section)
+         ========================================================================== -->
+    <section id="main-view" class="view-section active">
+      <div class="paper-box"
+        style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 50px 30px;">
+        <!-- 중앙 정렬 웰컴 텍스트 & 바로가기 버튼 -->
+        <div class="welcome-info"
+          style="max-width: 920px; width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
+          <h1 class="welcome-title" data-i18n="welcome_title" style="font-size: 2.8rem; margin-bottom: 10px;">ようこそ！<span
+              class="typing-cursor" aria-hidden="true"></span></h1>
+
+          <!-- [추가 1] 직무 포지션 태그라인 -->
+          <div class="hero-tagline" style="margin-bottom: 25px; display: flex; justify-content: center; gap: 10px;">
+            <span class="hero-tag tag-jlpt">🇯🇵 JLPT N1</span>
+            <span class="hero-tag tag-it">💻 IT Engineer</span>
+            <span class="hero-tag tag-bridge" data-i18n="hero_tag_bridge">🌐 日韓 Bridge</span>
+          </div>
+
+          <div class="welcome-desc" style="font-size: 1.15rem; line-height: 1.8; margin-bottom: 30px; width: 100%;">
+            <p data-i18n="welcome_desc1">私について簡単にご紹介いたします！</p>
+            <p data-i18n="welcome_desc2">2026年3月から開発を学び始め、これまでに4つのプロジェクトを手がけ、11月までに2件目の企業案件に取り組みます。</p>
+            <p data-i18n="welcome_desc3">好きなことは<strong>日本語</strong>と<strong>プログラミング</strong>です。</p>
+            <p data-i18n="welcome_desc4">どんな人か気になりましたら、下のメニューをご覧ください。</p>
+          </div>
+
+          <!-- 메인 바로가기 4개 넓은 카드 버튼 -->
+          <div class="main-nav-cards">
+            <a href="#/about" class="nav-card nav-card-about" onclick="navigateTo('about-view'); return false;">
+              <div class="nav-card-icon"><i class="bi bi-person-vcard-fill"></i></div>
+              <div class="nav-card-info">
+                <span class="eng-text">ABOUT ME</span>
+                <span class="kor-text" data-i18n="nav_about">自己紹介</span>
+              </div>
+              <div class="nav-card-arrow"><i class="bi bi-arrow-right-short"></i></div>
+            </a>
+            <a href="#/project" class="nav-card nav-card-project" onclick="navigateTo('project-view'); return false;">
+              <div class="nav-card-icon"><i class="bi bi-code-square"></i></div>
+              <div class="nav-card-info">
+                <span class="eng-text">PROJECT</span>
+                <span class="kor-text" data-i18n="nav_project">プロジェクト</span>
+              </div>
+              <div class="nav-card-arrow"><i class="bi bi-arrow-right-short"></i></div>
+            </a>
+            <a href="#/log" class="nav-card nav-card-log" onclick="navigateTo('log-view'); return false;">
+              <div class="nav-card-icon"><i class="bi bi-journal-bookmark-fill"></i></div>
+              <div class="nav-card-info">
+                <span class="eng-text">LOG</span>
+                <span class="kor-text" data-i18n="nav_log">学習日誌</span>
+              </div>
+              <div class="nav-card-arrow"><i class="bi bi-arrow-right-short"></i></div>
+            </a>
+            <a href="#/contact" class="nav-card nav-card-contact" onclick="navigateTo('contact-view'); return false;">
+              <div class="nav-card-icon"><i class="bi bi-envelope-paper-fill"></i></div>
+              <div class="nav-card-info">
+                <span class="eng-text">CONTACT</span>
+                <span class="kor-text" data-i18n="nav_contact">連絡先</span>
+              </div>
+              <div class="nav-card-arrow"><i class="bi bi-arrow-right-short"></i></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         2. ABOUT ME 페이지 (About Section)
+         ========================================================================== -->
+    <section id="about-view" class="view-section">
+      <!-- 서브 헤더 -->
+      <div class="sub-header">
+        <div class="sub-header-left">
+          <h2 class="sub-title-main">ABOUT me</h2>
+          <span class="sub-title-sub" data-i18n="about_sub_title">자기소개 · 프로필</span>
+        </div>
+        <div class="sub-header-right">
+          <!-- 뒤로가기 및 홈 아이콘 -->
+          <a href="#" class="nav-icon-btn" onclick="goBack(); return false;" aria-label="이전 페이지"><i class="bi bi-arrow-left"></i></a>
+          <a href="#/" class="nav-icon-btn" onclick="navigateTo('main-view'); return false;" aria-label="홈으로"><i class="bi bi-house-door"></i></a>
+        </div>
+      </div>
+
+      <!-- 자기소개 박스 -->
+      <div class="about-intro-section">
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 20px; gap: 10px;">
+          <h3 class="about-intro-title" data-i18n="about_intro_title" style="margin-bottom: 0;">
+            <i class="bi bi-person-fill"></i> 자기소개
+          </h3>
+          <span class="about-birthdate"
+            style="font-family: var(--font-header); font-size: 0.95rem; font-weight: 600; color: var(--dark-color); border: 2px solid var(--dark-color); padding: 4px 10px; border-radius: var(--radius-sm); background-color: var(--bg-color); box-shadow: 2px 2px 0px var(--dark-color); display: inline-flex; align-items: center; gap: 6px;">
+            <i class="bi bi-calendar3" style="color: var(--blue-color);"></i> 1998.01.16
+          </span>
+        </div>
+        <div class="about-intro-desc">
+          <p data-i18n="about_intro_desc1">こんにちは。2026年3月から開発を学んでいる金兌衍（キム・テヨン）と申します。日本語通訳翻訳を専攻し、在学中に2回の交換留学を経験しました。JLPT N1も取得しています。</p>
+          <p data-i18n="about_intro_desc2">利用者に長く使われるサービスほど、多くの人に愛され、関心を持ち続けてもらえていると思います。そして、その関心があるからこそ、改善点も見えてきて、サービスがさらに良くなっていくのではないかと考えています。私は、そうした好循環を生み出せるサービス作りに携わりたいと考えています。</p>
+          <p data-i18n="about_intro_desc3">転機は7月です。140文字制限のコメント欄にカウンターがなく、長く書いた人が何の案内もなく失敗していました。130文字から色が変わるように直して以来、UI/UX・モバイル対応の改善を13件記録しています。</p>
+          <p data-i18n="about_intro_desc4">もともと製品を見るたびに「どんな不便を解決するために生まれたのか」を考える習慣があり、同じことを画面でもやっているのだと後から気づきました。分からないことはそのままにせず、原因を最後まで突き止める姿勢を大切にしています。</p>
+        </div>
+      </div>
+
+      <!-- [추가 2] 스킬 스택 직접 노출 섹션 -->
+      <div class="skill-stack-section">
+        <h3 class="skill-stack-title">
+          <i class="bi bi-code-slash"></i>
+          <span data-i18n="skill_stack_title">Tech Stack</span>
+        </h3>
+        <div class="skill-categories">
+          <div class="skill-category">
+            <span class="skill-cat-label">Language</span>
+            <div class="skill-badges">
+              <span class="skill-badge badge-python">Python</span>
+              <span class="skill-badge badge-js">JavaScript</span>
+            </div>
+            <p class="skill-note" data-i18n="skill_note_lang">タイピング練習ゲームの入力判定、AIチャットボットの音声入力(STT)連携を実装。</p>
+          </div>
+          <div class="skill-category">
+            <span class="skill-cat-label">Frontend</span>
+            <div class="skill-badges">
+              <span class="skill-badge badge-html">HTML/CSS</span>
+            </div>
+            <p class="skill-note" data-i18n="skill_note_front">レスポンシブ対応・多言語(日/韓)UI・モバイルレイアウトの実装と改善。</p>
+          </div>
+          <div class="skill-category">
+            <span class="skill-cat-label">Backend / DB</span>
+            <div class="skill-badges">
+              <span class="skill-badge badge-fastapi">FastAPI</span>
+              <span class="skill-badge badge-db">MySQL</span>
+            </div>
+            <p class="skill-note" data-i18n="skill_note_back">個人開発で7つのテーブルを設計。JWT認証、パスワード再設定(SMTP)、REST APIを実装。</p>
+          </div>
+          <div class="skill-category">
+            <span class="skill-cat-label">Tools</span>
+            <div class="skill-badges">
+              <span class="skill-badge badge-aws">AWS</span>
+              <span class="skill-badge badge-git">Git / GitHub</span>
+              <span class="skill-badge badge-ai">Gemini API</span>
+            </div>
+            <p class="skill-note" data-i18n="skill_note_tools">AWSでログイン・会員登録ページをサーバー連携。Gemini APIで書影の自動生成を実装。</p>
+          </div>
+          <div class="skill-category">
+            <span class="skill-cat-label" data-i18n="skill_cat_jp">🇯🇵 日本語</span>
+            <div class="skill-badges">
+              <span class="skill-badge badge-jlpt">JLPT N1</span>
+              <span class="skill-badge badge-biz" data-i18n="skill_biz_ja">ビジネス会話</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 경험 섹션 (Experience) -->
+      <div class="about-section-expanded">
+        <h3 class="about-section-expanded-title">
+          <i class="bi bi-briefcase-fill"></i>
+          <span data-i18n="card_exp">경험</span>
+        </h3>
+        <div class="timeline-container">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <span class="timeline-date">2026.03 ~ 2026.11</span>
+              <h4 class="timeline-title" data-i18n="exp_seigakusha">세이가쿠샤코리아 일본 취업 IT 연수</h4>
+              <p class="timeline-desc" data-i18n="exp_seigakusha_desc">일본 IT 취업을 목표로 한 실무 기반 풀스택 개발 및 비즈니스 일본어 교육 과정을
+                이수하였습니다.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <span class="timeline-date">2025.06 ~ 2026.02</span>
+              <h4 class="timeline-title" data-i18n="exp_coupang">주식회사 쿠팡 입사</h4>
+              <p class="timeline-desc" data-i18n="exp_coupang_desc">계약직 근무 (계약 만료에 따른 퇴사)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 자격증 섹션 (Certifications) -->
+      <div class="about-section-expanded">
+        <h3 class="about-section-expanded-title">
+          <i class="bi bi-award-fill"></i>
+          <span data-i18n="card_certs">자격증</span>
+        </h3>
+        <div class="cert-grid">
+          <div class="cert-item">
+            <div class="cert-icon-badge">🇯🇵</div>
+            <div class="cert-details">
+              <span class="cert-title" data-i18n="cert_jlpt_title">JLPT N1</span>
+              <span class="cert-date" data-i18n="cert_jlpt_date">2025.08.12 취득</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 학력 섹션 (Education) -->
+      <div class="about-section-expanded">
+        <h3 class="about-section-expanded-title">
+          <i class="bi bi-mortarboard-fill"></i>
+          <span data-i18n="card_edu">학력</span>
+        </h3>
+        <div class="education-list">
+          <div class="edu-item">
+            <span class="edu-date">2024 ~ 2025</span>
+            <span class="edu-value" data-i18n="edu_tohoku">도호쿠분쿄대학 인간관계학과 교환학생</span>
+          </div>
+          <div class="edu-item">
+            <span class="edu-date">2023 ~ 2026</span>
+            <span class="edu-value" data-i18n="edu_cyber">사이버한국외국어대학교 일본어학부 졸업 (3학년 편입)</span>
+          </div>
+          <div class="edu-item">
+            <span class="edu-date">2016 ~ 2017</span>
+            <span class="edu-value" data-i18n="edu_kokugakuin">고쿠가쿠인대학 도치기단기대학 교환학생</span>
+          </div>
+          <div class="edu-item">
+            <span class="edu-date">2016 ~ 2018</span>
+            <span class="edu-value" data-i18n="edu_hanyang">한양여자대학교 일본어통번역학과 졸업 (현 실무일본어과)</span>
+          </div>
+          <div class="edu-item">
+            <span class="edu-date">2014 ~ 2016</span>
+            <span class="edu-value" data-i18n="edu_bulgok">불곡고등학교 졸업</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 취미 섹션 (Hobbies) -->
+      <div class="about-section-expanded">
+        <h3 class="about-section-expanded-title">
+          <i class="bi bi-heart-fill" style="color: #E74C3C;"></i>
+          <span data-i18n="card_hobbies">취미</span>
+        </h3>
+        <div class="hobbies-content">
+          <div class="hobby-intro-box">
+            <p class="hobby-intro-text" data-i18n="hobby_desc_intro">새로운 제품이나 가게, 전시를 직접 둘러보는 걸 좋아합니다.</p>
+          </div>
+          <div class="hobby-points">
+            <div class="hobby-point-item">
+              <span class="hobby-point-icon"><i class="bi bi-pencil"></i></span>
+              <p class="hobby-point-text" data-i18n="hobby_desc_p1">문구점 탐방</p>
+            </div>
+            <div class="hobby-point-item">
+              <span class="hobby-point-icon"><i class="bi bi-shop"></i></span>
+              <p class="hobby-point-text" data-i18n="hobby_desc_p2">팝업스토어 방문</p>
+            </div>
+            <div class="hobby-point-item">
+              <span class="hobby-point-icon"><i class="bi bi-book"></i></span>
+              <p class="hobby-point-text" data-i18n="hobby_desc_p3">문구 페어 · 북페어 등 전시회 방문</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==========================================================================
+         3. LOG 페이지 (Log Section)
+         ========================================================================== -->
+    <section id="log-view" class="view-section">
+      <div class="sub-header">
+        <div class="sub-header-left">
+          <h2 class="sub-title-main">LOG</h2>
+          <span class="sub-title-sub" data-i18n="log_sub_title">学習日誌 · 2026.03 – 11</span>
+        </div>
+        <div class="sub-header-right">
+          <a href="#" class="nav-icon-btn" onclick="goBack(); return false;" aria-label="이전 페이지"><i class="bi bi-arrow-left"></i></a>
+          <a href="#/" class="nav-icon-btn" onclick="navigateTo('main-view'); return false;" aria-label="홈으로"><i class="bi bi-house-door"></i></a>
+        </div>
+      </div>
+
+      <!-- 요약 칩 (script.js renderLogPage) -->
+      <div class="lg-chips" id="lg-stat"></div>
+
+      <!-- 활동 캘린더: 월별 미니 캘린더를 한 줄에 (script.js renderLogCalendar) -->
+      <div class="lg-cal" id="lg-cal"></div>
+
+      <div class="lg-sect">
+        <h3 data-i18n="log_sect_title">月ごとの記録</h3>
+        <small data-i18n="log_sect_sub">月ごとに振り返りと、その月の活動をまとめました。</small>
+        <span class="lg-allctl" id="lg-allctl" data-i18n="log_fold_all">すべて閉じる</span>
+      </div>
+      <div class="lg-sectline"></div>
+
+      <div class="lg-tagbar" id="lg-tagbar"></div>
+
+      <!-- 좌측 월 레일(sticky) + 월별 섹션 -->
+      <div class="lg-body">
+        <div class="lg-rail" id="lg-rail"></div>
+        <div id="lg-months"></div>
+      </div>
+
+    </section>
+
+    <!-- ==========================================================================
+         4. PROJECT 페이지 (Project Section)
+         ========================================================================== -->
+    <section id="project-view" class="view-section">
+      <div class="sub-header" style="border-bottom: none; margin-bottom: 15px;">
+        <div class="sub-header-left">
+          <h2 class="sub-title-main"
+            style="font-family: var(--font-header); font-size: 2rem; font-weight: 700; margin: 0;">Project</h2>
+        </div>
+        <div class="sub-header-right">
+          <a href="#" class="nav-icon-btn" onclick="goBack(); return false;" aria-label="이전 페이지"><i class="bi bi-arrow-left"></i></a>
+          <a href="#/" class="nav-icon-btn" onclick="navigateTo('main-view'); return false;" aria-label="홈으로"><i class="bi bi-house-door"></i></a>
+        </div>
+      </div>
+
+      <!-- 프로젝트 전환용 상단 탭바 -->
+      <div class="project-tab-bar">
+        <div class="project-tab active" id="p-tab-portfolio" onclick="switchProjectTab('portfolio')" role="button" tabindex="0"
+          data-i18n="p_tab_portfolio">포트폴리오 웹사이트</div>
+        <div class="project-tab" id="p-tab-gakong" onclick="switchProjectTab('gakong')" role="button" tabindex="0" data-i18n="p_tab_gakong">가공독서회
+        </div>
+        <div class="project-tab" id="p-tab-typing" onclick="switchProjectTab('typing')" role="button" tabindex="0" data-i18n="p_tab_typing">타이핑 연습
+          플랫폼</div>
+        <div class="project-tab" id="p-tab-hospital" onclick="switchProjectTab('hospital')" role="button" tabindex="0"
+          data-i18n="p_tab_hospital">건강검진 예약</div>
+      </div>
+
+      <!-- 프로젝트 세부 대시보드 박스 -->
+      <div class="project-detail-box">
+
+        <!-- [추가] 내부 탭바 (기획 문서가 있는 프로젝트에서 JS로 노출) -->
+        <div class="project-inner-tab-bar" id="project-inner-tab-bar" style="display: none;">
+          <button class="project-inner-tab active" id="inner-tab-overview" onclick="switchProjectInnerTab('overview')">
+            <i class="bi bi-grid-3x2-gap-fill"></i>
+            <span id="inner-tab-overview-label">概要</span>
+          </button>
+          <button class="project-inner-tab" id="inner-tab-docs" onclick="switchProjectInnerTab('docs')">
+            <i class="bi bi-file-earmark-text-fill"></i>
+            <span id="inner-tab-docs-label">企画書</span>
+          </button>
+          <button class="project-inner-tab" id="inner-tab-structure" onclick="switchProjectInnerTab('structure')"
+            style="display:none;">
+            <i class="bi bi-diagram-3-fill"></i>
+            <span id="inner-tab-structure-label">ページ構成 (画像)</span>
+          </button>
+          <button class="project-inner-tab" id="inner-tab-prototype" onclick="switchProjectInnerTab('prototype')"
+            style="display:none;">
+            <i class="bi bi-window-fullscreen"></i>
+            <span id="inner-tab-prototype-label">UI プロトタイプ</span>
+          </button>
+          <button class="project-inner-tab" id="inner-tab-demo" onclick="switchProjectInnerTab('demo')"
+            style="display:none;">
+            <i class="bi bi-play-circle-fill"></i>
+            <span id="inner-tab-demo-label">デモ動画</span>
+          </button>
+          <button class="project-inner-tab" id="inner-tab-trouble" onclick="switchProjectInnerTab('trouble')" style="display: none;"><i class="bi bi-wrench-adjustable"></i> <span id="inner-tab-trouble-label">개발 로그</span></button>
+        </div>
+
+        <!-- 개요 영역 (탭 전환 대상) -->
+        <div id="project-overview-area">
+          <!-- 상반부 영역: 이미지와 설명 -->
+          <div class="project-upper-section">
+            <!-- 좌측: 캡처 + 바로가기 버튼 -->
+            <div class="project-left">
+            <div class="project-media-box">
+              <div class="project-media-viewport" id="project-media-viewport">
+                <!-- JS 동적 렌더링: 이미지 또는 영상 -->
+              </div>
+              <button type="button" class="media-nav-btn media-nav-prev" id="media-prev-btn"
+                onclick="moveProjectMedia(-1)" aria-label="이전 이미지">
+                <i class="bi bi-chevron-left"></i>
+              </button>
+              <button type="button" class="media-nav-btn media-nav-next" id="media-next-btn"
+                onclick="moveProjectMedia(1)" aria-label="다음 이미지">
+                <i class="bi bi-chevron-right"></i>
+              </button>
+              <div class="media-dots" id="media-dots"></div>
+              <p class="media-client-note" id="media-client-note" hidden></p>
+            </div>
+            <div class="project-link-bar" id="project-link-bar" style="display: none;">
+              <span id="project-live-row" style="display: none;">
+                <a id="project-live-link" class="project-link-btn primary" href="#" target="_blank" rel="noopener">
+                  <i class="bi bi-box-arrow-up-right"></i><span id="project-live-text">사이트 보기</span>
+                </a>
+              </span>
+              <span id="project-github-row" style="display: none;">
+                <a id="project-github-link" class="project-link-btn" href="#" target="_blank" rel="noopener">
+                  <i class="bi bi-github"></i><span id="project-github-text">저장소 보기</span>
+                </a>
+              </span>
+            </div>
+            </div>
+            <!-- 우측 상세 메타 테이블 -->
+            <div class="project-info-box">
+              <h3 class="project-title-main" id="project-title-el">
+                포트폴리오 웹사이트를 소개합니다
+              </h3>
+
+              <!-- 案件区分: kind 가 있는 프로젝트에서만 노출 -->
+              <div class="project-info-row" id="project-kind-row" style="margin-top: 15px; display: none;">
+                <div class="info-label" data-i18n="p_label_kind">案件区分</div>
+                <div class="info-value-box">
+                  <p id="project-kind-el"></p>
+                </div>
+              </div>
+
+              <div class="project-info-row" style="margin-top: 15px;">
+                <div class="info-label" data-i18n="p_label_period">개발 기간</div>
+                <div class="info-value-box">
+                  <p id="project-period-el">2026.03 - 2026.11</p>
+                </div>
+              </div>
+
+              <div class="project-info-row">
+                <div class="info-label" data-i18n="p_label_reason">개발 이유</div>
+                <div class="info-value-box">
+                  <p id="project-reason-el">자기소개와 프로젝트를 정리하기 위해 제작하였습니다.</p>
+                </div>
+              </div>
+
+              <div class="project-info-row">
+                <div class="info-label" data-i18n="p_label_role">담당했던 부분</div>
+                <div class="info-value-box">
+                  <p id="project-role-el">프로젝트 기획부터 UI/UX 디자인, 프론트엔드 개발, 배포까지 전체 과정을 담당했습니다.</p>
+                </div>
+              </div>
+
+              <div class="project-info-row">
+                <div class="info-label" data-i18n="p_label_tools">사용했던 툴</div>
+                <div class="info-value-box">
+                  <p id="project-tools-el">HTML5, CSS3, JavaScript</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 빨간색 구분선 -->
+          <div class="project-red-divider"></div>
+
+          <!-- 하반부 영역: 트러블 슈팅 -->
+          <div class="project-lower-section">
+            <h4 class="lower-section-title" data-i18n="p_label_troubles">어려웠던 점, 오류 개선</h4>
+            <div class="difficulty-scroll-container" id="project-difficulty-container">
+              <!-- JS 동적 렌더링 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- [추가] 임베드 영역 (기획 문서 탭 선택 시) -->
+        <div id="project-embed-area" style="display: none;">
+          <!-- JS 동적 렌더링 -->
+        </div>
+
+        <!-- [추가] 데모 영상 영역 (데모 영상 탭 선택 시) -->
+        <div id="project-demo-area" style="display: none;">
+          <!-- JS 동적 렌더링 -->
+        </div>
+
+        <!-- [추가] 페이지 구성 (이미지) 영역 (페이지 구성 탭 선택 시) -->
+        <div id="project-structure-area" style="display: none;">
+          <!-- JS 동적 렌더링 -->
+        </div>
+
+        <!-- [추가] UI 프로토타입 영역 (프로토타입 탭 선택 시) -->
+        <div id="project-prototype-area" style="display: none;">
+          <!-- JS 동적 렌더링 -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         5. CONTACT 페이지 (Contact Section)
+         ========================================================================== -->
+    <section id="contact-view" class="view-section">
+      <!-- 서브 헤더 -->
+      <div class="sub-header">
+        <div class="sub-header-left">
+          <h2 class="sub-title-main">Contact</h2>
+        </div>
+        <div class="sub-header-right">
+          <!-- 뒤로가기 및 홈 아이콘 -->
+          <a href="#" class="nav-icon-btn" onclick="goBack(); return false;" aria-label="이전 페이지"><i class="bi bi-arrow-left"></i></a>
+          <a href="#/" class="nav-icon-btn" onclick="navigateTo('main-view'); return false;" aria-label="홈으로"><i class="bi bi-house-door"></i></a>
+        </div>
+      </div>
+
+      <!-- 연락처 & 방명록 레이아웃 -->
+      <div class="contact-layout">
+        <!-- 좌측 연락처 정보 -->
+        <div class="contact-left-box">
+          <h3 class="contact-left-title" data-i18n="contact_left_title">Contact</h3>
+
+          <a href="mailto:kty98116@gmail.com" class="contact-info-item email">
+            <i class="bi bi-envelope-fill contact-item-icon"></i>
+            <div class="contact-item-details">
+              <span class="contact-item-label">Email</span>
+              <span class="contact-item-value">kty98116@gmail.com</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/KIMTAEYEON0116" target="_blank" rel="noopener" class="contact-info-item github">
+            <i class="bi bi-github contact-item-icon"></i>
+            <div class="contact-item-details">
+              <span class="contact-item-label">GitHub</span>
+              <span class="contact-item-value">github.com/KIMTAEYEON0116</span>
+            </div>
+          </a>
+
+          <p class="contact-footer-text" data-i18n="contact_footer_text">お気軽にご連絡ください 😊</p>
+
+          <!-- 남는 공간을 채우는 사진. 파일이 없으면 통째로 숨겨 깨진 아이콘이 뜨지 않게 한다 -->
+          <figure class="contact-photo">
+            <p class="contact-photo-msg" data-i18n="contact_photo_msg">写真は私の好きな花です。</p>
+            <img src="contact_flower.jpg" alt="" loading="lazy" decoding="async"
+              onerror="this.closest('.contact-photo').hidden = true">
+            <figcaption>
+              Photo by <a href="https://unsplash.com/@vannexp" target="_blank" rel="noopener">Van Peng</a>
+              on <a href="https://unsplash.com/photos/ydd6e5HF2xw" target="_blank" rel="noopener">Unsplash</a>
+            </figcaption>
+          </figure>
+        </div>
+
+        <!-- 우측 방명록 영역 -->
+        <div class="guestbook-box">
+          <h3 class="guestbook-title" data-i18n="guestbook_title">방명록</h3>
+
+          <form class="guestbook-form" id="guestbook-form" onsubmit="handleGuestbookSubmit(event)">
+            <div class="form-group">
+              <input type="text" id="gb-title" class="form-input" placeholder="제목" required maxlength="100"
+                data-i18n-placeholder="gb_title_placeholder">
+            </div>
+            <div class="form-group">
+              <input type="text" id="gb-author" class="form-input" placeholder="이름 (선택)" maxlength="40"
+                data-i18n-placeholder="gb_author_placeholder">
+            </div>
+            <div class="form-group">
+              <textarea id="gb-content" class="form-textarea" placeholder="자유롭게 남겨주세요 :)" required maxlength="2000"
+                data-i18n-placeholder="gb_content_placeholder"></textarea>
+            </div>
+            <button type="submit" class="submit-btn">
+              <i class="bi bi-send-fill"></i> <span data-i18n="gb_btn_submit">등록하기</span>
+            </button>
+          </form>
+
+          <!-- 방명록 리스트 출력 영역 -->
+          <div class="guestbook-list-container">
+            <h4 class="guestbook-list-title">
+              <span data-i18n="gb_list_title">방명록 메시지</span>
+              <span id="guestbook-count" class="guestbook-count">0</span>
+            </h4>
+            <div class="guestbook-list" id="guestbook-list">
+              <!-- JS 동적 렌더링 -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="site-footer">
+      <div class="footer-divider"></div>
+      <div class="footer-content">
+        <div class="footer-left">
+          <p class="copyright">© 2026 Kim Taeyeon. All rights reserved.</p>
+        </div>
+        <div class="footer-right">
+          <a href="mailto:kty98116@gmail.com" class="footer-icon-link"><i class="bi bi-envelope-fill"></i>
+            kty98116@gmail.com</a>
+          <span class="footer-sep">|</span>
+          <a href="https://github.com/KIMTAEYEON0116" target="_blank" rel="noopener" class="footer-icon-link"><i
+              class="bi bi-github"></i> GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+<!-- 자바스크립트 인터랙션 정의 -->
+  <!-- 상세 모달 -->
+  <div class="lg-ov" id="lg-ov">
+    <div class="lg-mo">
+      <button class="lg-mo-x" id="lg-mo-x">&#10005;</button>
+      <div id="lg-mo-body"></div>
+    </div>
+  </div>
+
+  <noscript>
+    <p style="margin:24px;padding:16px;border:2px solid #2C3E50;border-radius:10px;background:#fff;font-size:15px;line-height:1.7;">
+      このサイトは JavaScript を使用しています。ブラウザの設定で JavaScript を有効にしてご覧ください。<br>
+      이 사이트는 JavaScript 를 사용합니다. 브라우저 설정에서 JavaScript 를 켜 주세요.
+    </p>
+    <style>#loading-screen{display:none!important}</style>
+  </noscript>
+  <script src="script.js?v=14.8"></script>
+</body>
+
+</html>

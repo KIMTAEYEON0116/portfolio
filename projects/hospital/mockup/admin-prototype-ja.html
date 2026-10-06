@@ -1,0 +1,2655 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <title>健診センター 健診統合管理者システム (プロトタイプ)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --surface-2: #ffffff;
+      --surface-1: #f8fafc;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --fill-accent: #0284c7;
+      --fill-accent-hover: #0369a1;
+      --on-accent: #ffffff;
+      --bg-accent: #f0f9ff;
+      --border-accent: #bae6fd;
+      --text-accent: #0369a1;
+      --bg-success: #ecfdf5;
+      --text-success: #047857;
+      --bg-warning: #fffbeb;
+      --text-warning: #b45309;
+      --bg-danger: #fef2f2;
+      --text-danger: #b91c1c;
+      --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text-primary);
+      background: #f1f5f9;
+      padding: 16px 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+      text-align: left;
+    }
+
+    th {
+      background: var(--surface-1);
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    tr {
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    tr:hover td {
+      background: #f8fafc;
+    }
+
+    a.link {
+      color: var(--text-accent);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    a.link:hover {
+      text-decoration: underline;
+    }
+
+    .navitem {
+      padding: 10px 20px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-radius: 6px;
+      margin: 2px 8px;
+      transition: background 0.15s;
+    }
+
+    .navitem:hover {
+      background: var(--bg-accent);
+      color: var(--text-accent);
+    }
+
+    .navitem.active {
+      background: var(--bg-accent);
+      color: var(--text-accent);
+      font-weight: 600;
+      border-left: 3px solid var(--fill-accent);
+      border-radius: 0 6px 6px 0;
+      margin-left: 0;
+      padding-left: 17px;
+    }
+
+    .navgroup {
+      padding: 16px 14px 5px 20px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      white-space: nowrap;
+      display: inline-block;
+    }
+
+    .status {
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      white-space: nowrap;
+      display: inline-block;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      font-size: 14px;
+      height: 36px;
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      padding: 0 12px;
+    }
+
+    .field textarea {
+      width: 100%;
+      font-size: 13px;
+      line-height: 1.6;
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      padding: 10px;
+      resize: vertical;
+    }
+
+    .btn {
+      padding: 9px 18px;
+      font-size: 14px;
+      border: none;
+      border-radius: 7px;
+    }
+
+    .btn-primary {
+      background: var(--fill-accent);
+      color: var(--on-accent);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border-strong);
+      background: var(--surface-2);
+      color: var(--text-primary);
+    }
+
+    .btn-danger {
+      background: var(--bg-danger);
+      color: var(--text-danger);
+      border: 1px solid #e3b4b4;
+    }
+
+    #mainContent {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 28px;
+    }
+
+    .langToggle {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      background: var(--surface-2);
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      padding: 3px;
+    }
+
+    .langToggle a {
+      padding: 5px 11px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .langToggle a.active {
+      background: var(--fill-accent);
+      color: var(--on-accent);
+    }
+  </style>
+<style>html:lang(ja) body{word-break:auto-phrase;line-break:strict}</style>
+</head>
+
+<body>
+
+  <div
+    style="display:flex; border:0.5px solid var(--border); border-radius:14px; overflow:hidden; min-height:calc(100vh - 32px); max-width:1500px; margin:0 auto; background:var(--surface-2); box-shadow:0 2px 16px rgba(0,0,0,0.06);">
+
+    <!-- サイドバー -->
+    <div
+      style="width:256px; background:var(--surface-1); border-right:0.5px solid var(--border); flex-shrink:0; display:flex; flex-direction:column;">
+      <div
+        style="padding:18px 20px; font-size:15px; font-weight:600; border-bottom:0.5px solid var(--border); background:var(--fill-accent); color:var(--on-accent); letter-spacing:-0.01em;">
+        健診予約システム<br><span style="font-size:13px; font-weight:400; opacity:0.85;">管理者サイト (プロトタイプ)</span>
+      </div>
+
+      <div class="navgroup">受診者 & 受付</div>
+      <div class="navitem active" data-page="list" onclick="showPage('list')">受診者一覧</div>
+      <div class="navitem" data-page="phone" id="nav-phone" onclick="showPage('phone')">電話/郵送受付 登録</div>
+      <div class="navitem" data-page="ng" id="nav-ng" onclick="showPage('ng')">仮受付・NG一覧 <span id="ngCountBadge"
+          class="badge" style="background:var(--bg-warning); color:var(--text-warning);"></span></div>
+
+      <div class="navgroup" id="grp-hospital">健診 & 病院設定</div>
+      <div class="navitem" data-page="capacity" id="nav-capacity" onclick="showPage('capacity')">会場・定員設定</div>
+      <div class="navitem" data-page="options" id="nav-options" onclick="showPage('options')">オプション検査管理</div>
+
+      <div class="navgroup" id="grp-stats">統計 & レポート</div>
+      <div class="navitem" data-page="stats" id="nav-stats" onclick="showPage('stats')">統計ダッシュボード</div>
+
+      <div class="navgroup" id="grp-system">システム & ログ</div>
+      <div class="navitem" data-page="email-settings" id="nav-email-settings" onclick="showPage('email-settings')">メール
+        設定</div>
+      <div class="navitem" data-page="accounts" id="nav-accounts" onclick="showPage('accounts')">アカウント管理</div>
+      <div class="navitem" data-page="audit-logs" id="nav-audit-logs" onclick="showPage('audit-logs')">操作ログ</div>
+
+      <div style="flex:1;"></div>
+      <div style="border-top:0.5px solid var(--border); padding:8px;">
+        <div class="navitem" style="color:var(--text-secondary);" onclick="openChangePasswordModal()">パスワード変更</div>
+        <div class="navitem" style="color:var(--text-danger);"
+          onclick="if(confirm('ログアウトしますか?')){ alert('ログアウトしました。'); openLoginModal(); }">ログアウト</div>
+      </div>
+      <div class="navitem"
+        style="border-top:0.5px solid var(--border); font-size:12px; color:var(--text-muted); cursor:default;"
+        onclick="resetDemo()">データ初期化 (デモ)</div>
+    </div>
+
+    <!-- 右側メイン -->
+    <div style="flex:1; display:flex; flex-direction:column; min-height:calc(100vh - 32px); overflow:hidden;">
+      <!-- 上部 管理者プロフィール & アカウント切替バー -->
+      <div
+        style="background:var(--surface-1); border-bottom:1px solid var(--border); padding:12px 24px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:15px; font-weight:700; color:var(--text-primary);">🏥 社団法人 健診センター 統合管理者ポータル</span>
+          <a href="./main-prototype-ja.html" target="_blank" class="btn btn-outline" style="padding:4px 10px; font-size:12px; text-decoration:none;">🌐 受診者ポータルを開く</a>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="langToggle">
+            <a href="./admin-prototype.html">한국어</a>
+            <a href="./admin-prototype-ja.html" class="active">日本語</a>
+          </div>
+
+          <div
+            style="display:flex; align-items:center; gap:10px; background:var(--bg-accent); border:1px solid var(--border-accent); padding:6px 14px; border-radius:20px; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+            <div>
+              <div style="font-size:13px; font-weight:700; color:var(--text-accent); line-height:1.2;">
+                <span id="loggedInUserNameTop">鈴木 兼一</span> <span
+                  style="font-size:11px; font-weight:500; color:var(--text-secondary);"
+                  id="loggedInUserUsernameTop">(admin_op)</span>
+              </div>
+              <div id="loggedInUserRoleBadgeTop" style="font-size:11px; font-weight:600; color:var(--text-accent);">業務
+                管理者アカウント</div>
+            </div>
+          </div>
+
+          <button class="btn btn-outline"
+            style="padding:6px 12px; font-size:12px; font-weight:600; border-color:var(--fill-accent); color:var(--fill-accent); background:var(--surface-2);"
+            onclick="openLoginModal()">
+            🔑 アカウント変更 / 切替
+          </button>
+        </div>
+      </div>
+
+      <div id="mainContent">
+        <div id="roleBanner"
+          style="display:none; background:var(--bg-warning); color:var(--text-warning); border:1px solid #e3d3b4; border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:16px; line-height:1.5;">
+        </div>
+
+        <!-- PAGE: 受診者一覧 -->
+        <div id="page-list">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <p style="font-size:22px; font-weight:600;">受診者一覧</p>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-primary" onclick="showPage('phone')">電話/郵送受付 登録</button>
+            </div>
+          </div>
+
+          <div style="background:var(--surface-1); border-radius:10px; padding:16px 18px; margin-bottom:18px; border:1px solid var(--border);">
+            <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; margin-bottom:10px;">
+              <div class="field"><label style="font-size:12px; font-weight:600;">患者番号</label><input id="fltId" placeholder="例: P-260032" autocomplete="off" style="font-size:13px; padding:6px 8px;" onkeyup="if(event.key==='Enter') renderList()"></div>
+              <div class="field"><label style="font-size:12px; font-weight:600;">予約番号</label><input id="fltResNo" placeholder="例: AS-KD-..." autocomplete="off" style="font-size:13px; padding:6px 8px;" onkeyup="if(event.key==='Enter') renderList()"></div>
+              <div class="field"><label style="font-size:12px; font-weight:600;">氏名</label><input id="fltName" placeholder="氏名検索" autocomplete="off" style="font-size:13px; padding:6px 8px;" onkeyup="if(event.key==='Enter') renderList()"></div>
+              <div class="field"><label style="font-size:12px; font-weight:600;">生年月日</label><input id="fltBirth" placeholder="YYYY-MM-DD" autocomplete="off" style="font-size:13px; padding:6px 8px;" onkeyup="if(event.key==='Enter') renderList()"></div>
+              <div class="field"><label style="font-size:12px; font-weight:600;">受付日時</label><input id="fltCreated" placeholder="YYYY-MM-DD" autocomplete="off" style="font-size:13px; padding:6px 8px;" onkeyup="if(event.key==='Enter') renderList()" onchange="renderList()"></div>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
+              <div class="field"><label style="font-size:12px; font-weight:600;">健診日時</label><input id="fltDate" placeholder="YYYY-MM-DD" autocomplete="off" style="font-size:13px; padding:6px 8px;" onkeyup="if(event.key==='Enter') renderList()" onchange="renderList()"></div>
+              <div class="field"><label style="font-size:12px; font-weight:600;">会場 (拠点)</label><select id="fltSite" style="font-size:13px; padding:6px 8px;" onchange="renderList()">
+                  <option value="">全会場</option>
+                </select></div>
+              <div class="field"><label style="font-size:12px; font-weight:600;">受付チャネル</label><select id="fltChannel" style="font-size:13px; padding:6px 8px;" onchange="renderList()">
+                  <option value="">全チャネル</option>
+                  <option value="online">オンライン</option>
+                  <option value="phone">電話</option>
+                  <option value="mail">郵送</option>
+                </select></div>
+              <div class="field"><label style="font-size:12px; font-weight:600;">ステータス</label><select id="fltStatus" style="font-size:13px; padding:6px 8px;" onchange="renderList()">
+                  <option value="">全ステータス</option>
+                  <option value="예약완료">予約完了</option>
+                  <option value="확인대기">確認待ち</option>
+                  <option value="임시접수">仮受付</option>
+                  <option value="취소">キャンセル</option>
+                </select></div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center; justify-content:flex-end;">
+              <button class="btn btn-outline" style="padding:6px 14px; font-size:12px;" onclick="resetListFilters()">🔄 フィルターリセット</button>
+              <button class="btn btn-primary" style="padding:6px 18px; font-size:12px;" onclick="renderList()">🔍 検索</button>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>患者番号</th>
+                  <th>予約番号</th>
+                  <th>氏名</th>
+                  <th>生年月日</th>
+                  <th>受付日時</th>
+                  <th>健診日時</th>
+                  <th>会場</th>
+                  <th>チャネル</th>
+                  <th>状態</th>
+                </tr>
+              </thead>
+              <tbody id="listBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PAGE: 受診者詳細 -->
+        <div id="page-detail" style="display:none;"></div>
+
+        <!-- PAGE: 電話/郵送受付 登録 (統合) -->
+        <div id="page-phone" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <p style="font-size:22px; font-weight:600; margin:0;" id="receptionTitle">電話/郵送受付 登録</p>
+            <button class="btn btn-outline" style="font-size:13px; padding:6px 14px; background:var(--bg-accent); color:var(--text-accent); border-color:var(--border-accent);" onclick="fillReceptionDemo()">🧪 デモデータ自動入力</button>
+          </div>
+          <p style="font-size:13px; color:var(--text-secondary); margin-bottom:20px;" id="receptionDesc">受付方法を選択し、受診者情報を入力してください。受付方法に応じて、バリデーションおよび確定状況が自動的に分類されます。</p>
+          
+          <!-- 受付方法選択ラジオ -->
+          <div class="field" style="width:100%; background:var(--surface-1); padding:16px 24px; border-radius:10px; border:1px solid var(--border); display:flex; align-items:center; gap:36px; margin-bottom:20px; box-shadow:0 1px 3px rgba(0,0,0,0.02);">
+            <span style="font-weight:700; font-size:14px; color:var(--text-primary); flex-shrink:0;">受付方法選択 *</span>
+            <label style="display:inline-flex; align-items:center; gap:8px; font-weight:600; margin:0; cursor:pointer; font-size:13px; white-space:nowrap;">
+              <input type="radio" name="receptionChannel" value="phone" checked onchange="onReceptionChannelChange('phone')"> 電話受付 (即時確定)
+            </label>
+            <label style="display:inline-flex; align-items:center; gap:8px; font-weight:600; margin:0; cursor:pointer; font-size:13px; white-space:nowrap;">
+              <input type="radio" name="receptionChannel" value="mail" onchange="onReceptionChannelChange('mail')"> 郵送受付 (不備時は仮受付)
+            </label>
+          </div>
+
+          <!-- 2カラムメインレイアウト -->
+          <div style="display:flex; gap:24px; align-items:flex-start; width:100%;">
+
+            <!-- 左カラム: 受診者個人情報 & 予約日程 (3列グリッド) -->
+            <div style="flex:1; background:var(--surface-1); padding:22px 24px; border-radius:12px; border:1px solid var(--border); box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+              <p style="font-weight:700; color:var(--text-primary); margin-bottom:16px; font-size:15px; border-bottom:1px solid var(--border); padding-bottom:10px;">📋 受診者個人情報及び健診日程</p>
+              
+              <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:14px 18px;">
+                <div class="field"><label id="lbl-pName" style="font-size:12px; font-weight:600;">氏名 *</label><input id="pName" placeholder="佐藤 健二" style="font-size:13px; padding:7px 10px;"></div>
+                <div class="field"><label id="lbl-pBirth" style="font-size:12px; font-weight:600;">生年月日 * (YYYY-MM-DD)</label><input id="pBirth" placeholder="1968-03-12" style="font-size:13px; padding:7px 10px;"></div>
+                <div class="field"><label id="lbl-pGender" style="font-size:12px; font-weight:600;">性別 *</label><select id="pGender" style="font-size:13px; padding:7px 10px;">
+                    <option value="">選択してください</option>
+                    <option value="M">男性</option>
+                    <option value="F">女性</option>
+                  </select></div>
+
+                <div class="field"><label id="lbl-pPhone" style="font-size:12px; font-weight:600;">連絡先 *</label><input id="pPhone" placeholder="090-1234-5678" style="font-size:13px; padding:7px 10px;"></div>
+                <div class="field"><label id="lbl-pInsurance" style="font-size:12px; font-weight:600;">保険者番号/記号・番号 *</label><input id="pInsurance" placeholder="01234567-1234-567890" style="font-size:13px; padding:7px 10px;"></div>
+                <div class="field"><label style="font-size:12px; font-weight:600;">メールアドレス</label><input id="pEmail" placeholder="example@mail.com" style="font-size:13px; padding:7px 10px;"></div>
+
+                <div class="field">
+                  <label id="lbl-pZip" style="font-size:12px; font-weight:600;">郵便番号 *</label>
+                  <input id="pZip" placeholder="0700001" style="font-size:13px; padding:7px 10px;">
+                </div>
+                <div class="field"><label id="lbl-pAddrDetail" style="font-size:12px; font-weight:600;">番地 *</label><input id="pAddrDetail" placeholder="4条西4丁目 1-2" style="font-size:13px; padding:7px 10px;"></div>
+                <div class="field"><label id="lbl-pAddress" style="font-size:12px; font-weight:600;">住所 *</label><input id="pAddress" placeholder="サンプル市 中央1丁目" style="font-size:13px; padding:7px 10px;"></div>
+
+                <div class="field"><label id="lbl-pSite" style="font-size:12px; font-weight:600;">会場 *</label><select id="pSite" style="font-size:13px; padding:7px 10px;" onchange="onPhoneSiteChange()"><option value="">選択してください</option></select></div>
+                <div class="field">
+                  <label id="lbl-pDate" style="font-size:12px; font-weight:600;">選択した希望日 *</label>
+                  <input id="pDateText" readonly placeholder="下のカレンダーから日付をクリック" style="font-size:13px; padding:7px 10px; font-weight:600; color:var(--text-accent); background:var(--surface-2);">
+                  <input type="hidden" id="pDate" value="">
+                </div>
+                <div class="field"><label id="lbl-pTime" style="font-size:12px; font-weight:600;">健診希望時間帯 *</label><select id="pTime" style="font-size:13px; padding:7px 10px;"><option value="">選択してください</option></select></div>
+
+                <!-- 日付選択カレンダーウィジェット -->
+                <div class="field" style="grid-column: 1 / 4; margin-top: 6px;">
+                  <label style="font-size:13px; font-weight:700; color:var(--text-primary); margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                    <span>📅 健診希望日選択 (カレンダーの日付をクリック)</span>
+                    <span style="font-size:11px; font-weight:normal; color:var(--text-secondary);">○ 空きあり | △ 混雑 | × 締切</span>
+                  </label>
+                  <div style="background:var(--surface-2); border:1px solid var(--border-strong); border-radius:10px; padding:14px 16px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                      <button type="button" class="btn btn-outline" style="padding:3px 12px; font-size:12px;" onclick="changePhoneCalMonth(-1)">◀ 前月</button>
+                      <span id="phoneCalTitle" style="font-size:15px; font-weight:700; color:var(--text-primary);">2026年 9月</span>
+                      <button type="button" class="btn btn-outline" style="padding:3px 12px; font-size:12px;" onclick="changePhoneCalMonth(1)">翌月 ▶</button>
+                    </div>
+                    <div id="phoneCalGrid" style="display:grid; grid-template-columns:repeat(7, 1fr); gap:6px; text-align:center;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 右カラム: 検査コース及び追加検査(オプション)パネル -->
+            <div style="width:400px; flex-shrink:0; background:var(--surface-1); padding:22px 24px; border-radius:12px; border:1px solid var(--border); box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+              <p style="font-weight:700; color:var(--text-accent); margin-bottom:16px; font-size:15px; border-bottom:1px solid var(--border); padding-bottom:10px;">🩺 コース及び追加検査選択</p>
+              
+              <div style="margin-bottom:20px;">
+                <label style="display:block; margin-bottom:8px; color:var(--text-secondary); font-weight:600; font-size:13px;">基本コース選択</label>
+                <select id="pCourseSelect" style="height:38px; font-size:13px; width:100%; border:1px solid var(--border-strong); border-radius:6px; padding:0 10px;">
+                  <option value="기본 건강검진 (특정검진 포함)">基本健診(特定健診含む)</option>
+                  <option value="유방암 특화 종합검진">乳がん特化総合健診</option>
+                  <option value="대장내시경 정밀 패키지">大腸内視鏡精密パッケージ</option>
+                </select>
+              </div>
+
+              <label style="display:block; margin-bottom:12px; color:var(--text-secondary); font-weight:600; font-size:13px;">追加検査選択 (複数選択可能)</label>
+              <div style="display:grid; grid-template-columns:1fr; gap:12px; font-size:13px; background:var(--surface-2); padding:16px; border-radius:8px; border:1px solid var(--border);">
+                <label style="font-weight:normal; display:flex; align-items:center; gap:10px; cursor:pointer;"><input type="checkbox" class="phoneOpt" value="gastro_scope"> 胃内視鏡検査追加</label>
+                <label style="font-weight:normal; display:flex; align-items:center; gap:10px; cursor:pointer;"><input type="checkbox" class="phoneOpt" value="colon"> 大腸がん検診(便潜血)</label>
+                <label style="font-weight:normal; display:flex; align-items:center; gap:10px; cursor:pointer;"><input type="checkbox" class="phoneOpt" value="cervical"> 子宮頸がん検査 (女性)</label>
+                <label style="font-weight:normal; display:flex; align-items:center; gap:10px; cursor:pointer;"><input type="checkbox" class="phoneOpt" value="breast_mammo"> 乳がん検査 (女性)</label>
+                <label style="font-weight:normal; display:flex; align-items:center; gap:10px; cursor:pointer;"><input type="checkbox" class="phoneOpt" value="prostate"> 前立腺がん検査 (男性)</label>
+                <label style="font-weight:normal; display:flex; align-items:center; gap:10px; cursor:pointer;"><input type="checkbox" class="phoneOpt" value="abdominal_us"> 腹部超音波検査</label>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 下部 登録完了ボタン (右揃え) -->
+          <div style="margin-top:24px; width:100%; display:flex; justify-content:flex-end;">
+            <button class="btn btn-primary" style="padding:12px 40px; font-size:14px; font-weight:600; box-shadow:0 2px 6px rgba(0,0,0,0.1);" onclick="submitReception()">登録完了</button>
+          </div>
+        </div>
+
+        <!-- PAGE: 仮受付・NG一覧 -->
+        <div id="page-ng" style="display:none;">
+          <p style="font-size:19px; font-weight:500; margin-bottom:4px;">仮受付・NG一覧</p>
+          <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">必須項目が漏れている郵送受付件です。電話確認(最大3回)後、確定またはキャンセル処理を行ってください。</p>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>受付日</th>
+                  <th>氏名</th>
+                  <th>生年月日</th>
+                  <th>チャネル</th>
+                  <th>不備項目</th>
+                  <th>連絡回数</th>
+                  <th>最終連絡日</th>
+                </tr>
+              </thead>
+              <tbody id="ngBody"></tbody>
+            </table>
+            <p id="ngEmpty"
+              style="display:none; text-align:center; padding:24px; font-size:13px; color:var(--text-muted);">不備(仮受付)件数がありません。</p>
+          </div>
+        </div>
+
+        <!-- PAGE: 会場・定員設定 -->
+        <div id="page-capacity" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+            <div>
+              <p style="font-size:19px; font-weight:500; margin:0 0 4px;">会場・定員設定</p>
+              <p style="font-size:13px; color:var(--text-secondary); margin:0;">希望の会場(病院)を選択して時間帯別の基本定員を一括設定したり、特定日の休診/臨時締切を管理します。</p>
+            </div>
+            <select id="capSiteSelect" style="font-size:14px; height:38px; padding:0 12px; border:1px solid var(--border-strong); border-radius:8px; min-width:240px; font-weight:500; background:var(--surface-1);"></select>
+          </div>
+
+          <!-- 1. 時間帯別基本定員設定 -->
+          <div style="background:var(--surface-1); border-radius:12px; padding:20px; margin-bottom:24px; border:1px solid var(--border);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+              <div>
+                <p style="font-size:16px; font-weight:600; margin:0 0 2px;">時間帯別基本定員設定 <span style="font-size:12px; font-weight:400; color:var(--text-secondary);">(日付に関係なく全日程に一括反映されます)</span></p>
+              </div>
+              <button class="btn btn-primary" id="btnSaveBaseCap" onclick="saveSiteBaseCap()">基本定員を一括保存</button>
+            </div>
+            <div id="baseCapGrid" style="display:grid; grid-template-columns:repeat(6,1fr); gap:12px;"></div>
+          </div>
+
+          <!-- 1.5 日付別リアルタイム定員状況 -->
+          <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:24px;">
+            <p style="font-size:16px; font-weight:600; margin:0 0 2px;">日付別リアルタイム定員状況</p>
+            <p style="font-size:13px; color:var(--text-secondary); margin:0 0 14px;">上の「基本定員」は全日程に適用されるテンプレートです。ここでは日付を選んでその日の実際の予約数(used)/定員(total)を確認・個別調整します。</p>
+            <div style="display:grid; grid-template-columns:280px 1fr; gap:24px;">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                  <button class="btn btn-outline" style="padding:5px 10px; font-size:12px;" onclick="capCalOffset--; renderCapCalendar();">‹</button>
+                  <span id="capCalTitle" style="font-size:13px; font-weight:600;"></span>
+                  <button class="btn btn-outline" style="padding:5px 10px; font-size:12px;" onclick="capCalOffset++; renderCapCalendar();">›</button>
+                </div>
+                <p style="font-size:11px; color:var(--text-secondary); margin:0 0 8px;">
+                  <span style="color:var(--text-success);">○</span> 余裕あり
+                  <span style="color:var(--text-warning);">△</span> 残りわずか
+                  <span style="color:var(--text-danger);">×</span> 締切/満席
+                </p>
+                <div id="capCalGrid" style="display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center;"></div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+                  <p id="capDateTitle" style="font-size:14px; font-weight:600; margin:0;">日付を選択してください</p>
+                  <button class="btn btn-outline" id="btnViewDateReservations" style="padding:6px 12px; font-size:12px; display:none;" onclick="viewDateReservations()">この日の予約者を見る →</button>
+                </div>
+                <div id="capDateSlots" style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. 特定日の休診・締切設定 -->
+          <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:24px;">
+            <p style="font-size:16px; font-weight:600; margin:0 0 4px;">特定日の休診 / 臨時締切設定</p>
+            <p style="font-size:13px; color:var(--text-secondary); margin:0 0 16px;">公休や開院記念日などの特定日全体を臨時休診/締切処理します。</p>
+            <div style="display:flex; gap:10px; align-items:center; max-width:640px; flex-wrap:wrap;">
+              <input type="date" id="holidayDateInput" style="width:160px; font-size:14px; height:38px; border:1px solid var(--border-strong); border-radius:6px; padding:0 10px;">
+              <input type="text" id="holidayReasonInput" placeholder="事由 (例: 開院記念日休診)" style="flex:1; min-width:180px; font-size:14px; height:38px; border:1px solid var(--border-strong); border-radius:6px; padding:0 10px;">
+              <button class="btn btn-danger" style="padding:9px 16px;" onclick="applyHoliday(true)">当日全体を休診処理</button>
+              <button class="btn btn-outline" style="padding:9px 16px;" onclick="applyHoliday(false)">締切解除</button>
+            </div>
+          </div>
+
+          <!-- 3. 会場(病院)情報 / 緊急連絡先 -->
+          <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:20px;">
+            <p style="font-size:16px; font-weight:600; margin:0 0 2px;">会場(病院)情報 &amp; 緊急連絡先</p>
+            <p style="font-size:12px; color:var(--text-secondary); margin:0 0 16px;">選択した会場の代表連絡先および緊急時に連絡可能な担当者情報です。</p>
+            <div id="siteInfoCard"></div>
+          </div>
+        </div>
+
+        <!-- PAGE: オプション検査管理 -->
+        <div id="page-options" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <div>
+              <p style="font-size:19px; font-weight:500; margin:0 0 4px;">オプション検査管理 (追加検査項目)</p>
+              <p style="font-size:13px; color:var(--text-secondary); margin:0;">性別/年齢別の追加検査対象ルールおよび表示/非表示状態をその場で修正
+                設定します。</p>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>オプションコード</th>
+                  <th>検査項目名</th>
+                  <th>対象性別</th>
+                  <th>年齢制限 (Target Rule)</th>
+                  <th>表示状態</th>
+                  <th>管理</th>
+                </tr>
+              </thead>
+              <tbody id="optionsBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PAGE: 統計ダッシュボード -->
+        <div id="page-stats" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+            <div>
+              <p style="font-size:19px; font-weight:500; margin:0 0 4px;">統計ダッシュボード</p>
+              <p style="font-size:13px; color:var(--text-secondary); margin:0;">リアルタイム予約受付状況、チャネル別/会場別の分布、およびレポートExcelダウンロードを提供します。</p>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-outline" onclick="exportTakExcel()">TAK連動用Excelダウンロード</button>
+              <button class="btn btn-outline" onclick="exportWeeklyExcel()">週次レポートExcelダウンロード</button>
+              <button class="btn btn-primary" onclick="exportCsvData()">全データCSVダウンロード</button>
+            </div>
+          </div>
+
+          <!-- 統計専用検索およびフィルターバー -->
+          <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin-bottom:20px; display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+            <div class="field" style="margin:0; flex:1; min-width:140px;">
+              <label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">会場(病院)フィルター</label>
+              <select id="fltStatSite" onchange="renderStats()" style="width:100%; font-size:13px; padding:7px 10px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1); color:var(--text-primary);"></select>
+            </div>
+            <div class="field" style="margin:0; flex:1; min-width:130px;">
+              <label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">受付チャネル</label>
+              <select id="fltStatChannel" onchange="renderStats()" style="width:100%; font-size:13px; padding:7px 10px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1); color:var(--text-primary);">
+                <option value="">すべてのチャネル</option>
+                <option value="online">オンライン受付</option>
+                <option value="mail">郵送受付</option>
+                <option value="phone">電話受付</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0; flex:1; min-width:130px;">
+              <label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">予約状態</label>
+              <select id="fltStatStatus" onchange="renderStats()" style="width:100%; font-size:13px; padding:7px 10px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1); color:var(--text-primary);">
+                <option value="">すべての状態</option>
+                <option value="예약완료">予約完了</option>
+                <option value="확인대기">確認待ち</option>
+                <option value="임시접수">仮受付 (NG)</option>
+                <option value="취소">予約キャンセル</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0; flex:1; min-width:140px;">
+              <label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">希望日 (YYYY-MM-DD)</label>
+              <input id="fltStatDate" type="date" onchange="renderStats()" style="width:100%; font-size:13px; padding:6px 10px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1); color:var(--text-primary);">
+            </div>
+            <button class="btn btn-outline" onclick="resetStatFilters()" style="padding:7px 14px; font-size:13px;">リセット</button>
+          </div>
+
+          <!-- KPIサマリーカード -->
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:20px;">
+            <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:16px;">
+              <p style="font-size:12px; color:var(--text-secondary); margin-bottom:4px;">総受付件数</p>
+              <p id="statTotal" style="font-size:24px; font-weight:700; color:var(--text-primary); margin:0;">0件</p>
+            </div>
+            <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:16px;">
+              <p style="font-size:12px; color:var(--text-secondary); margin-bottom:4px;">予約確定完了</p>
+              <p id="statConfirmed" style="font-size:24px; font-weight:700; color:var(--text-success); margin:0;">0件</p>
+            </div>
+            <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:16px;">
+              <p style="font-size:12px; color:var(--text-secondary); margin-bottom:4px;">仮受付 (NG/不備)</p>
+              <p id="statNg" style="font-size:24px; font-weight:700; color:var(--text-warning); margin:0;">0件</p>
+            </div>
+            <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:16px;">
+              <p style="font-size:12px; color:var(--text-secondary); margin-bottom:4px;">オンライン受付比率</p>
+              <p id="statOnlineRatio" style="font-size:24px; font-weight:700; color:var(--text-accent); margin:0;">0%</p>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
+            <!-- チャネル別比率 -->
+            <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:18px;">
+              <p style="font-size:15px; font-weight:600; margin-bottom:14px;">受付チャネル別比率 (オンライン / 郵送 / 電話)</p>
+              <div id="channelChart" style="display:flex; flex-direction:column; gap:12px;"></div>
+            </div>
+
+            <!-- オプション検査申込状況 -->
+            <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:18px;">
+              <p style="font-size:15px; font-weight:600; margin-bottom:14px;">オプション検査(追加検査)申込状況</p>
+              <div id="optionsChart" style="display:flex; flex-direction:column; gap:12px;"></div>
+            </div>
+          </div>
+
+          <!-- 会場別統計 -->
+          <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:18px; margin-bottom:20px;">
+            <p style="font-size:15px; font-weight:600; margin-bottom:12px;">会場(病院)別健診受付統計</p>
+            <table>
+              <thead>
+                <tr><th>会場(病院)名</th><th>確定件数</th><th>仮受付件数</th><th>キャンセル件数</th><th>合計</th></tr>
+              </thead>
+              <tbody id="siteStatsBody"></tbody>
+            </table>
+          </div>
+
+          <!-- 対象外年齢ログ -->
+          <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <div>
+                <p style="font-size:15px; font-weight:600; margin:0 0 2px;">対象外年齢 (40~74歳範囲外) 申込者モニタリングログ</p>
+                <p style="font-size:12px; color:var(--text-secondary); margin:0;">基本推奨年齢(40〜74歳)の範囲を外れてオンライン/電話で申し込んだ受診者の統計および個別管理ログです。</p>
+              </div>
+              <span id="outOfTargetCountBadge" class="badge" style="background:var(--bg-warning); color:var(--text-warning);">0件 検出</span>
+            </div>
+            <table>
+              <thead>
+                <tr><th>受付日</th><th>氏名</th><th>生年月日(満年齢)</th><th>区分(年齢事由)</th><th>受付チャネル</th><th>会場 / 日時</th><th>状態</th></tr>
+              </thead>
+              <tbody id="outOfTargetBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PAGE: メール設定 -->
+        <div id="page-email-settings" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <div>
+              <p style="font-size:22px; font-weight:600; margin:0 0 4px;">メール設定</p>
+              <p style="font-size:13px; color:var(--text-secondary); margin:0;">予約案内メールのテンプレートを設定し、送信履歴を確認します。</p>
+            </div>
+            <button class="btn btn-primary" onclick="saveEmailSettings()">設定を保存</button>
+          </div>
+
+          <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:20px; margin-bottom:20px;">
+            <p style="font-size:15px; font-weight:600; margin-bottom:14px;">自動送信メールテンプレート編集</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+              <div>
+                <label style="display:block; font-size:12px; font-weight:500; margin-bottom:4px;">[1] 予約確定案内メール 件名および本文</label>
+                <input id="tplConfirmSubject" value="[健診センター] 健診予約確定のご案内 ({resNo})" style="width:100%; font-size:13px; padding:6px; border:1px solid var(--border-strong); border-radius:6px; margin-bottom:6px;">
+                <textarea id="tplConfirmBody" rows="6" style="width:100%; font-size:13px; padding:8px; border:1px solid var(--border-strong); border-radius:6px; font-family:inherit; resize:vertical;">{name}様,
+
+健診予約が正常に完了しました。
+- 予約番号: {resNo}
+- 健診日時: {date} {time}
+- 健診病院: {site}
+
+[当日の持ち物]
+健康保険証または資格確認書を必ずお持ちください。
+
+以上、よろしくお願いいたします。</textarea>
+              </div>
+              <div>
+                <label style="display:block; font-size:12px; font-weight:500; margin-bottom:4px;">[2] 検診前日リマインドメール 件名および本文 (D-1 12:00)</label>
+                <input id="tplReminderSubject" value="[健診センター] 明日の健診日程のご案内 ({date})" style="width:100%; font-size:13px; padding:6px; border:1px solid var(--border-strong); border-radius:6px; margin-bottom:6px;">
+                <textarea id="tplReminderBody" rows="6" style="width:100%; font-size:13px; padding:8px; border:1px solid var(--border-strong); border-radius:6px; font-family:inherit; resize:vertical;">{name}様,
+
+明日({date} {time})、{site}にて健診が予定されています。
+
+- 健診前日の夜9時以降は絶食してください(水を含め飲食禁止)
+- 健康保険証を必ずお持ちください</textarea>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:20px;">
+            <p style="font-size:15px; font-weight:600; margin-bottom:14px;">送信履歴</p>
+            <table>
+              <thead><tr><th>日時</th><th>受信者</th><th>種類</th><th>件名 / 内容</th><th>モード</th><th>状態</th></tr></thead>
+              <tbody id="noticeBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PAGE: アカウント管理 -->
+        <div id="page-accounts" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <p style="font-size:19px; font-weight:600; margin:0;">アカウント管理 <span style="font-size:12px; font-weight:500; color:var(--text-accent); background:var(--bg-accent); padding:2px 8px; border-radius:10px;">システム管理者専用</span></p>
+            <button class="btn btn-primary" onclick="openAccountModal()">新規アカウント登録</button>
+          </div>
+          <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">管理者アカウントを登録し、3階層の権限(システム管理者/業務管理者/一般スタッフ)および所属会場を設定します。</p>
+
+          <!-- 3段階管理者権限構造案内カード -->
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-bottom:20px;">
+            <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <strong style="font-size:14px; color:var(--text-accent);">🛡️ 階層1: システム管理者</strong>
+                <span style="font-size:11px; background:var(--bg-accent); color:var(--text-accent); padding:2px 6px; border-radius:6px; font-weight:600;">system_admin</span>
+              </div>
+              <p style="font-size:12px; color:var(--text-secondary); margin:0 0 10px; line-height:1.5;">社団法人 健診センター 統合最高管理権限</p>
+              <ul style="font-size:12px; color:var(--text-primary); padding-left:16px; margin:0; line-height:1.6;">
+                <li>全20会場の健診拠点制御および定員(Capacity)管理</li>
+                <li>管理者アカウント発行・権限変更・状態切り替え</li>
+                <li>メールテンプレートおよびSMTP設定管理</li>
+                <li>全体統計ダッシュボードおよび操作ログ(Audit Trail)監視</li>
+              </ul>
+            </div>
+            <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <strong style="font-size:14px; color:var(--text-success);">📋 階層2: 業務管理者</strong>
+                <span style="font-size:11px; background:var(--bg-success); color:var(--text-success); padding:2px 6px; border-radius:6px; font-weight:600;">operation_admin</span>
+              </div>
+              <p style="font-size:12px; color:var(--text-secondary); margin:0 0 10px; line-height:1.5;">健診センター実務運営および予約調整権한</p>
+              <ul style="font-size:12px; color:var(--text-primary); padding-left:16px; margin:0; line-height:1.6;">
+                <li>受診者予約情報の確認・変更・キャンセル処理</li>
+                <li>不備項目(仮受付/NG)書類補完および確定処理</li>
+                <li>電話/郵送受付の受診者新規登録</li>
+                <li>電話連絡履歴(最大3回)および管理者メモ記録</li>
+              </ul>
+            </div>
+            <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <strong style="font-size:14px; color:var(--text-secondary);">👤 階層3: 一般スタッフ</strong>
+                <span style="font-size:11px; background:var(--surface-2); color:var(--text-muted); padding:2px 6px; border-radius:6px; font-weight:600;">general_staff</span>
+              </div>
+              <p style="font-size:12px; color:var(--text-secondary); margin:0 0 10px; line-height:1.5;">窓口・コールセンター受診者応対権限</p>
+              <ul style="font-size:12px; color:var(--text-primary); padding-left:16px; margin:0; line-height:1.6;">
+                <li>受診者予約一覧検索および詳細情報閲覧</li>
+                <li>電話/窓口予約受付の登録補助</li>
+                <li>通話内容メモおよび受診者メモ記録</li>
+                <li><span style="color:var(--text-danger); font-size:11px;">※ システム設定、定員・アカウント変更権限制限</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- アカウント管理検索およびフィルターバー -->
+          <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin-bottom:16px; display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+            <div class="field" style="margin:0; flex:1; min-width:140px;">
+              <label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">権限階層フィルター</label>
+              <select id="fltAccRole" onchange="renderAccounts()" style="width:100%; font-size:13px; padding:7px 10px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1); color:var(--text-primary);">
+                <option value="">すべての権限</option>
+                <option value="system_admin">システム管理者</option>
+                <option value="operation_admin">業務管理者</option>
+                <option value="general_staff">一般スタッフ</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0; flex:1; min-width:140px;">
+              <label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">所属会場フィルター</label>
+              <select id="fltAccSite" onchange="renderAccounts()" style="width:100%; font-size:13px; padding:7px 10px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1); color:var(--text-primary);"></select>
+            </div>
+            <div class="field" style="margin:0; flex:1; min-width:110px;">
+              <label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">アカウント状態</label>
+              <select id="fltAccStatus" onchange="renderAccounts()" style="width:100%; font-size:13px; padding:7px 10px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1); color:var(--text-primary);">
+                <option value="">すべての状態</option>
+                <option value="활성">有効 (活性)</option>
+                <option value="비활성">無効 (非活性)</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0; flex:1; min-width:150px;">
+              <label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">ID / 氏名検索</label>
+              <input id="fltAccKeyword" placeholder="アカウントIDまたは氏名検索" onkeyup="renderAccounts()" style="width:100%; font-size:13px; padding:6px 10px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1); color:var(--text-primary);">
+            </div>
+            <button class="btn btn-outline" onclick="resetAccFilters()" style="padding:7px 14px; font-size:13px;">リセット</button>
+          </div>
+
+          <table>
+            <thead>
+              <tr><th>アカウントID</th><th>氏名</th><th>所属会場</th><th>権限階層</th><th>状態</th><th>登録日時</th><th>管理</th></tr>
+            </thead>
+            <tbody id="accountsBody"></tbody>
+          </table>
+        </div>
+
+        <!-- PAGE: 操作ログ -->
+        <div id="page-audit-logs" style="display:none;">
+          <p style="font-size:19px; font-weight:500; margin-bottom:4px;">管理者操作ログ (Audit Trail)</p>
+          <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">予約変更、定員修正、郵送/電話受付、通話履歴およびアカウント登録など、すべての管理者操作記録を確認します。</p>
+
+          <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin-bottom:16px; display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+            <div class="field" style="margin:0; flex:1; min-width:140px;">
+              <label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">操作区分フィルター</label>
+              <select id="fltLogAction" onchange="renderAuditLogs()" style="width:100%; font-size:13px; padding:7px 10px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1); color:var(--text-primary);">
+                <option value="">すべての操作</option>
+                <option value="예약 등록">予約登録</option>
+                <option value="예약 취소">予約キャンセル</option>
+                <option value="정원 변경">定員変更</option>
+                <option value="통화 이력">電話連絡履歴</option>
+                <option value="계정 등록">アカウント登録</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0; flex:1; min-width:130px;">
+              <label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">権限階層フィルター</label>
+              <select id="fltLogRole" onchange="renderAuditLogs()" style="width:100%; font-size:13px; padding:7px 10px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1); color:var(--text-primary);">
+                <option value="">すべての権限</option>
+                <option value="system_admin">システム管理者</option>
+                <option value="operation_admin">業務管理者</option>
+                <option value="general_staff">一般スタッフ</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0; flex:1; min-width:140px;">
+              <label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">担当者検索</label>
+              <input id="fltLogUser" placeholder="担当者名 / ID" onkeyup="renderAuditLogs()" style="width:100%; font-size:13px; padding:6px 10px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1); color:var(--text-primary);">
+            </div>
+            <div class="field" style="margin:0; flex:1; min-width:140px;">
+              <label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">操作対象検索</label>
+              <input id="fltLogTarget" placeholder="受診者ID / 会場名など" onkeyup="renderAuditLogs()" style="width:100%; font-size:13px; padding:6px 10px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1); color:var(--text-primary);">
+            </div>
+            <button class="btn btn-outline" onclick="resetLogFilters()" style="padding:7px 14px; font-size:13px;">リセット</button>
+          </div>
+
+          <table>
+            <thead>
+              <tr><th>日時</th><th>担当者 (権限)</th><th>操作区分</th><th>対象</th><th>詳細内容</th></tr>
+            </thead>
+            <tbody id="auditLogsBody"></tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- パスワード変更モーダル -->
+  <div id="changePwModalOverlay" style="display:none; position:fixed; inset:0; background:rgba(20,20,18,0.45); align-items:center; justify-content:center; z-index:100;">
+    <div style="background:var(--surface-2); border-radius:12px; width:380px; max-width:92vw; padding:22px 24px; box-shadow:0 12px 40px rgba(0,0,0,0.25);">
+      <p style="font-size:16px; font-weight:600; margin-bottom:16px;">パスワード変更</p>
+      <div class="field" style="margin-bottom:12px;"><label>現在のパスワード</label><input id="pwOld" type="password" placeholder="現在のパスワードを入力"></div>
+      <div class="field" style="margin-bottom:12px;"><label>新しいパスワード</label><input id="pwNew" type="password" placeholder="8文字以上"></div>
+      <div class="field" style="margin-bottom:16px;"><label>新しいパスワード (確認)</label><input id="pwNewConfirm" type="password" placeholder="同じものを入力"></div>
+      <div id="pwModalError" style="display:none; color:var(--text-danger); font-size:13px; margin-bottom:10px;"></div>
+      <div style="display:flex; justify-content:flex-end; gap:8px;">
+        <button class="btn btn-outline" onclick="el('changePwModalOverlay').style.display='none'">キャンセル</button>
+        <button class="btn btn-primary" onclick="alert('パスワードが正常に変更されました。'); el('changePwModalOverlay').style.display='none';">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- アカウント登録モーダル -->
+  <div id="accountModalOverlay" style="display:none; position:fixed; inset:0; background:rgba(20,20,18,0.45); align-items:center; justify-content:center; z-index:100;">
+    <div style="background:var(--surface-2); border-radius:12px; width:420px; max-width:92vw; padding:22px 24px; box-shadow:0 12px 40px rgba(0,0,0,0.25);">
+      <p style="font-size:16px; font-weight:600; margin-bottom:16px;">新規アカウント登録</p>
+      <div class="field" style="margin-bottom:12px;"><label>アカウントID *</label><input id="accModalUsername" placeholder="半角英数字"></div>
+      <div class="field" style="margin-bottom:12px;"><label>氏名 *</label><input id="accModalName" placeholder="担当者名"></div>
+      <div class="field" style="margin-bottom:12px;"><label>権限</label><select id="accModalRole"><option value="operation_admin">業務管理者</option><option value="system_admin">システム管理者</option><option value="general_staff">一般スタッフ</option></select></div>
+      <div class="field" style="margin-bottom:16px;"><label>所属会場</label><select id="accModalSite"></select></div>
+      <div id="accModalError" style="display:none; color:var(--text-danger); font-size:13px; margin-bottom:10px;"></div>
+      <div style="display:flex; justify-content:flex-end; gap:8px;">
+        <button class="btn btn-outline" onclick="closeAccountModal()">キャンセル</button>
+        <button class="btn btn-primary" onclick="submitAccountModal()">登録</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- メール送信モーダル -->
+  <div id="emailModalOverlay" style="display:none; position:fixed; inset:0; background:rgba(20,20,18,0.45); align-items:center; justify-content:center; z-index:100;">
+    <div style="background:var(--surface-2); border-radius:12px; width:540px; max-width:92vw; max-height:86vh; overflow:auto; padding:22px 24px; box-shadow:0 12px 40px rgba(0,0,0,0.25);">
+      <p id="emailModalTitle" style="font-size:16px; font-weight:500; margin-bottom:4px;">メール送信</p>
+      <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">送信前に受信者、メールアドレス、内容をご確認・修正の上、送信してください。</p>
+      <div class="field" style="margin-bottom:12px;"><label>受信者氏名</label><input id="emailModalTo" readonly style="background:var(--surface-1); color:var(--text-secondary);"></div>
+      <div class="field" style="margin-bottom:12px;"><label>件名</label><input id="emailModalSubject"></div>
+      <div class="field" style="margin-bottom:12px;"><label>メールアドレス (修正可能) *</label><input id="emailModalEmail" type="email" placeholder="example@mail.com"></div>
+      <div class="field" style="margin-bottom:16px;"><label>本文</label><textarea id="emailModalBody" rows="10"></textarea></div>
+      <div id="emailModalError" style="display:none; color:var(--text-danger); font-size:13px; margin-bottom:10px;"></div>
+      <div style="display:flex; justify-content:flex-end; gap:8px;">
+        <button class="btn btn-outline" onclick="closeEmailModal()">キャンセル</button>
+        <button class="btn btn-primary" onclick="sendEmailModal()">送信</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 管理者ログインポップアップモーダル -->
+  <div id="loginModalOverlay"
+    style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); z-index:9999; align-items:center; justify-content:center;">
+    <div
+      style="background:var(--surface-1); border:1px solid var(--border); border-radius:14px; width:440px; padding:28px; box-shadow:0 20px 40px rgba(0,0,0,0.2);">
+      <div style="text-align:center; margin-bottom:20px;">
+        <p style="font-size:18px; font-weight:700; color:var(--text-primary); margin:0 0 4px;">管理者ログイン (Admin Auth)</p>
+        <p style="font-size:12px; color:var(--text-secondary); margin:0;">接続するデモアカウントを選択するか、ユーザーIDを入力してログインしてください。</p>
+      </div>
+
+      <div
+        style="background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:16px;">
+        <p style="font-size:11px; font-weight:600; color:var(--text-secondary); margin:0 0 8px;">デモアカウント即時選択 (Quick Login):</p>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <button class="btn btn-outline" style="justify-content:flex-start; font-size:12px; padding:6px 10px;"
+            onclick="quickLogin('admin_sys', '山田 太郎', 'システム管理者')"><strong>山田 太郎</strong> (システム管理者 · admin_sys)</button>
+          <button class="btn btn-outline" style="justify-content:flex-start; font-size:12px; padding:6px 10px;"
+            onclick="quickLogin('admin_op', '鈴木 兼一', '業務管理者')"><strong>鈴木 兼一</strong> (業務管理者 · admin_op)</button>
+          <button class="btn btn-outline" style="justify-content:flex-start; font-size:12px; padding:6px 10px;"
+            onclick="quickLogin('staff_01', '高橋 花子', '一般スタッフ')"><strong>高橋 花子</strong> (一般スタッフ · staff_01)</button>
+        </div>
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <label style="display:block; font-size:12px; font-weight:600; margin-bottom:4px;">ユーザーID</label>
+        <input type="text" id="loginUsername" value="admin_op"
+          style="width:100%; font-size:13px; padding:8px 10px; border:1px solid var(--border-strong); border-radius:6px;">
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="display:block; font-size:12px; font-weight:600; margin-bottom:4px;">パスワード</label>
+        <input type="password" id="loginPassword" value="password123"
+          style="width:100%; font-size:13px; padding:8px 10px; border:1px solid var(--border-strong); border-radius:6px;">
+      </div>
+
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-outline" style="padding:10px;" onclick="closeLoginModal()">閉じる</button>
+        <button class="btn btn-primary" style="flex:1; padding:10px;" onclick="submitLogin()">ログイン</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./demo-shared-data.js"></script>
+  <script>
+    var currentUser = { username: "admin_op", name: "鈴木 兼一", role: "operation_admin" };
+
+    var JA_STATUS_MAP = { '예약완료': '予約完了', '확인대기': '確認待ち', '임시접수': '仮受付', '취소': 'キャンセル' };
+    function jaStatus(s){ return JA_STATUS_MAP[s] || s || '-'; }
+
+    var JA_COURSE_MAP = {
+      '기본 건강검진 (특정검진 포함)': '基本健診(特定健診含む)',
+      '유방암 특화 종합검진': '乳がん特化総合健診',
+      '대장내시경 정밀 패키지': '大腸内視鏡精密パッケージ',
+    };
+    function jaCourse(c){ return JA_COURSE_MAP[c] || c || '-'; }
+
+    var JP_FIELD_LABELS = {
+      name: '氏名', gender: '性別', birth: '生年月日', phone: '電話番号(携帯または固定)',
+      insuranceNo: '保険者番号/記号・番号', zipcode: '郵便番号', address: '住所', addressDetail: '番地',
+      site: '希望検診会場', date: '希望検診日', time: '希望検診時間',
+    };
+
+    var JP_OPTION_LABELS = {
+      gastro_scope: '胃内視鏡検査追加', gastro_barium: '胃X線(バリウム)検査追加', colon: '大腸がん検診(便潜血)検査追加',
+      abdominal_us: '腹部超音波検査追加', breast_mammo: '乳がん検診(マンモグラフィ)追加 (女性)', breast_us: '乳腺超音波検査追加 (女性)',
+      cervical: '子宮頸がん検査追加 (女性)', bone_density: '骨密度検査追加 (女性)', prostate: '前立腺がん(PSA)検査追加 (男性)',
+      tumor_marker: '腫瘍マーカー(がんマーカー)検査追加', fundus: '眼底検査追加', hepatitis: 'B型・C型肝炎ウイルス検査追加',
+    };
+
+    var JA_FREE_TEXT_MAP = {
+      '희망 시간대 정원 마감 — 유선으로 재조율 필요': '希望時間帯が定員締切 — 電話での再調整が必要',
+    };
+    function jaFreeText(s){ return JA_FREE_TEXT_MAP[s] || s; }
+
+    function jaSite(s){ return (!s || s === '전체' || s === '전체 거점' || s === '전체거점' || s === '전체') ? '全拠点' : s; }
+
+    function jaPersonName(name){
+      if (!name) return name;
+      return name
+        .replace('(시스템 관리자)', '(システム管理者)')
+        .replace('(업무 관리자)', '(業務管理者)')
+        .replace('(일반 스태프)', '(一般スタッフ)')
+        .replace(/^관리자$/, '管理者');
+    }
+
+    var JA_AUDIT_ACTION_MAP = {
+      '예약 등록': '予約登録', '예약 취소': '予約キャンセル', '정원 변경': '定員変更', '정원 수정': '定員変更',
+      '통화 이력': '電話連絡履歴', '통화 이력 기록': '電話連絡履歴', '계정 등록': 'アカウント登録',
+      '휴진/마감 설정': '休診/締切設定', '기타': 'その他',
+    };
+    function jaAuditAction(a){ return JA_AUDIT_ACTION_MAP[a] || a; }
+
+    var JA_AUDIT_TEXT_PAIRS = [
+      ['시간대별 기본 정원 변경 일괄 적용 완료', '時間帯別基本定員の変更を一括適用しました'],
+      ['시간대별 기본정원', '時間帯別基本定員'],
+      ['온라인 신청 접수 및 정원 차감', 'オンライン申込み受付および定員減算'],
+      ['휴진/전체마감', '休診/全体締切'],
+      ['마감 해제', '締切解除'],
+      ['권한: ', '権限: '],
+      [', 소속: ', '、所属: '],
+      ['1차 전화통화 시도 (부재중)', '1回目の電話連絡試行(不在)'],
+    ];
+    function jaAuditText(s){
+      if (!s) return s;
+      var out = s;
+      JA_AUDIT_TEXT_PAIRS.forEach(function(pair){ out = out.split(pair[0]).join(pair[1]); });
+      return out;
+    }
+    
+
+    function el(id) { return document.getElementById(id); }
+
+    window.addEventListener('DOMContentLoaded', async function () {
+      await DemoDB.init();
+      fillDropdowns();
+      renderPhoneCalendar();
+      showPage('list');
+
+      if (el('pZip')) el('pZip').addEventListener('keyup', function () { searchAddressByZip(this.value, 'pAddress'); });
+      if (el('mZip')) el('mZip').addEventListener('keyup', function () { searchAddressByZip(this.value, 'mAddress'); });
+    });
+
+    function openLoginModal() { el('loginModalOverlay').style.display = 'flex'; }
+    function closeLoginModal() { el('loginModalOverlay').style.display = 'none'; }
+    function openChangePasswordModal() { el('changePwModalOverlay').style.display = 'flex'; }
+
+    function quickLogin(un, name, roleName) {
+      currentUser.username = un;
+      currentUser.name = name;
+      el('loggedInUserNameTop').textContent = name;
+      el('loggedInUserUsernameTop').textContent = '(' + un + ')';
+      el('loggedInUserRoleBadgeTop').textContent = roleName;
+      closeLoginModal();
+      alert(name + '様 (' + roleName + ') としてログインしました。');
+    }
+
+    function submitLogin() {
+      var un = el('loginUsername').value.trim();
+      quickLogin(un, un, '業務管理者');
+    }
+
+    function resetDemo() {
+      if (confirm('デモデータを初期状態に戻しますか?')) {
+        location.reload();
+      }
+    }
+
+    function fillDropdowns() {
+      ['pSite', 'fltSite', 'fltStatSite', 'fltAccSite'].forEach(function (id) {
+        var select = el(id);
+        if (!select) return;
+        var defaultLabel = (id === 'fltStatSite' || id === 'fltAccSite') ? 'すべての会場' : '選択してください';
+        select.innerHTML = '<option value="">' + defaultLabel + '</option>';
+        DemoDB.SITES.forEach(function (s) {
+          var o = document.createElement('option');
+          o.value = s; o.textContent = s;
+          select.appendChild(o);
+        });
+      });
+    }
+
+    function resetStatFilters() {
+      if (el('fltStatSite')) el('fltStatSite').value = '';
+      if (el('fltStatChannel')) el('fltStatChannel').value = '';
+      if (el('fltStatStatus')) el('fltStatStatus').value = '';
+      if (el('fltStatDate')) el('fltStatDate').value = '';
+      renderStats();
+    }
+
+    function resetAccFilters() {
+      if (el('fltAccRole')) el('fltAccRole').value = '';
+      if (el('fltAccSite')) el('fltAccSite').value = '';
+      if (el('fltAccStatus')) el('fltAccStatus').value = '';
+      if (el('fltAccKeyword')) el('fltAccKeyword').value = '';
+      renderAccounts();
+    }
+
+    function resetLogFilters() {
+      if (el('fltLogAction')) el('fltLogAction').value = '';
+      if (el('fltLogRole')) el('fltLogRole').value = '';
+      if (el('fltLogUser')) el('fltLogUser').value = '';
+      if (el('fltLogTarget')) el('fltLogTarget').value = '';
+      renderAuditLogs();
+    }
+
+    // ---------- 会場/日付/時間帯 共通select入力 (リアルタイム定員反映) ----------
+    function fillSiteSelect(selectEl, includeBlank) {
+      if (!selectEl) return;
+      selectEl.innerHTML = includeBlank ? '<option value="">選択してください</option>' : '';
+      DemoDB.SITES.forEach(function (s) {
+        var o = document.createElement('option');
+        o.value = s; o.textContent = s;
+        selectEl.appendChild(o);
+      });
+    }
+
+    function fillDateSelect(selectEl, includeBlank) {
+      if (!selectEl) return;
+      selectEl.innerHTML = includeBlank ? '<option value="">選択してください</option>' : '';
+      var y = DemoDB.SEED_YEAR, m = DemoDB.SEED_MONTH;
+      var dim = new Date(y, m, 0).getDate();
+      for (var day = 1; day <= dim; day++) {
+        var dateISO = y + '-' + DemoDB.pad(m) + '-' + DemoDB.pad(day);
+        var o = document.createElement('option');
+        o.value = dateISO; o.textContent = dateISO;
+        selectEl.appendChild(o);
+      }
+    }
+
+    async function fillTimeSelect(selectEl, site, date, includeBlank) {
+      if (!selectEl) return;
+      selectEl.innerHTML = includeBlank ? '<option value="">選択してください</option>' : '';
+      if (!site || !date) return;
+      var capacityGrid = await DemoDB.getCapacityGrid(site);
+      var slots = capacityGrid[date] || {};
+      DemoDB.TIMES.forEach(function (t) {
+        var slot = slots[t] || { total: 0, used: 0, closed: true, remaining: 0 };
+        var unavailable = slot.closed || slot.remaining <= 0;
+        var statusLabel = unavailable ? '満席' : (slot.remaining >= 5 ? '空きあり ' + slot.remaining + '名' : '残りわずか ' + slot.remaining + '名');
+        var o = document.createElement('option');
+        o.value = t;
+        o.textContent = t + ' (' + statusLabel + ')';
+        if (unavailable) o.disabled = true;
+        selectEl.appendChild(o);
+      });
+    }
+
+    async function searchAddressByZip(zipcode, targetAddrId) {
+      if (!zipcode) return;
+      var cleanZip = zipcode.replace(/[^0-9]/g, '');
+      if (cleanZip.length === 7) {
+        var addr = DemoDB.lookupZipcode(cleanZip);
+        if (addr && el(targetAddrId)) {
+          el(targetAddrId).value = addr;
+          return;
+        }
+        try {
+          var res = await fetch('https://zipcloud.ibsnet.co.jp/api/search?zipcode=' + cleanZip);
+          var data = await res.json();
+          if (data.results && data.results[0]) {
+            var r = data.results[0];
+            el(targetAddrId).value = r.address1 + ' ' + r.address2 + ' ' + r.address3;
+          }
+        } catch (e) { console.error('郵便番号の自動入力エラー:', e); }
+      }
+    }
+
+    function triggerZipSearch(zipInputId, addrInputId) {
+      var zipVal = el(zipInputId).value.trim();
+      if (!zipVal) {
+        alert('郵便番号を入力してください。');
+        return;
+      }
+      var addr = DemoDB.lookupZipcode(zipVal);
+      if (addr) {
+        el(addrInputId).value = addr;
+        alert('郵便番号 (' + zipVal + ') の住所を自動的に見つけました:\n' + addr);
+      } else {
+        alert('郵便番号7桁を入力すると自動住所検索が完了します。');
+      }
+    }
+
+    function showPage(name) {
+      var role = (currentUser && currentUser.role) ? currentUser.role : 'operation_admin';
+      var isSys = (role === 'system_admin');
+      var isOp = (role === 'operation_admin' || role === 'system_admin');
+
+      if ((name === 'email-settings' || name === 'accounts') && !isSys) {
+        alert('🔒 [階層1: システム管理者] 専用権限ページです。\n現在のログインアカウント: ' + (currentUser.name || '') + ' (' + roleNameJA(role) + ')');
+        return;
+      }
+      if ((name === 'capacity' || name === 'options' || name === 'audit-logs') && !isOp) {
+        alert('🔒 [階層2: 業務管理者以上] 権限必要ページです。\n現在のログインアカウント: ' + (currentUser.name || '') + ' (' + roleNameJA(role) + ')');
+        return;
+      }
+
+      currentActivePage = name;
+      document.querySelectorAll('.navitem').forEach(function (item) {
+        if (item.dataset.page === name) item.classList.add('active');
+        else item.classList.remove('active');
+      });
+      ['list', 'detail', 'phone', 'ng', 'capacity', 'options', 'stats', 'email-settings', 'accounts', 'audit-logs'].forEach(function (p) {
+        if (el('page-' + p)) el('page-' + p).style.display = (p === name) ? 'block' : 'none';
+      });
+      if (name === 'list') renderList();
+      if (name === 'ng') renderNG();
+      if (name === 'capacity') renderCapacity();
+      if (name === 'options') renderOptions();
+      if (name === 'stats') renderStats();
+      if (name === 'accounts') renderAccounts();
+      if (name === 'audit-logs') renderAuditLogs();
+      if (name === 'email-settings') renderNotice();
+      updateNgBadge();
+      applyRolePermissions();
+    }
+
+    function statusBadge(status) {
+      if (status === '예약완료') return '<span class="status" style="background:var(--bg-success); color:var(--text-success); padding:3px 8px; border-radius:12px; font-size:12px; font-weight:600;">' + jaStatus(status) + '</span>';
+      if (status === '확인대기') return '<span class="status" style="background:var(--bg-warning); color:var(--text-warning); padding:3px 8px; border-radius:12px; font-size:12px; font-weight:600;">' + jaStatus(status) + '</span>';
+      if (status === '임시접수') return '<span class="status" style="background:var(--bg-danger); color:var(--text-danger); padding:3px 8px; border-radius:12px; font-size:12px; font-weight:600;">' + jaStatus(status) + '</span>';
+      return '<span class="status" style="background:var(--surface-1); color:var(--text-muted); padding:3px 8px; border-radius:12px; font-size:12px;">' + DemoDB.escapeHtml(jaStatus(status)) + '</span>';
+    }
+
+    function statusStyle(status) {
+      if (status === '예약완료') return 'background:var(--bg-success); color:var(--text-success);';
+      if (status === '확인대기') return 'background:var(--bg-warning); color:var(--text-warning);';
+      if (status === '임시접수') return 'background:var(--bg-danger); color:var(--text-danger);';
+      return 'background:var(--surface-1); color:var(--text-muted);';
+    }
+
+
+    function channelBadge(channel) {
+      var label = channel === 'online' ? 'オンライン' : channel === 'phone' ? '電話' : '郵送';
+      var style = channel === 'online' ? 'background:var(--bg-accent); color:var(--text-accent);' : (channel === 'phone' ? 'background:var(--bg-success); color:var(--text-success);' : 'background:var(--bg-warning); color:var(--text-warning);');
+      return '<span class="badge" style="padding:2px 8px; border-radius:10px; font-size:11px; font-weight:500; ' + style + '">' + label + '</span>';
+    }
+
+    async function updateNgBadge() {
+
+      var rows = await DemoDB.listReservations({ status: ['임시접수'] });
+      if (el('ngCountBadge')) el('ngCountBadge').textContent = rows.length > 0 ? rows.length : '';
+    }
+
+    function formatDateShort(isoStr) {
+      if (!isoStr) return '-';
+      var s = String(isoStr).replace('T', ' ');
+      if (s.length > 16) s = s.substring(0, 16);
+      return s;
+    }
+
+    function applyRolePermissions() {
+      var role = currentUser.role || 'operation_admin';
+      var isSys = (role === 'system_admin');
+      var isOp = (role === 'operation_admin' || role === 'system_admin');
+
+      var menuCapacity = document.querySelector('[onclick*="showPage(\'capacity\')"]');
+      var menuOptions = document.querySelector('[onclick*="showPage(\'options\')"]');
+      var menuEmail = document.querySelector('[onclick*="showPage(\'email-settings\')"]');
+      var menuAccounts = document.querySelector('[onclick*="showPage(\'accounts\')"]');
+      var menuAudit = document.querySelector('[onclick*="showPage(\'audit-logs\')"]');
+
+      function setMenuState(menuEl, isAllowed, reqLabel) {
+        if (!menuEl) return;
+        var existingBadge = menuEl.querySelector('.role-lock-badge');
+        if (isAllowed) {
+          menuEl.style.opacity = '1';
+          menuEl.title = '';
+          if (existingBadge) existingBadge.remove();
+        } else {
+          menuEl.style.opacity = '0.45';
+          menuEl.title = '🔒 ' + reqLabel + ' 権限が必要です';
+          if (!existingBadge) {
+            var span = document.createElement('span');
+            span.className = 'role-lock-badge';
+            span.style.cssText = 'font-size:10px; background:var(--bg-danger); color:var(--text-danger); padding:1px 5px; border-radius:4px; margin-left:auto; font-weight:600;';
+            span.textContent = '🔒 ロック';
+            menuEl.appendChild(span);
+          }
+        }
+      }
+
+      setMenuState(menuCapacity, isOp, '業務管理者以上');
+      setMenuState(menuOptions, isOp, '業務管理者以上');
+      setMenuState(menuAudit, isOp, '業務管理者以上');
+      setMenuState(menuEmail, isSys, 'システム管理者');
+      setMenuState(menuAccounts, isSys, 'システム管理者');
+    }
+
+    function infoBlock(label, value) {
+      return '<div><p style="font-size:12px; color:var(--text-secondary); margin-bottom:4px;">' + label + '</p><p style="font-size:15px;">' + DemoDB.escapeHtml(value) + '</p></div>';
+    }
+
+    function defaultConfirmBody(r) {
+      return (jaPersonName(r.name) || '') + '様,\n\n健診のご予約が確定しました。以下の内容をご確認ください。\n\n- 予約番号: ' + (r.resNo || '-') + '\n- 検診コース: ' + (r.course || '-') + '\n- 会場: ' + (jaSite(r.site) || r.site || '-') + '\n- 日時: ' + (r.date || '-') + ' ' + (r.time || '') + '\n\nご不明な点は担当者までお問い合わせください。\nありがとうございました。';
+    }
+
+    async function renderList() {
+      var fltId = el('fltId') ? el('fltId').value.trim() : '';
+      var fltResNo = el('fltResNo') ? el('fltResNo').value.trim() : '';
+      var fltName = el('fltName') ? el('fltName').value.trim() : '';
+      var fltBirth = el('fltBirth') ? el('fltBirth').value.trim() : '';
+      var fltCreated = el('fltCreated') ? el('fltCreated').value.trim() : '';
+      var fltDate = el('fltDate') ? el('fltDate').value.trim() : '';
+      var fltChannel = el('fltChannel') ? el('fltChannel').value : '';
+      var fltSite = el('fltSite') ? el('fltSite').value : '';
+      var fltStatus = el('fltStatus') ? el('fltStatus').value : '';
+
+      var filter = {};
+      if (fltId) filter.id = fltId;
+      if (fltResNo) filter.resNo = fltResNo;
+      if (fltName) filter.name = fltName;
+      if (fltBirth) filter.birth = fltBirth;
+      if (fltCreated) filter.created = fltCreated;
+      if (fltDate) filter.date = fltDate;
+      if (fltChannel) filter.channel = fltChannel;
+      if (fltSite) filter.site = fltSite;
+      if (fltStatus) filter.status_val = fltStatus;
+
+      var rows = await DemoDB.listReservations(filter);
+
+      if (rows && rows.length) {
+        rows = rows.filter(function (r) {
+          if (fltId && !(r.id || '').toLowerCase().includes(fltId.toLowerCase())) return false;
+          if (fltResNo && !(r.resNo || '').toLowerCase().includes(fltResNo.toLowerCase())) return false;
+          if (fltName && !(r.name || '').includes(fltName)) return false;
+          if (fltBirth && !(r.birth || '').includes(fltBirth)) return false;
+          if (fltCreated && !(r.createdAt || '').includes(fltCreated)) return false;
+          if (fltDate && !(r.date || '').includes(fltDate)) return false;
+          if (fltChannel && r.channel !== fltChannel) return false;
+          if (fltSite && r.site !== fltSite) return false;
+          if (fltStatus && r.status !== fltStatus) return false;
+          return true;
+        });
+      }
+
+      var body = el('listBody'); body.innerHTML = '';
+      if (!rows || rows.length === 0) {
+        body.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:24px; color:var(--text-muted);">条件に合う受診者データがありません。</td></tr>';
+        return;
+      }
+
+      rows.forEach(function (r) {
+        var tr = document.createElement('tr');
+        tr.style.cursor = 'pointer';
+        tr.onclick = function () { showDetail(r.id); };
+        if (r.status === '취소') {
+          tr.style.textDecoration = 'line-through';
+          tr.style.color = 'var(--text-muted)';
+        }
+        tr.innerHTML =
+          '<td style="font-weight:600; color:var(--text-accent);"><a class="link">' + DemoDB.escapeHtml(r.id) + '</a></td>' +
+          '<td style="color:var(--text-secondary);">' + DemoDB.escapeHtml(r.resNo) + '</td>' +
+          '<td>' + DemoDB.escapeHtml(jaPersonName(r.name) || '(未記載)') + '</td>' +
+          '<td style="color:var(--text-secondary);">' + DemoDB.escapeHtml(r.birth || '-') + '</td>' +
+          '<td style="color:var(--text-secondary); font-size:12px; white-space:nowrap;">' + DemoDB.escapeHtml(formatDateShort(r.createdAt)) + '</td>' +
+          '<td>' + (r.date ? DemoDB.escapeHtml(r.date + ' ' + (r.time || '')) : '-') + '</td>' +
+          '<td>' + DemoDB.escapeHtml(jaSite(r.site) || r.site || '-') + '</td>' +
+          '<td>' + channelBadge(r.channel) + '</td>' +
+          '<td>' + statusBadge(r.status) + '</td>';
+        body.appendChild(tr);
+      });
+    }
+
+    function resetListFilters() {
+      ['fltId', 'fltResNo', 'fltName', 'fltBirth', 'fltCreated', 'fltDate', 'fltSite', 'fltChannel', 'fltStatus'].forEach(function (id) {
+        if (el(id)) el(id).value = '';
+      });
+      renderList();
+    }
+
+    async function showDetail(id, isEditMode, isMemoEditMode) {
+      currentDetailId = id;
+      var got = await DemoDB.getReservation(id);
+      if (!got) { showPage('list'); return; }
+      var r = got.record;
+      var history = got.history;
+
+      var missingKeys = DemoDB.REQUIRED_FIELDS.filter(function (k) { return !r[k]; });
+      var hasMissing = (missingKeys && missingKeys.length > 0) || (r.missingFields && r.missingFields.length > 0);
+
+      var html = '';
+      html += '<div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">';
+      html += '<button class="btn btn-outline" style="padding:6px 10px; font-size:13px;" onclick="showPage(\'list\')">← 一覧に戻る</button>';
+      html += '<span style="font-size:14px; color:var(--text-secondary);">受診者一覧 &gt;</span>';
+      html += '<span style="font-size:15px; font-weight:500;">' + DemoDB.escapeHtml(r.name || '(未記載)') + '</span>';
+      html += '<span class="status" style="' + statusStyle(r.status) + '">' + DemoDB.escapeHtml(jaStatus(r.status)) + '</span>';
+      html += '</div>';
+
+      // 1. 受診者情報エリア (統合カード - 不備項目は黄色枠線で強調)
+      var cardBorder = (r.status === '임시접수' || hasMissing)
+        ? 'border:2px solid #eab308; background:var(--surface-1); box-shadow:0 2px 8px rgba(234,179,8,0.15);'
+        : 'border:1px solid var(--border); background:var(--surface-2);';
+
+      html += '<div style="position:relative; border-radius:12px; padding:22px; margin-bottom:20px; ' + cardBorder + '">';
+
+      if (r.status === '임시접수' || hasMissing) {
+        var missingLabelList = (missingKeys || []).map(function (k) { return JP_FIELD_LABELS[k] || k; }).concat(r.missingFields || []);
+        var missingText = missingLabelList.length ? missingLabelList.join(', ') : '必須項目の確認が必要です';
+        html += '<div style="background:#fefce8; border:1px solid #fde047; color:#854d0e; padding:10px 14px; border-radius:8px; margin-bottom:16px; font-size:13px; font-weight:600; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">';
+        html += '<span>⚠️ 受診者情報に不備があります。(不備項目: <span style="text-decoration:underline;">' + DemoDB.escapeHtml(missingText) + '</span>)</span>';
+        html += '<span style="font-size:12px; font-weight:400; color:#a16207;">[受診者情報修正] ボタンを押して黄色の項目を補完してください。</span>';
+        html += '</div>';
+      }
+
+      if (isEditMode) {
+        var getFieldStyle = function (key) {
+          var isMissing = (missingKeys && missingKeys.indexOf(key) !== -1) || (r.missingFields && r.missingFields.indexOf(key) !== -1);
+          return isMissing
+            ? 'border:2px solid #eab308; background:#fffde7; padding:8px 12px; border-radius:8px; font-weight:600;'
+            : 'border:1px solid var(--border-strong); background:var(--surface-1); padding:8px 12px; border-radius:8px;';
+        };
+
+        html += '<div style="display:grid; grid-template-columns:1.3fr 1fr; gap:20px; align-items:start; margin-bottom:16px;">';
+        
+        // LEFT CARD: 📋 受診者基本情報および健診日程
+        html += '<div style="background:var(--surface-2); border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.03);">';
+        html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid var(--border); padding-bottom:10px;">';
+        html += '<h3 style="font-size:15px; font-weight:700; color:var(--text-primary); margin:0; display:flex; align-items:center; gap:6px;">📋 受診者基本情報および健診日程</h3>';
+        html += '<span style="font-size:12px; color:var(--text-muted);">(🟡 黄色枠線: 不備/必須入力項目)</span>';
+        html += '</div>';
+
+        html += '<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px 14px; margin-bottom:14px;">';
+        html += '<div class="field" style="' + getFieldStyle('name') + '"><label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">氏名 *</label><input id="editName" value="' + DemoDB.escapeHtml(r.name || '') + '" placeholder="例) 佐藤 健二" style="width:100%; font-size:14px; padding:6px 8px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1);"></div>';
+        html += '<div class="field" style="' + getFieldStyle('birth') + '"><label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">生年月日 * (YYYY-MM-DD)</label><input id="editBirth" value="' + DemoDB.escapeHtml(r.birth || '') + '" placeholder="1968-03-12" style="width:100%; font-size:14px; padding:6px 8px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1);"></div>';
+        html += '<div class="field" style="' + getFieldStyle('gender') + '"><label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">性別 *</label><select id="editGender" style="width:100%; font-size:14px; padding:6px 8px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1);"><option value="">選択してください</option><option value="M"' + (r.gender === 'M' ? ' selected' : '') + '>男性</option><option value="F"' + (r.gender === 'F' ? ' selected' : '') + '>女性</option></select></div>';
+
+        html += '<div class="field" style="' + getFieldStyle('phone') + '"><label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">連絡先 *</label><input id="editPhone" value="' + DemoDB.escapeHtml(r.phone || '') + '" placeholder="090-1234-5678" style="width:100%; font-size:14px; padding:6px 8px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1);"></div>';
+        html += '<div class="field" style="' + getFieldStyle('insuranceNo') + '"><label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">保険者番号/記号・番号 *</label><input id="editInsurance" value="' + DemoDB.escapeHtml(r.insuranceNo || '') + '" placeholder="01234567-1234-567890" style="width:100%; font-size:14px; padding:6px 8px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1);"></div>';
+        html += '<div class="field" style="' + getFieldStyle('email') + '"><label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">メールアドレス</label><input id="editEmail" value="' + DemoDB.escapeHtml(r.email || '') + '" placeholder="example@mail.com" style="width:100%; font-size:14px; padding:6px 8px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1);"></div>';
+
+        html += '<div class="field" style="' + getFieldStyle('zipcode') + '"><label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">郵便番号 *</label><input id="editZip" value="' + DemoDB.escapeHtml(r.zipcode || '') + '" placeholder="0700001" style="width:100%; font-size:14px; padding:6px 8px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1);"></div>';
+        html += '<div class="field" style="' + getFieldStyle('addressDetail') + '"><label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">番地 *</label><input id="editAddrDetail" value="' + DemoDB.escapeHtml(r.addressDetail || '') + '" placeholder="4条西4丁目 1-2" style="width:100%; font-size:14px; padding:6px 8px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1);"></div>';
+        html += '<div class="field" style="' + getFieldStyle('address') + '"><label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">住所 *</label><input id="editAddress" value="' + DemoDB.escapeHtml(r.address || '') + '" placeholder="サンプル市 中央2丁目" style="width:100%; font-size:14px; padding:6px 8px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1);"></div>';
+
+        html += '<div class="field" style="' + getFieldStyle('site') + '"><label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">会場 *</label><select id="editSite" style="width:100%; font-size:14px; padding:6px 8px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1);"><option value="">選択してください</option></select></div>';
+        html += '<div class="field" style="' + getFieldStyle('date') + '"><label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">選択された希望日付 *</label><select id="editDate" style="width:100%; font-size:14px; padding:6px 8px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1);"><option value="">選択してください</option></select></div>';
+        html += '<div class="field" style="' + getFieldStyle('time') + '"><label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:4px; display:block;">健診希望時間帯 *</label><select id="editTime" style="width:100%; font-size:14px; padding:6px 8px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1);"><option value="">選択してください</option></select></div>';
+        html += '</div>';
+        html += '</div>';
+
+        // RIGHT CARD: 🩺 検査コースおよびオプション選択
+        html += '<div style="background:var(--surface-2); border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.03);">';
+        html += '<div style="margin-bottom:14px; border-bottom:1px solid var(--border); padding-bottom:10px;">';
+        html += '<h3 style="font-size:15px; font-weight:700; color:var(--text-primary); margin:0; display:flex; align-items:center; gap:6px;">🩺 検査コースおよびオプション選択</h3>';
+        html += '</div>';
+
+        html += '<div style="margin-bottom:16px;">';
+        html += '<label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:6px; display:block;">基本コース選択</label>';
+        html += '<select id="editCourse" style="width:100%; font-size:14px; padding:8px 10px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1); font-weight:600; color:var(--text-primary);"><option value="기본 건강검진 (특정검진 포함)">基本健診 (特定健診含む)</option></select>';
+        html += '</div>';
+
+        html += '<div>';
+        html += '<label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:8px; display:block;">追加検査選択 (複数選択可能)</label>';
+        html += '<div id="editOptionsContainer" style="background:var(--surface-1); border:1px solid var(--border-strong); border-radius:8px; padding:12px 14px; display:flex; flex-direction:column; gap:8px; max-height:240px; overflow-y:auto;"></div>';
+        html += '</div>';
+        html += '</div>';
+
+        html += '</div>'; // End 2-card grid
+
+        html += '<div id="editConfirmError" style="display:none; color:var(--text-danger); font-size:13px; margin-bottom:10px; font-weight:600;"></div>';
+        html += '<div style="display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">';
+        html += '<button class="btn btn-outline" onclick="showDetail(\'' + r.id + '\', false)">キャンセル</button>';
+        if (r.status === '임시접수') {
+          html += '<button class="btn btn-primary" style="background:#0284c7; color:#fff;" onclick="submitEditAndConfirm(\'' + r.id + '\')">修正および確定処理</button>';
+        }
+        html += '<button class="btn btn-primary" onclick="submitEditDetail(\'' + r.id + '\')">修正完了</button>';
+        html += '</div>';
+      } else {
+        var makeBlock = function (label, val, key) {
+          var isMissing = (missingKeys && missingKeys.indexOf(key) !== -1) || (r.missingFields && r.missingFields.indexOf(key) !== -1);
+          var containerStyle = isMissing
+            ? 'border:2px solid #eab308; background:#fffbe6; padding:8px 12px; border-radius:8px;'
+            : '';
+          var badgeHtml = isMissing
+            ? '<span style="background:#fef08a; color:#854d0e; font-size:11px; font-weight:700; padding:2px 6px; border-radius:4px; margin-left:6px;">⚠️ 不備</span>'
+            : '';
+          var valHtml = (isMissing && (!val || val === '-'))
+            ? '<span style="color:#d97706; font-weight:700; font-style:italic;">未記入 (要修正)</span>'
+            : DemoDB.escapeHtml(val || '-');
+          return '<div style="' + containerStyle + '"><p style="font-size:12px; color:var(--text-secondary); margin-bottom:4px;">' + label + badgeHtml + '</p><p style="font-size:15px; font-weight:' + (isMissing ? '600' : '400') + ';">' + valHtml + '</p></div>';
+        };
+
+        html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">';
+        html += '<span style="font-size:16px; font-weight:700; color:var(--text-primary);">受診者情報</span>';
+        html += '<div style="display:flex; gap:8px; flex-wrap:wrap;">';
+        if (r.status === '임시접수') {
+          html += '<button class="btn btn-primary" onclick="confirmNg(\'' + r.id + '\')">確定処理</button>';
+          html += '<button class="btn btn-danger" onclick="cancelReservationUI(\'' + r.id + '\')">受付キャンセル</button>';
+        } else if (r.status === '예약완료' || r.status === '확인대기') {
+          html += '<button class="btn btn-outline" onclick="resendMail(\'' + r.id + '\')">確認メール再送信</button>';
+          html += '<button class="btn btn-danger" onclick="cancelReservationUI(\'' + r.id + '\')">予約キャンセル (定員復旧)</button>';
+        }
+        html += '<button class="btn btn-outline" style="padding:4px 10px; font-size:12px;" onclick="showDetail(\'' + r.id + '\', true)">受診者情報修正</button>';
+        html += '</div>';
+        html += '</div>';
+
+        html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px 20px; line-height:1.8;">';
+        html += makeBlock('患者番号', r.id, 'id') + makeBlock('予約番号', r.resNo, 'resNo');
+        html += makeBlock('生年月日', r.birth ? (r.birth + ' (満' + DemoDB.calcAge(r.birth) + '歳)') : '', 'birth') + makeBlock('性別', r.gender === 'F' ? '女性' : r.gender === 'M' ? '男性' : '', 'gender');
+        html += makeBlock('連絡先', r.phone, 'phone') + makeBlock('メールアドレス', r.email, 'email');
+        html += makeBlock('保険者番号/記号・番号', r.insuranceNo, 'insuranceNo') + makeBlock('郵便番号', r.zipcode, 'zipcode');
+        html += makeBlock('住所', r.address ? (r.address + (r.addressDetail ? ' ' + r.addressDetail : '')) : '', 'address') + makeBlock('受付チャネル', r.channel === 'online' ? 'オンライン' : r.channel === 'phone' ? '電話' : '郵送', 'channel');
+        html += makeBlock('会場/日時', r.site ? (jaSite(r.site) + ' · ' + (r.date ? r.date + ' ' + r.time : '')) : '', 'site') + makeBlock('追加検査', (r.options && r.options.length) ? r.options.map(function(o){ return JP_OPTION_LABELS[o] || o; }).join(', ') : '-', 'options');
+        html += '</div>';
+      }
+      html += '</div>';
+
+      // 2. 特記事項エリア (すべての患者で利用可能)
+      var memoAuthorInfo = r.memoAuthor ? (' <span style="font-size:12px; font-weight:400; color:var(--text-muted);">[記録者: ' + DemoDB.escapeHtml(jaPersonName(r.memoAuthor)) + (r.memoUpdatedAt ? ' · ' + DemoDB.escapeHtml(r.memoUpdatedAt) : '') + ']</span>') : '';
+      html += '<div style="background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-bottom:20px;">';
+      html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">';
+      html += '<div><span style="font-weight:700; font-size:14px; color:var(--text-primary);">📝 特記事項</span>' + memoAuthorInfo + '</div>';
+      if (!isMemoEditMode) {
+        html += '<button class="btn btn-outline" style="padding:4px 10px; font-size:12px; font-weight:500;" onclick="showDetail(\'' + r.id + '\', false, true)">修正</button>';
+      }
+      html += '</div>';
+      if (isMemoEditMode) {
+        html += '<textarea id="editMemoText" rows="3" style="width:100%; font-size:13px; padding:10px; border:1px solid var(--border-strong); border-radius:8px; resize:vertical; font-family:inherit; margin-bottom:10px; background:var(--surface-1); color:var(--text-primary);" placeholder="妊娠の有無、手術歴、特記事項などを記録してください。(記録者が自動記録されます)">' + DemoDB.escapeHtml(r.memo || '') + '</textarea>';
+        html += '<div style="display:flex; gap:8px;">';
+        html += '<button class="btn btn-primary" style="padding:6px 12px; font-size:13px;" onclick="submitMemo(\'' + r.id + '\')">保存</button>';
+        html += '<button class="btn btn-outline" style="padding:6px 12px; font-size:13px;" onclick="showDetail(\'' + r.id + '\', false, false)">キャンセル</button>';
+        html += '</div>';
+      } else {
+        var memoVal = r.memo ? DemoDB.escapeHtml(jaFreeText(r.memo)).replace(/\n/g, '<br>') : '<span style="color:var(--text-muted); font-style:italic;">登録された特記事項がありません。</span>';
+        html += '<div style="font-size:13px; line-height:1.6; color:var(--text-secondary); background:var(--surface-2); border:1px solid var(--border-strong); border-radius:8px; padding:12px 14px; min-height:50px;">' + memoVal + '</div>';
+      }
+      html += '</div>';
+
+      // 3. 電話連絡履歴エリア (すべての患者で利用可能)
+      html += '<div style="background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-bottom:20px;">';
+      html += '<p style="font-size:14px; font-weight:700; color:var(--text-primary); margin:0 0 12px;">📞 電話連絡履歴 (最大3回)</p>';
+      (r.callLogs || []).forEach(function (c) {
+        var authorTag = c.by ? (' <span style="color:var(--text-accent); font-weight:600;">[記録者: ' + DemoDB.escapeHtml(jaPersonName(c.by)) + ']</span>') : '';
+        html += '<div style="background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:8px;">';
+        html += '<span style="color:var(--text-secondary); font-weight:500;">' + DemoDB.escapeHtml(c.date) + '</span>' + authorTag + ' — ' + DemoDB.escapeHtml(jaFreeText(c.memo));
+        html += '</div>';
+      });
+      if ((r.callLogs || []).length < 3) {
+        html += '<div style="display:flex; gap:8px; margin-top:8px;">';
+        html += '<input id="callMemo" placeholder="通話内容メモを入力 (記録者が自動記録されます)" style="flex:1; padding:8px 10px; font-size:13px; border:1px solid var(--border-strong); border-radius:6px; background:var(--surface-1); color:var(--text-primary);">';
+        html += '<button class="btn btn-outline" onclick="addCallLogUI(\'' + r.id + '\')">記録追加</button>';
+        html += '</div>';
+      } else {
+        html += '<p style="font-size:12px; color:var(--text-muted); margin-top:6px;">連絡履歴が3回に達しました。</p>';
+      }
+      html += '</div>';
+
+      // 年度別検診履歴
+      if (history && history.length) {
+        html += '<p style="font-size:16px; font-weight:500; margin:24px 0 14px;">年度別検診履歴</p>';
+        history.forEach(function (h) {
+          html += '<div style="border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin-bottom:10px; cursor:pointer;" onclick="showDetail(\'' + h.id + '\')"><div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:15px;">' + DemoDB.escapeHtml(h.date || '-') + ' <span style="font-size:13px; color:var(--text-secondary);">' + DemoDB.escapeHtml(jaSite(h.site) || '') + ' ' + DemoDB.escapeHtml(h.time || '') + '</span></span><span class="status" style="' + statusStyle(h.status) + '">' + DemoDB.escapeHtml(jaStatus(h.status)) + '</span></div><p style="font-size:12px; color:var(--text-muted); margin-top:6px;">予約番号: ' + DemoDB.escapeHtml(h.resNo) + '</p></div>';
+        });
+      }
+
+      el('page-detail').innerHTML = html;
+      showPage('detail');
+
+      // セレクトフィールドのオプション入力 (修正モード)
+      if (isEditMode) {
+        var editSite = el('editSite');
+        var editDate = el('editDate');
+        var editTime = el('editTime');
+        if (editSite) {
+          DemoDB.SITES.forEach(function (s) {
+            var o = document.createElement('option'); o.value = s; o.textContent = jaSite(s); editSite.appendChild(o);
+          });
+          editSite.value = r.site || '';
+        }
+        if (editDate) {
+          ['2026-09-01','2026-09-02','2026-09-03','2026-09-04','2026-09-05','2026-09-06','2026-09-07','2026-09-08','2026-09-09','2026-09-10'].forEach(function (d) {
+            var o = document.createElement('option'); o.value = d; o.textContent = d; editDate.appendChild(o);
+          });
+          editDate.value = r.date || '';
+        }
+        if (editTime) {
+          DemoDB.TIMES.forEach(function (t) {
+            var o = document.createElement('option'); o.value = t; o.textContent = t; editTime.appendChild(o);
+          });
+          editTime.value = r.time || '';
+        }
+
+        var optContainer = el('editOptionsContainer');
+        if (optContainer) {
+          optContainer.innerHTML = '';
+          var curOpts = r.options || [];
+          var list = (DemoDB.OPTIONS && DemoDB.OPTIONS.length) ? DemoDB.OPTIONS : [
+            { key: 'gastro_scope', label: '위 내시경 검사 추가' },
+            { key: 'gastro_barium', label: '위 X선(바륨) 검사 추가' },
+            { key: 'colon', label: '대장암 검진(변잠혈) 검사 추가' },
+            { key: 'abdominal_us', label: '복부 초음파 검사 추가' },
+            { key: 'breast_mammo', label: '유방암 검진(유방촬영) 추가 (여성 40세+)' },
+            { key: 'breast_us', label: '유방 초음파 검사 추가 (여성)' },
+            { key: 'cervical', label: '자궁경부암 검사 추가 (여성 20세+)' },
+            { key: 'bone_density', label: '골밀도 검사 추가 (여성)' },
+            { key: 'prostate', label: '전립선암(PSA) 검사 추가 (남성 50세+)' },
+            { key: 'tumor_marker', label: '종양표지자(암표지자) 검사 추가' },
+            { key: 'fundus', label: '안저 검사 추가' },
+            { key: 'hepatitis', label: 'B형·C형 간염 바이러스 검사 추가' }
+          ];
+          list.forEach(function (o) {
+            var lblName = o.label || o.name || o.key || '';
+            var jaName = JP_OPTION_LABELS[o.key] || JP_OPTION_LABELS[lblName] || JP_OPTION_LABELS[o.name] || lblName;
+            var lbl = document.createElement('label');
+            lbl.style.cssText = 'display:flex; align-items:center; gap:10px; font-size:13.5px; color:#1e293b; cursor:pointer; font-weight:500; padding:4px 0;';
+            var isChecked = curOpts.indexOf(lblName) !== -1 || curOpts.indexOf(o.key) !== -1 || curOpts.indexOf(o.name) !== -1 || curOpts.indexOf(o.label) !== -1 || curOpts.indexOf(jaName) !== -1;
+            lbl.innerHTML = '<input type="checkbox" value="' + DemoDB.escapeHtml(lblName) + '"' + (isChecked ? ' checked' : '') + ' style="width:18px; height:18px; accent-color:#0284c7; flex-shrink:0;"> <span style="color:#1e293b; font-size:13.5px; font-weight:500;">' + DemoDB.escapeHtml(jaName) + '</span>';
+            optContainer.appendChild(lbl);
+          });
+        }
+      }
+    }
+
+    function searchZipAdminEdit() {
+      var zipInput = el('editZip');
+      if (!zipInput) return;
+      var zipVal = zipInput.value.trim().replace(/[^0-9]/g, '');
+      if (!zipVal) { alert('郵便番号を入力してください。'); return; }
+      var addr = DemoDB.lookupZipcode(zipVal);
+      if (addr) {
+        if (el('editAddress')) el('editAddress').value = addr;
+        alert('郵便番号 (' + zipVal + ') の住所が入力されました:\n' + addr);
+      } else {
+        alert('郵便番号7桁を入力すると住所が自動完成します。');
+      }
+    }
+
+    async function submitEditDetail(id) {
+      var selectedOpts = [];
+      document.querySelectorAll('#editOptionsContainer input[type="checkbox"]:checked').forEach(function (cb) {
+        selectedOpts.push(cb.value);
+      });
+      var updated = {
+        name: el('editName').value.trim(),
+        birth: el('editBirth').value.trim(),
+        gender: el('editGender').value,
+        phone: el('editPhone').value.trim(),
+        insuranceNo: el('editInsurance').value.trim(),
+        email: el('editEmail').value.trim(),
+        zipcode: el('editZip').value.trim(),
+        addressDetail: el('editAddrDetail').value.trim(),
+        address: el('editAddress').value.trim(),
+        site: el('editSite').value,
+        date: el('editDate').value,
+        time: el('editTime').value,
+        course: el('editCourse') ? el('editCourse').value : '기본 건강검진 (특정검진 포함)',
+        options: selectedOpts
+      };
+      await DemoDB.updateReservation(id, updated);
+      alert('受診者情報が正常に修正されました。');
+      await showDetail(id, false);
+      await renderList();
+    }
+
+    async function submitMemo(id) {
+      var memoText = el('editMemoText').value.trim();
+      var authorStr = (currentUser && currentUser.name) ? (currentUser.name + ' (' + currentUser.username + ')') : '管理者';
+      var nowStr = new Date().toLocaleString('ja-JP');
+      await DemoDB.updateReservation(id, {
+        memo: memoText,
+        memoAuthor: authorStr,
+        memoUpdatedAt: nowStr
+      });
+      alert('メモが保存されました。');
+      await showDetail(id, false, false);
+    }
+
+    async function addCallLogUI(id) {
+      var memoInput = el('callMemo');
+      if (!memoInput) return;
+      var memo = memoInput.value.trim();
+      if (!memo) { alert('通話内容を入力してください。'); return; }
+      var authorStr = (currentUser && currentUser.name) ? (currentUser.name + ' (' + currentUser.username + ')') : '管理者';
+      var res = await DemoDB.addCallLog(id, memo, authorStr);
+      if (!res.ok) {
+        if (res.error === 'MAX_REACHED') alert('電話連絡履歴は最大3回まで記録できます。');
+        else alert('記録追加に失敗しました。');
+        return;
+      }
+      await showDetail(id);
+    }
+
+    async function confirmNg(id) {
+      if (el('editName')) {
+        await DemoDB.updateReservation(id, {
+          name: el('editName').value.trim(), birth: el('editBirth').value.trim(), gender: el('editGender').value,
+          phone: el('editPhone').value.trim(), email: el('editEmail').value.trim(), insuranceNo: el('editInsurance').value.trim(),
+          zipcode: el('editZip').value.trim(), addressDetail: el('editAddrDetail').value.trim(), address: el('editAddress').value.trim(),
+          site: el('editSite').value, date: el('editDate').value, time: el('editTime').value
+        });
+      }
+      var result = await DemoDB.confirmTemp(id);
+      if (!result.ok) {
+        var msg = result.error === 'MISSING' ? 'まだ不備項目があります: ' + result.missing.map(function (k) { return JP_FIELD_LABELS[k] || jaFreeText(k) || k; }).join(', ')
+          : result.error === 'FULL' ? '当該時間帯は定員に達しました。他の時間帯をお選びください。'
+          : '当該時間帯は締め切られました。他の時間帯をお選びください。';
+        alert(msg);
+        await showDetail(id, true);
+        return;
+      }
+      await showDetail(id);
+      await updateNgBadge();
+      openEmailModal({
+        title: '確認メール送信',
+        toName: jaPersonName(result.record.name),
+        toEmail: result.record.email,
+        subject: '予約確定のご案内 (' + result.record.resNo + ')',
+        body: defaultConfirmBody(result.record),
+        onSend: async function (subject, body, sentEmail) {
+          if (sentEmail && sentEmail !== result.record.email) {
+            await DemoDB.updateReservation(result.record.id, { email: sentEmail });
+          }
+          await DemoDB.addNotice({ date: new Date().toLocaleString('ja-JP'), to: (jaPersonName(result.record.name) || '受診者') + ' (' + (sentEmail || '-') + ')', type: 'メール', content: subject, body: body, mode: 'シミュレーション', status: '送信完了' });
+          alert('確認メールを送信しました (' + (sentEmail || '') + ')。');
+        }
+      });
+    }
+
+    async function submitEditAndConfirm(id) {
+      await submitEditDetail(id);
+      await confirmNg(id);
+    }
+
+    async function cancelReservationUI(id) {
+      if (!confirm('予約をキャンセルしますか?定員がただちに復旧されます。')) return;
+      await DemoDB.cancelReservation(id);
+      await showDetail(id);
+      await updateNgBadge();
+    }
+
+    async function resendMail(id) {
+      var got = await DemoDB.getReservation(id);
+      var r = got.record;
+      openEmailModal({
+        title: '確認メール再送信',
+        toName: jaPersonName(r.name),
+        toEmail: r.email,
+        subject: '確認メール再送信 (' + r.resNo + ')',
+        body: defaultConfirmBody(r),
+        onSend: async function (subject, body, sentEmail) {
+          if (sentEmail && sentEmail !== r.email) {
+            await DemoDB.updateReservation(r.id, { email: sentEmail });
+          }
+          await DemoDB.addNotice({ date: new Date().toLocaleString('ja-JP'), to: (jaPersonName(r.name) || '受診者') + ' (' + (sentEmail || '-') + ')', type: 'メール', content: subject, body: body, mode: 'シミュレーション', status: '送信完了' });
+          alert('確認メールを再送信しました (' + (sentEmail || '') + ')。');
+        }
+      });
+    }
+
+    // ---------- メールモーダル ----------
+    var emailModalContext = null;
+    function openEmailModal(opts) {
+      emailModalContext = opts;
+      el('emailModalTitle').textContent = opts.title || 'メール送信';
+      el('emailModalTo').value = opts.toName || '(氏名未記入)';
+      el('emailModalSubject').value = opts.subject || '';
+      el('emailModalEmail').value = opts.toEmail || '';
+      el('emailModalBody').value = opts.body || '';
+      el('emailModalError').style.display = 'none';
+      el('emailModalOverlay').style.display = 'flex';
+    }
+    function closeEmailModal() { el('emailModalOverlay').style.display = 'none'; emailModalContext = null; }
+    function sendEmailModal() {
+      if (!emailModalContext) return;
+      var subject = el('emailModalSubject').value.trim();
+      var email = el('emailModalEmail').value.trim();
+      var body = el('emailModalBody').value.trim();
+      var err = el('emailModalError');
+      err.style.display = 'none';
+      if (!subject || !body) { err.style.display = 'block'; err.textContent = '件名と本文を入力してください。'; return; }
+      if (!email) { err.style.display = 'block'; err.textContent = '送信先のメールアドレスを入力してください。'; return; }
+      emailModalContext.onSend(subject, body, email);
+      closeEmailModal();
+    }
+
+    var JA_NOTICE_FIELD_MAP = { '이메일': 'メール', '메일': 'メール', '시뮬레이션': 'シミュレーション', '발송 완료': '送信完了', '送信 완료': '送信完了' };
+    function jaNoticeField(v, fallback){ return JA_NOTICE_FIELD_MAP[v] || v || fallback; }
+
+    // ---------- メール設定 & 送信履歴 ----------
+    async function renderNotice() {
+      var notices = await DemoDB.listNotices();
+      var body = el('noticeBody');
+      if (!body) return;
+      body.innerHTML = '';
+      (notices || []).forEach(function (n) {
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td style="color:var(--text-muted); font-size:12px;">' + DemoDB.escapeHtml(n.date || '-') + '</td>' +
+          '<td>' + DemoDB.escapeHtml(jaPersonName(n.to) || '-') + '</td>' +
+          '<td><span class="badge" style="background:var(--bg-accent); color:var(--text-accent);">' + DemoDB.escapeHtml(jaNoticeField(n.type, 'メール')) + '</span></td>' +
+          '<td>' + DemoDB.escapeHtml(jaFreeText(n.content) || '-') + '</td>' +
+          '<td style="color:var(--text-muted);">' + DemoDB.escapeHtml(jaNoticeField(n.mode, 'シミュレーション')) + '</td>' +
+          '<td><span class="badge" style="background:var(--bg-success); color:var(--text-success);">' + DemoDB.escapeHtml(jaNoticeField(n.status, '送信完了')) + '</span></td>';
+        body.appendChild(tr);
+      });
+    }
+
+    async function saveEmailSettings() {
+      alert('メールテンプレート設定が保存されました。(プロトタイプシミュレーション)');
+    }
+
+    // ---------- アカウント管理 ----------
+    async function renderAccounts() {
+      var accs = await DemoDB.listAccounts();
+      var roleFlt = el('fltAccRole') ? el('fltAccRole').value : '';
+      var siteFlt = el('fltAccSite') ? el('fltAccSite').value : '';
+      var statusFlt = el('fltAccStatus') ? el('fltAccStatus').value : '';
+      var kwFlt = el('fltAccKeyword') ? el('fltAccKeyword').value.trim().toLowerCase() : '';
+
+      var filtered = accs.filter(function (a) {
+        if (roleFlt && a.role !== roleFlt) return false;
+        if (siteFlt && a.site !== siteFlt && a.site !== '전체') return false;
+        if (statusFlt && a.status !== statusFlt) return false;
+        if (kwFlt) {
+          var targetStr = ((a.username || '') + ' ' + (a.name || '')).toLowerCase();
+          if (targetStr.indexOf(kwFlt) === -1) return false;
+        }
+        return true;
+      });
+
+      var body = el('accountsBody');
+      if (!body) return;
+      body.innerHTML = '';
+      filtered.forEach(function (a) {
+        var tr = document.createElement('tr');
+        var roleBadge = a.role === 'system_admin'
+          ? '<span class="status" style="background:var(--bg-accent); color:var(--text-accent);">システム管理者</span>'
+          : (a.role === 'operation_admin'
+            ? '<span class="status" style="background:var(--bg-success); color:var(--text-success);">業務管理者</span>'
+            : '<span class="status" style="background:var(--surface-1); color:var(--text-secondary);">一般スタッフ</span>');
+        var statusBadgeHtml = a.status === '활성'
+          ? '<span class="badge" style="background:var(--bg-success); color:var(--text-success);">有効</span>'
+          : '<span class="badge" style="background:var(--bg-danger); color:var(--text-danger);">無効</span>';
+        tr.innerHTML =
+          '<td style="font-weight:600; color:var(--text-accent);">' + DemoDB.escapeHtml(a.username) + '</td>' +
+          '<td>' + DemoDB.escapeHtml(jaPersonName(a.name)) + '</td>' +
+          '<td style="color:var(--text-secondary);">' + DemoDB.escapeHtml(jaSite(a.site) || '全拠点') + '</td>' +
+          '<td>' + roleBadge + '</td>' +
+          '<td>' + statusBadgeHtml + '</td>' +
+          '<td style="color:var(--text-muted); font-size:12px;">' + DemoDB.escapeHtml(a.createdAt || '-') + '</td>' +
+          '<td><button class="btn btn-outline" style="padding:3px 8px; font-size:12px;" onclick="toggleAccountStatus(\'' + a.id + '\',\'' + a.status + '\')">'
+          + (a.status === '활성' ? '無効化' : '有効化') + '</button></td>';
+        body.appendChild(tr);
+      });
+    }
+
+    function openAccountModal() {
+      el('accModalError').style.display = 'none';
+      el('accModalUsername').value = '';
+      el('accModalName').value = '';
+      var sel = el('accModalSite');
+      sel.innerHTML = '<option value="전체">全拠点</option>';
+      DemoDB.SITES.forEach(function (s) {
+        var o = document.createElement('option');
+        o.value = s; o.textContent = s;
+        sel.appendChild(o);
+      });
+      el('accountModalOverlay').style.display = 'flex';
+    }
+    function closeAccountModal() { el('accountModalOverlay').style.display = 'none'; }
+    async function submitAccountModal() {
+      var uname = el('accModalUsername').value.trim();
+      var name = el('accModalName').value.trim();
+      var role = el('accModalRole').value;
+      var site = el('accModalSite').value;
+      var err = el('accModalError');
+      err.style.display = 'none';
+      if (!uname || !name) {
+        err.style.display = 'block';
+        err.textContent = 'ユーザーIDと氏名を両方入力してください。';
+        return;
+      }
+      await DemoDB.addAccount({ username: uname, name: name, role: role, site: site });
+      closeAccountModal();
+      await renderAccounts();
+    }
+    async function toggleAccountStatus(id, curStatus) {
+      var nextStatus = (curStatus === '활성') ? '비활성' : '활성';
+      await DemoDB.updateAccount(id, { status: nextStatus });
+      await renderAccounts();
+    }
+
+    // ---------- 操作ログ ----------
+    async function renderAuditLogs() {
+      var logs = await DemoDB.listAuditLogs();
+      var actFilter = el('fltLogAction') ? el('fltLogAction').value : '';
+      var roleFilter = el('fltLogRole') ? el('fltLogRole').value : '';
+      var userFilter = el('fltLogUser') ? el('fltLogUser').value.trim().toLowerCase() : '';
+      var targetFilter = el('fltLogTarget') ? el('fltLogTarget').value.trim().toLowerCase() : '';
+      var body = el('auditLogsBody');
+      if (!body) return;
+      body.innerHTML = '';
+      var filtered = logs.filter(function (l) {
+        if (actFilter && (l.action || '').indexOf(actFilter) === -1) return false;
+        if (roleFilter && (l.role || '') !== roleFilter) return false;
+        if (userFilter && (l.user || '').toLowerCase().indexOf(userFilter) === -1) return false;
+        if (targetFilter && ((l.target || '') + ' ' + (l.details || l.detail || '')).toLowerCase().indexOf(targetFilter) === -1) return false;
+        return true;
+      });
+      filtered.forEach(function (l) {
+        var tr = document.createElement('tr');
+        var actStyle = (l.action === '예약 등록') ? 'background:var(--bg-accent); color:var(--text-accent);'
+          : ((l.action === '예약 취소') ? 'background:var(--bg-danger); color:var(--text-danger);'
+            : ((l.action === '정원 변경') ? 'background:var(--bg-warning); color:var(--text-warning);' : 'background:var(--surface-1); color:var(--text-secondary);'));
+        tr.innerHTML =
+          '<td style="color:var(--text-muted); font-size:12px;">' + DemoDB.escapeHtml(l.date) + '</td>' +
+          '<td><strong style="font-size:13px;">' + DemoDB.escapeHtml(jaPersonName(l.user)) + '</strong></td>' +
+          '<td><span class="status" style="' + actStyle + '">' + DemoDB.escapeHtml(jaAuditAction(l.action)) + '</span></td>' +
+          '<td style="font-weight:500;">' + DemoDB.escapeHtml(jaPersonName(jaAuditText(l.target))) + '</td>' +
+          '<td style="font-size:13px; color:var(--text-secondary);">' + DemoDB.escapeHtml(jaAuditText(l.detail || l.details || '')) + '</td>';
+        body.appendChild(tr);
+      });
+    }
+
+    async function renderNG() {
+      var rows = await DemoDB.listReservations({ status: ['임시접수'], order: 'asc' });
+      var body = el('ngBody');
+      if (!body) return;
+      body.innerHTML = '';
+      rows.forEach(function (r) {
+        var tr = document.createElement('tr');
+        tr.style.cursor = 'pointer';
+        tr.title = 'クリックして受診者詳細を表示';
+        tr.onclick = function () { showDetail(r.id); };
+        var missingKeys = DemoDB.REQUIRED_FIELDS.filter(function (k) { return !r[k]; }).concat(r.missingFields || []);
+        var uniqueKeys = [];
+        missingKeys.forEach(function (k) {
+          if (uniqueKeys.indexOf(k) === -1) {
+            uniqueKeys.push(k);
+          }
+        });
+        var missing = uniqueKeys.map(function (k) {
+          return JP_FIELD_LABELS[k] || jaFreeText(k) || k;
+        });
+        var last = (r.callLogs && r.callLogs.length) ? r.callLogs[r.callLogs.length - 1].date : '-';
+        tr.innerHTML =
+          '<td style="color:var(--text-secondary);">' + DemoDB.escapeHtml((r.createdAt || '').slice(0, 10)) + '</td>' +
+          '<td><strong style="color:var(--text-accent); text-decoration:underline;">' + DemoDB.escapeHtml(jaPersonName(r.name) || '(未記入)') + '</strong></td>' +
+          '<td style="color:var(--text-secondary);">' + DemoDB.escapeHtml(r.birth || '-') + '</td>' +
+          '<td>' + channelBadge(r.channel) + '</td>' +
+          '<td style="color:var(--text-warning); font-weight:600;"><span style="text-decoration:underline;">' + DemoDB.escapeHtml(missing.join(', ') || '-') + '</span></td>' +
+          '<td>' + ((r.callLogs || []).length) + '回</td>' +
+          '<td style="color:var(--text-secondary);">' + DemoDB.escapeHtml(last) + '</td>';
+        body.appendChild(tr);
+      });
+      if (el('ngEmpty')) el('ngEmpty').style.display = rows.length ? 'none' : 'block';
+    }
+
+    function renderOptions() {
+      var opts = DemoDB.OPTIONS || [];
+      var body = el('optionsBody'); if (!body) return;
+      body.innerHTML = '';
+      opts.forEach(function (o) {
+        var tr = document.createElement('tr');
+        tr.id = 'opt-row-' + o.key;
+        renderOptionRowNormal(tr, o);
+        body.appendChild(tr);
+      });
+    }
+
+    function renderOptionRowNormal(tr, o) {
+      var targetGender = o.gender === 'F' ? '<span class="badge" style="background:var(--bg-accent); color:var(--text-accent);">女性専用</span>' : (o.gender === 'M' ? '<span class="badge" style="background:var(--bg-success); color:var(--text-success);">男性専用</span>' : '男女共通');
+      var targetAge = (o.minAge || o.maxAge) ? (o.minAge ? o.minAge + '歳以上 ' : '') + (o.maxAge ? o.maxAge + '歳以下' : '') : 'すべての年齢層 (制限なし)';
+      var isHidden = o.visible === false || o.hidden === true;
+      var statusBadge = isHidden ? '<span class="badge" style="background:var(--bg-danger); color:var(--text-danger);">非表示</span>' : '<span class="badge" style="background:var(--bg-success); color:var(--text-success);">表示中</span>';
+
+      tr.innerHTML =
+        '<td style="font-weight:600; color:var(--text-accent);">' + DemoDB.escapeHtml(o.key) + '</td>' +
+        '<td><strong>' + DemoDB.escapeHtml(JP_OPTION_LABELS[o.key] || o.label) + '</strong></td>' +
+        '<td>' + targetGender + '</td>' +
+        '<td>' + targetAge + '</td>' +
+        '<td>' + statusBadge + '</td>' +
+        '<td><button class="btn btn-primary" style="padding:5px 12px; font-size:12px;" onclick="editOptionRow(\'' + o.key + '\')">条件 / 表示管理</button></td>';
+    }
+
+    function editOptionRow(key) {
+      var o = DemoDB.OPTIONS.find(function (x) { return x.key === key; }); if (!o) return;
+      var tr = el('opt-row-' + key);
+      var currentGender = o.gender || '';
+      var currentMinAge = (o.minAge != null) ? o.minAge : 40;
+      var currentMaxAge = (o.maxAge != null) ? o.maxAge : 74;
+      var isHidden = o.visible === false || o.hidden === true;
+
+      tr.innerHTML =
+        '<td style="font-weight:600; color:var(--text-accent);">' + DemoDB.escapeHtml(o.key) + '</td>' +
+        '<td><strong>' + DemoDB.escapeHtml(JP_OPTION_LABELS[o.key] || o.label) + '</strong></td>' +
+        '<td>' +
+          '<div style="display:flex; gap:4px;">' +
+            '<button class="btn ' + (currentGender===''?'btn-primary':'btn-outline') + '" style="padding:3px 8px; font-size:11px;" onclick="setOptGender(\'' + key + '\', \'\')">全体</button>' +
+            '<button class="btn ' + (currentGender==='M'?'btn-primary':'btn-outline') + '" style="padding:3px 8px; font-size:11px;" onclick="setOptGender(\'' + key + '\', \'M\')">男性</button>' +
+            '<button class="btn ' + (currentGender==='F'?'btn-primary':'btn-outline') + '" style="padding:3px 8px; font-size:11px;" onclick="setOptGender(\'' + key + '\', \'F\')">女性</button>' +
+          '</div>' +
+        '</td>' +
+        '<td>' +
+          '<div style="display:flex; gap:4px; align-items:center;">' +
+            '<input type="number" id="optMinAge-' + key + '" value="' + currentMinAge + '" style="width:52px; padding:3px 6px; font-size:11px; border:1px solid var(--border-strong); border-radius:6px;">' +
+            '<span style="font-size:11px; color:var(--text-secondary);">歳 ~</span>' +
+            '<input type="number" id="optMaxAge-' + key + '" value="' + currentMaxAge + '" style="width:52px; padding:3px 6px; font-size:11px; border:1px solid var(--border-strong); border-radius:6px;">' +
+            '<span style="font-size:11px; color:var(--text-secondary);">歳</span>' +
+            '<button class="btn btn-outline" style="padding:3px 8px; font-size:11px;" onclick="setOptAgeRange(\'' + key + '\')">適用</button>' +
+          '</div>' +
+        '</td>' +
+        '<td>' +
+          '<button class="btn ' + (!isHidden?'btn-primary':'btn-danger') + '" style="padding:3px 10px; font-size:11px;" onclick="toggleOptVisibility(\'' + key + '\')">' +
+            (!isHidden ? '表示' : '非表示') +
+          '</button>' +
+        '</td>' +
+        '<td><button class="btn btn-outline" style="padding:4px 8px; font-size:12px;" onclick="renderOptions()">完了</button></td>';
+    }
+
+    async function setOptGender(key, genderVal) {
+      await DemoDB.updateOptionConfig(key, { gender: genderVal || null });
+      editOptionRow(key);
+    }
+
+    async function setOptAgeRange(key) {
+      var minVal = el('optMinAge-' + key).value.trim();
+      var maxVal = el('optMaxAge-' + key).value.trim();
+      await DemoDB.updateOptionConfig(key, { minAge: minVal === '' ? null : Number(minVal), maxAge: maxVal === '' ? null : Number(maxVal) });
+      editOptionRow(key);
+    }
+
+    async function toggleOptVisibility(key) {
+      var o = DemoDB.OPTIONS.find(function (x) { return x.key === key; });
+      var isHidden = o ? (o.visible === false || o.hidden === true) : false;
+      await DemoDB.updateOptionConfig(key, { visible: isHidden, hidden: !isHidden });
+      editOptionRow(key);
+    }
+
+    // ---------- 電話/郵送受付 - 健診希望日カレンダー ----------
+    var phoneCalOffset = 0;
+
+    function onPhoneSiteChange() {
+      phoneCalOffset = 0;
+      renderPhoneCalendar();
+    }
+
+    function changePhoneCalMonth(delta) {
+      phoneCalOffset += delta;
+      renderPhoneCalendar();
+    }
+
+    async function renderPhoneCalendar(preserveSelection) {
+      var siteSel = el('pSite');
+      var site = siteSel ? siteSel.value : '';
+      var grid = el('phoneCalGrid');
+      var titleEl = el('phoneCalTitle');
+      if (!grid || !titleEl) return;
+
+      if (!preserveSelection) {
+        el('pDate').value = '';
+        el('pDateText').value = '';
+        if (el('pTime')) el('pTime').innerHTML = '<option value="">選択してください</option>';
+      }
+
+      grid.innerHTML = '';
+      if (!site) {
+        titleEl.textContent = '会場を先に選択してください';
+        return;
+      }
+
+      var baseY = DemoDB.SEED_YEAR, baseM = DemoDB.SEED_MONTH;
+      var d = new Date(baseY, baseM - 1 + phoneCalOffset, 1);
+      var y = d.getFullYear(), m = d.getMonth() + 1;
+      titleEl.textContent = y + '年 ' + m + '月';
+
+      var capacityGrid = await DemoDB.getCapacityGrid(site);
+      var selectedDate = el('pDate').value;
+
+      var dayNames = ['日', '月', '火', '水', '木', '金', '土'];
+      dayNames.forEach(function (dn) {
+        var dh = document.createElement('div');
+        dh.style.cssText = 'font-size:11px; color:var(--text-muted); padding:2px 0;';
+        dh.textContent = dn;
+        grid.appendChild(dh);
+      });
+
+      var startDow = new Date(y, m - 1, 1).getDay();
+      for (var i = 0; i < startDow; i++) grid.appendChild(document.createElement('div'));
+
+      var colors = { o: 'var(--text-success)', a: 'var(--text-warning)', x: 'var(--text-danger)' };
+      var dim = new Date(y, m, 0).getDate();
+      for (var day = 1; day <= dim; day++) {
+        var dateISO = y + '-' + DemoDB.pad(m) + '-' + DemoDB.pad(day);
+        var slotsForDate = capacityGrid[dateISO];
+        var status = slotsForDate ? DemoDB.dayStatusFromSlots(slotsForDate) : 'x';
+        var isSelected = (dateISO === selectedDate);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.style.cssText = 'padding:6px 2px; min-height:38px; font-size:12px; border-radius:6px; border:1px solid ' + (isSelected ? 'var(--fill-accent)' : 'var(--border)') + '; background:' + (isSelected ? 'var(--bg-accent)' : 'var(--surface-2)') + ';';
+
+        var num = document.createElement('div'); num.textContent = day;
+        var mark = document.createElement('div'); mark.style.fontSize = '11px';
+
+        if (status === 'x') {
+          btn.disabled = true;
+          btn.style.opacity = '0.45';
+          mark.style.color = colors.x; mark.textContent = '×';
+        } else {
+          mark.style.color = colors[status]; mark.textContent = status === 'o' ? '○' : '△';
+          btn.style.cursor = 'pointer';
+          btn.onclick = (function (dISO) { return function () { selectPhoneDate(dISO); }; })(dateISO);
+        }
+
+        btn.appendChild(num); btn.appendChild(mark);
+        grid.appendChild(btn);
+      }
+    }
+
+    async function selectPhoneDate(dateISO) {
+      el('pDate').value = dateISO;
+      el('pDateText').value = dateISO;
+      await renderPhoneCalendar(true);
+      await fillTimeSelect(el('pTime'), el('pSite').value, dateISO, true);
+    }
+
+    async function autoFillPhoneSlot() {
+      if (!el('pSite') || el('pSite').options.length <= 1) return;
+      el('pSite').selectedIndex = 1;
+      phoneCalOffset = 0;
+      await renderPhoneCalendar();
+      var site = el('pSite').value;
+      var capacityGrid = await DemoDB.getCapacityGrid(site);
+      var availableDate = Object.keys(capacityGrid).sort().find(function (dISO) {
+        return DemoDB.dayStatusFromSlots(capacityGrid[dISO]) !== 'x';
+      });
+      if (!availableDate) return;
+      await selectPhoneDate(availableDate);
+      var timeSel = el('pTime');
+      for (var i = 0; i < timeSel.options.length; i++) {
+        if (!timeSel.options[i].disabled && timeSel.options[i].value) { timeSel.selectedIndex = i; break; }
+      }
+    }
+
+    function onReceptionChannelChange(channel) {
+      var desc = el('receptionDesc');
+      var title = el('receptionTitle');
+      if (channel === 'phone') {
+        title.textContent = '電話/郵送受付 登録 (電話受付モード)';
+        desc.textContent = '通話しながらそのまま入力してください。必須項目(*)をすべて入力すると、ただちに [予約完了] 状態で登録されます。';
+        // Restore * indicators for labels
+        ['Name', 'Birth', 'Gender', 'Phone', 'Insurance', 'Zip', 'AddrDetail', 'Address', 'Site', 'Date', 'Time'].forEach(function (k) {
+          var label = el('lbl-p' + k);
+          if (label && label.textContent.indexOf('*') === -1) {
+            label.innerHTML = label.innerHTML.replace(':', '') + ' *';
+          }
+        });
+      } else {
+        title.textContent = '電話/郵送受付 登録 (郵送受付モード)';
+        desc.textContent = '申込書に記載された内容をそのまま入力してください。不備のある必須項目(*)がある場合、自動的に[仮受付]状態として安全に保管されます。';
+        // Keep * indicator but inform that missing is allowed
+      }
+    }
+
+    async function fillReceptionDemo() {
+      var channel = document.querySelector('input[name="receptionChannel"]:checked').value;
+      if (channel === 'phone') {
+        el('pName').value = '鈴木 一郎';
+        el('pBirth').value = '1971-11-05';
+        el('pGender').value = 'M';
+        el('pPhone').value = '090-2222-3333';
+        el('pInsurance').value = '01234567-2222-333344';
+        el('pEmail').value = 'suzuki@example.co.jp';
+        el('pZip').value = '0700011';
+        el('pAddress').value = 'サンプル県 サンプル市 中央通';
+        el('pAddrDetail').value = '3-1';
+        await autoFillPhoneSlot();
+        document.querySelectorAll('.phoneOpt').forEach(function (cb) {
+          cb.checked = (cb.value === 'gastro_scope' || cb.value === 'colon');
+        });
+      } else {
+        // Mail demo fills missing values intentionally to demonstrate the auto temp-registration
+        el('pName').value = '高橋 實';
+        el('pBirth').value = '1954-06-18';
+        el('pGender').value = 'M';
+        el('pPhone').value = ''; // Missing phone
+        el('pInsurance').value = ''; // Missing insuranceNo
+        el('pEmail').value = '';
+        el('pZip').value = '0700801';
+        el('pAddress').value = 'サンプル県 サンプル市 中央通';
+        el('pAddrDetail').value = '12-3';
+        await autoFillPhoneSlot();
+        document.querySelectorAll('.phoneOpt').forEach(function (cb) {
+          cb.checked = (cb.value === 'prostate');
+        });
+      }
+    }
+
+    async function submitReception() {
+      var channel = document.querySelector('input[name="receptionChannel"]:checked').value;
+      var selectedOpts = Array.prototype.slice.call(document.querySelectorAll('.phoneOpt:checked')).map(function (cb) { return cb.value; });
+      var courseVal = el('pCourseSelect') ? el('pCourseSelect').value : '기본 건강검진 (특정검진 포함)';
+
+      var nameVal = el('pName').value.trim();
+      var birthVal = el('pBirth').value.trim();
+      var genderVal = el('pGender').value;
+      var phoneVal = el('pPhone').value.trim();
+      var insVal = el('pInsurance').value.trim();
+      var emailVal = el('pEmail').value.trim();
+      var zipVal = el('pZip').value.trim();
+      var addrDetVal = el('pAddrDetail').value.trim();
+      var addrVal = el('pAddress').value.trim();
+      var siteVal = el('pSite').value;
+      var dateVal = el('pDate').value;
+      var timeVal = el('pTime').value;
+
+      var fields = {
+        name: nameVal, birth: birthVal, gender: genderVal,
+        phone: phoneVal, email: emailVal, insuranceNo: insVal,
+        zipcode: zipVal, addressDetail: addrDetVal, address: addrVal,
+        site: siteVal, date: dateVal, time: timeVal,
+        course: courseVal, options: selectedOpts, channel: channel
+      };
+
+      // Validation check fields mapping
+      var checkKeys = ['name', 'birth', 'gender', 'phone', 'insuranceNo', 'zipcode', 'address', 'addressDetail', 'site', 'date', 'time'];
+
+      if (channel === 'phone') {
+        // Phone reception requires all mandatory fields filled
+        var missing = [];
+        checkKeys.forEach(function (k) {
+          if (!fields[k]) missing.push(k);
+        });
+        if (missing.length > 0) {
+          alert('電話受付の際、必須入力項目をすべて入力してください:\n- ' + missing.map(function(m){ return JP_FIELD_LABELS[m] || m; }).join('\n- '));
+          return;
+        }
+        fields.status = '예약완료';
+        fields.missingFields = [];
+      } else {
+        // Mail reception allows missing fields. It flags status as '임시접수' if fields are missing.
+        var missing = [];
+        checkKeys.forEach(function (k) {
+          if (!fields[k]) missing.push(k); // Store raw keys
+        });
+        if (missing.length > 0) {
+          fields.status = '임시접수';
+          fields.missingFields = missing;
+        } else {
+          fields.status = '예약완료';
+          fields.missingFields = [];
+        }
+      }
+
+      await DemoDB.addReservation(fields);
+      alert((channel === 'phone' ? '電話' : '郵送') + '受付が正常に登録されました。');
+      showPage('list');
+    }
+
+    // ---------- 会場・定員設定 ----------
+    var capSite = '';
+    var capCalOffset = 0;
+    var capSelectedDate = '';
+
+    async function renderCapacity() {
+      var sel = el('capSiteSelect');
+      if (!sel.dataset.filled) {
+        DemoDB.SITES.forEach(function (s) {
+          var o = document.createElement('option');
+          o.value = s; o.textContent = s;
+          sel.appendChild(o);
+        });
+        sel.dataset.filled = '1';
+        sel.onchange = function () {
+          capSite = sel.value;
+          capCalOffset = 0;
+          capSelectedDate = '';
+          renderCapacity();
+        };
+      }
+      if (!capSite) capSite = DemoDB.SITES[0] || '';
+      sel.value = capSite;
+      await renderCapCalendar();
+      await renderCapDateSlots();
+
+      var baseCaps = await DemoDB.getSiteBaseCapacity(capSite);
+      var siteRes = await DemoDB.listReservations({ site: capSite });
+      var grid = el('baseCapGrid');
+      if (grid) grid.innerHTML = '';
+
+      DemoDB.TIMES.forEach(function (t) {
+        var maxCap = (baseCaps && baseCaps[t] != null) ? baseCaps[t] : (DemoDB.SLOT_BASE_CAPACITY ? (DemoDB.SLOT_BASE_CAPACITY[t] || 20) : 20);
+        var usedCount = siteRes.filter(function (r) { return r.time === t && r.status !== '취소'; }).length;
+        var pct = maxCap ? Math.min(100, Math.round((usedCount / maxCap) * 100)) : 0;
+        var pctColor = pct >= 100 ? 'var(--text-danger)' : (pct >= 80 ? 'var(--text-warning)' : 'var(--text-accent)');
+
+        var item = document.createElement('div');
+        item.style.cssText = 'background:var(--surface-1); border:1px solid var(--border-strong); border-radius:10px; padding:12px; text-align:center; transition:all 0.15s;';
+        item.innerHTML =
+          '<div style="font-size:14px; font-weight:700; color:var(--text-accent); margin-bottom:4px;">' + t + '</div>' +
+          '<div style="font-size:15px; font-weight:700; color:' + pctColor + '; margin-bottom:6px;">' +
+          '<span style="font-size:18px;">' + usedCount + '</span><span style="font-size:13px; color:var(--text-muted);">/</span><span style="font-size:14px; color:var(--text-primary);">' + maxCap + '名</span>' +
+          '</div>' +
+          '<div style="background:var(--border); border-radius:4px; height:6px; overflow:hidden; margin-bottom:8px;">' +
+          '<div style="background:' + pctColor + '; width:' + pct + '%; height:100%;"></div>' +
+          '</div>' +
+          '<div style="display:flex; align-items:center; justify-content:center; gap:4px; font-size:11px; color:var(--text-secondary);">' +
+          '<span>最大定員:</span>' +
+          '<input type="number" class="base-cap-input" data-time="' + t + '" value="' + maxCap + '" min="0" style="width:52px; font-size:13px; font-weight:600; text-align:center; padding:2px 4px; border:1px solid var(--border-strong); border-radius:4px;">' +
+          '<span>名</span>' +
+          '</div>';
+        if (grid) grid.appendChild(item);
+      });
+
+      renderSiteInfo(capSite);
+    }
+
+    async function renderCapCalendar() {
+      var grid = el('capCalGrid');
+      var titleEl = el('capCalTitle');
+      if (!grid || !titleEl) return;
+      grid.innerHTML = '';
+      if (!capSite) { titleEl.textContent = '会場を先に選択してください'; return; }
+
+      var baseY = DemoDB.SEED_YEAR, baseM = DemoDB.SEED_MONTH;
+      var d = new Date(baseY, baseM - 1 + capCalOffset, 1);
+      var y = d.getFullYear(), m = d.getMonth() + 1;
+      titleEl.textContent = y + '年 ' + m + '月';
+
+      var capacityGrid = await DemoDB.getCapacityGrid(capSite);
+
+      var dayNames = ['日', '月', '火', '水', '木', '金', '土'];
+      dayNames.forEach(function (dn) {
+        var dh = document.createElement('div');
+        dh.style.cssText = 'font-size:11px; color:var(--text-muted); padding:2px 0;';
+        dh.textContent = dn;
+        grid.appendChild(dh);
+      });
+
+      var startDow = new Date(y, m - 1, 1).getDay();
+      for (var i = 0; i < startDow; i++) grid.appendChild(document.createElement('div'));
+
+      var colors = { o: 'var(--text-success)', a: 'var(--text-warning)', x: 'var(--text-danger)' };
+      var dim = new Date(y, m, 0).getDate();
+      for (var day = 1; day <= dim; day++) {
+        var dateISO = y + '-' + DemoDB.pad(m) + '-' + DemoDB.pad(day);
+        var slotsForDate = capacityGrid[dateISO];
+        var status = slotsForDate ? DemoDB.dayStatusFromSlots(slotsForDate) : 'x';
+        var isSelected = (dateISO === capSelectedDate);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.style.cssText = 'padding:6px 2px; min-height:36px; font-size:12px; border-radius:6px; cursor:pointer; border:1px solid ' + (isSelected ? 'var(--fill-accent)' : 'var(--border)') + '; background:' + (isSelected ? 'var(--bg-accent)' : 'var(--surface-2)') + ';';
+
+        var num = document.createElement('div'); num.textContent = day;
+        var mark = document.createElement('div'); mark.style.fontSize = '10px';
+        mark.style.color = colors[status] || colors.x;
+        mark.textContent = status === 'o' ? '○' : status === 'a' ? '△' : '×';
+        btn.onclick = (function (dISO) { return function () { selectCapDate(dISO); }; })(dateISO);
+
+        btn.appendChild(num); btn.appendChild(mark);
+        grid.appendChild(btn);
+      }
+    }
+
+    async function selectCapDate(dateISO) {
+      capSelectedDate = dateISO;
+      await renderCapCalendar();
+      await renderCapDateSlots();
+    }
+
+    async function renderCapDateSlots() {
+      var box = el('capDateSlots');
+      var titleEl = el('capDateTitle');
+      var viewBtn = el('btnViewDateReservations');
+      if (!box || !titleEl) return;
+      if (!capSite || !capSelectedDate) {
+        titleEl.textContent = '日付を選択してください';
+        box.innerHTML = '';
+        if (viewBtn) viewBtn.style.display = 'none';
+        return;
+      }
+      titleEl.textContent = capSelectedDate + ' 時間帯別定員 (リアルタイム)';
+      if (viewBtn) viewBtn.style.display = 'inline-block';
+      box.innerHTML = '';
+      var times = await DemoDB.getTimesForDate(capSite, capSelectedDate);
+      DemoDB.TIMES.forEach(function (t) {
+        var slot = times[t] || { total: 0, used: 0, closed: true, remaining: 0 };
+        var color = slot.closed ? 'var(--text-muted)' : (slot.remaining <= 0 ? 'var(--text-danger)' : slot.remaining <= 2 ? 'var(--text-warning)' : 'var(--text-success)');
+        var card = document.createElement('div');
+        card.style.cssText = 'border:1px solid var(--border); border-radius:8px; padding:10px 12px; background:var(--surface-1);';
+        card.innerHTML =
+          '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">' +
+          '<span style="font-size:13px; font-weight:600;">' + t + '</span>' +
+          '<span style="font-size:11px; color:' + color + '; font-weight:600;">' + (slot.closed ? '締切' : slot.remaining + '名 余裕') + '</span>' +
+          '</div>' +
+          '<div style="display:flex; align-items:center; gap:6px;">' +
+          '<input type="number" class="capnum" min="0" value="' + slot.used + '" title="予約人数(used)" onchange="capDateUpdateUsed(this,\'' + t + '\')">' +
+          '<span style="color:var(--text-muted); font-size:12px;">/</span>' +
+          '<input type="number" class="capnum" min="0" value="' + slot.total + '" title="定員(total)" onchange="capDateUpdateTotal(this,\'' + t + '\')">' +
+          '<button class="btn ' + (slot.closed ? 'btn-outline' : 'btn-danger') + '" style="padding:3px 8px; font-size:11px; margin-left:auto;" onclick="capDateToggleClosed(\'' + t + '\')">' + (slot.closed ? 'オープン' : '締切') + '</button>' +
+          '</div>';
+        box.appendChild(card);
+      });
+    }
+
+    async function capDateUpdateUsed(inputEl, time) {
+      await DemoDB.setUsed(capSite, capSelectedDate, time, inputEl.value);
+      await renderCapDateSlots();
+      await renderCapCalendar();
+    }
+    async function capDateUpdateTotal(inputEl, time) {
+      await DemoDB.setTotal(capSite, capSelectedDate, time, inputEl.value);
+      await renderCapDateSlots();
+      await renderCapCalendar();
+    }
+    async function capDateToggleClosed(time) {
+      var times = await DemoDB.getTimesForDate(capSite, capSelectedDate);
+      var slot = times[time];
+      await DemoDB.setClosed(capSite, capSelectedDate, time, !(slot && slot.closed));
+      await renderCapDateSlots();
+      await renderCapCalendar();
+    }
+
+    function viewDateReservations() {
+      showPage('list');
+      if (el('fltDate')) el('fltDate').value = capSelectedDate;
+      if (el('fltSite')) el('fltSite').value = capSite;
+      renderList();
+    }
+
+    // ---------- 会場(病院)情報 & 緊急連絡先 ----------
+    var SITE_INFO = {
+      'サンプル病院D': { address: 'サンプル市 中央3丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '田中 誠', dept: '健診センター' },
+      'サンプル病院A': { address: 'サンプル市 中央4丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '佐藤 良子', dept: '地域医療連携室' },
+      'サンプル病院F': { address: 'サンプル市 中央5丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '伊藤 直樹', dept: '健診センター' },
+      'サンプルクリニックD': { address: 'サンプル市 中央6丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '渡辺 香織', dept: '受付・健診予約室' },
+      'サンプルクリニックF': { address: 'サンプル市 中央7丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '山本 隆', dept: '内科健診室' },
+      'サンプル病院G': { address: 'サンプル市 中央8丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '中村 恵美', dept: '健診センター' },
+      'サンプルクリニックG': { address: 'サンプル市 中央9丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '小林 誠一', dept: '受付・健診予約室' },
+      'サンプル医院C': { address: 'サンプル市 中央1丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '加藤 美咲', dept: '地域医療連携室' },
+      'サンプルクリニックE': { address: 'サンプル市 中央2丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '吉田 健', dept: '内科健診室' },
+      'サンプルクリニックB': { address: 'サンプル市 中央3丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '山田 陽子', dept: '健診センター' },
+      'サンプル病院H': { address: 'サンプル市 中央4丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '佐々木 亮', dept: '健診センター' },
+      'サンプル診療所A': { address: 'サンプル市 中央5丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '山口 智子', dept: '受付・健診予約室' },
+      'サンプルクリニックH': { address: 'サンプル市 中央6丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '斎藤 大輔', dept: '内科健診室' },
+      'サンプル医院A': { address: 'サンプル市 中央7丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '松本 由美', dept: '内科健診室' },
+      'サンプル病院C': { address: 'サンプル市 中央8丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '井上 健太', dept: '健診センター' },
+      'サンプルクリニックA': { address: 'サンプル市 中央9丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '木村 美穂', dept: '受付・健診予約室' },
+      'サンプル医院B': { address: 'サンプル市 中央1丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '林 隆一', dept: '受付・健診予約室' },
+      'サンプル病院E': { address: 'サンプル市 中央2丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '清水 麻衣', dept: '健診センター' },
+      'サンプルクリニックC': { address: 'サンプル市 中央3丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '山崎 一郎', dept: '内科健診室' },
+      'サンプル病院B': { address: 'サンプル市 中央4丁目', phone: '0000-00-0000', emergency: '0000-00-0000', manager: '森 早紀', dept: '健診センター' }
+    };
+
+    function renderSiteInfo(site) {
+      var box = el('siteInfoCard');
+      if (!box) return;
+      var info = SITE_INFO[site] || { address: '-', phone: '-', emergency: '-', manager: '-', dept: '-' };
+      box.innerHTML =
+        '<div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px 24px; margin-bottom:16px;">' +
+        infoBlock('病院名', site) +
+        infoBlock('住所', info.address) +
+        infoBlock('代表電話', info.phone) +
+        infoBlock('担当者', info.manager) +
+        infoBlock('担当部署', info.dept) +
+        '</div>' +
+        '<div style="background:var(--bg-danger); border:1px solid var(--border-accent); border-radius:10px; padding:14px 18px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;">' +
+        '<span style="font-size:13px; font-weight:700; color:var(--text-danger); white-space:nowrap;">緊急連絡先 (夜間・救急)</span>' +
+        '<span style="font-size:18px; font-weight:700; color:var(--text-danger); letter-spacing:0.5px;">' + DemoDB.escapeHtml(info.emergency) + '</span>' +
+        '</div>';
+    }
+
+    async function saveSiteBaseCap() {
+      var inputs = document.querySelectorAll('.base-cap-input');
+      var baseCap = {};
+      inputs.forEach(function (inp) {
+        baseCap[inp.dataset.time] = parseInt(inp.value, 10) || 0;
+      });
+      await DemoDB.updateSiteBaseCapacity(capSite, baseCap, '관리자', 'operation_admin');
+      alert(capSite + ' の時間帯別基本定員が正常に一括反映されました。');
+      await renderCapacity();
+    }
+
+    async function applyHoliday(closed) {
+      var dInput = el('holidayDateInput').value;
+      var rInput = el('holidayReasonInput').value.trim() || '臨時休診';
+      if (!dInput) { alert('日付を先に選択してください。'); return; }
+      await DemoDB.toggleHoliday(capSite, dInput, closed, rInput, '관리자', 'operation_admin');
+      alert(capSite + ' · ' + dInput + ' の予定が ' + (closed ? '全休診/締切' : '締切解除') + ' に設定されました。');
+    }
+
+    // ---------- 統計 & レポート ----------
+    async function renderStats() {
+      var fltSite = el('fltStatSite') ? el('fltStatSite').value : '';
+      var fltChannel = el('fltStatChannel') ? el('fltStatChannel').value : '';
+      var fltStatus = el('fltStatStatus') ? el('fltStatStatus').value : '';
+      var fltDate = el('fltStatDate') ? el('fltStatDate').value : '';
+
+      var rows = await DemoDB.listReservations({});
+      if (fltSite) rows = rows.filter(function (r) { return r.site === fltSite; });
+      if (fltChannel) rows = rows.filter(function (r) { return r.channel === fltChannel; });
+      if (fltStatus) rows = rows.filter(function (r) { return r.status === fltStatus; });
+      if (fltDate) rows = rows.filter(function (r) { return r.date === fltDate; });
+
+      var total = rows.length;
+      var confirmed = rows.filter(function (r) { return r.status === '예약완료' || r.status === '확인대기'; }).length;
+      var ng = rows.filter(function (r) { return r.status === '임시접수'; }).length;
+      var online = rows.filter(function (r) { return r.channel === 'online'; }).length;
+      var mail = rows.filter(function (r) { return r.channel === 'mail'; }).length;
+      var phone = rows.filter(function (r) { return r.channel === 'phone'; }).length;
+
+      el('statTotal').textContent = total + '件';
+      el('statConfirmed').textContent = confirmed + '件';
+      el('statNg').textContent = ng + '件';
+      el('statOnlineRatio').textContent = (total ? Math.round((online / total) * 100) : 0) + '%';
+
+      var cChart = el('channelChart');
+      cChart.innerHTML = '';
+      [
+        { name: 'オンライン受付', count: online, color: 'var(--fill-accent)' },
+        { name: '郵送受付', count: mail, color: 'var(--text-warning)' },
+        { name: '電話受付', count: phone, color: 'var(--text-success)' }
+      ].forEach(function (c) {
+        var pct = total ? Math.round((c.count / total) * 100) : 0;
+        cChart.innerHTML +=
+          '<div>' +
+          '<div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">' +
+          '<span>' + c.name + '</span><strong>' + c.count + '件 (' + pct + '%)</strong>' +
+          '</div>' +
+          '<div style="background:var(--border); border-radius:6px; height:10px; overflow:hidden;">' +
+          '<div style="background:' + c.color + '; width:' + pct + '%; height:100%;"></div>' +
+          '</div></div>';
+      });
+
+      var optCounts = { cervical: 0, breast_mammo: 0, prostate: 0, gastro_scope: 0, colon: 0 };
+      rows.forEach(function (r) {
+        (r.options || []).forEach(function (o) { if (optCounts[o] != null) optCounts[o]++; });
+      });
+
+      var optLabels = { cervical: '子宮頸がん検査', breast_mammo: '乳がん検査', prostate: '前立腺がん検査', gastro_scope: '胃内視鏡検査', colon: '大腸がん検査' };
+      var oChart = el('optionsChart');
+      oChart.innerHTML = '';
+      Object.keys(optCounts).forEach(function (k) {
+        var cnt = optCounts[k];
+        var pct = total ? Math.round((cnt / total) * 100) : 0;
+        oChart.innerHTML +=
+          '<div>' +
+          '<div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">' +
+          '<span>' + optLabels[k] + '</span><strong>' + cnt + '件 (' + pct + '%)</strong>' +
+          '</div>' +
+          '<div style="background:var(--border); border-radius:6px; height:10px; overflow:hidden;">' +
+          '<div style="background:var(--text-accent); width:' + pct + '%; height:100%;"></div>' +
+          '</div></div>';
+      });
+
+      var siteMap = {};
+      DemoDB.SITES.forEach(function (s) { siteMap[s] = { confirmed: 0, ng: 0, canceled: 0, total: 0 }; });
+      rows.forEach(function (r) {
+        var s = r.site || 'その他';
+        if (!siteMap[s]) siteMap[s] = { confirmed: 0, ng: 0, canceled: 0, total: 0 };
+        if (r.status === '예약완료' || r.status === '확인대기') siteMap[s].confirmed++;
+        else if (r.status === '임시접수') siteMap[s].ng++;
+        else if (r.status === '취소') siteMap[s].canceled++;
+        siteMap[s].total++;
+      });
+
+      var sBody = el('siteStatsBody');
+      sBody.innerHTML = '';
+      Object.keys(siteMap).forEach(function (sName) {
+        var d = siteMap[sName];
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td><strong>' + DemoDB.escapeHtml(sName) + '</strong></td>' +
+          '<td style="color:var(--text-success); font-weight:600;">' + d.confirmed + '</td>' +
+          '<td style="color:var(--text-warning); font-weight:600;">' + d.ng + '</td>' +
+          '<td style="color:var(--text-muted);">' + d.canceled + '</td>' +
+          '<td><strong>' + d.total + '件</strong></td>';
+        sBody.appendChild(tr);
+      });
+
+      var outBody = el('outOfTargetBody');
+      if (outBody) {
+        outBody.innerHTML = '';
+        var outRows = rows.filter(function (r) {
+          if (!r.birth) return false;
+          var age = DemoDB.calcAge(r.birth);
+          return (age != null && (age < 40 || age > 74));
+        });
+
+        el('outOfTargetCountBadge').textContent = outRows.length + '件 検出';
+
+        outRows.forEach(function (r) {
+          var age = DemoDB.calcAge(r.birth);
+          var reasonTag = age < 40
+            ? '<span class="status" style="background:var(--bg-warning); color:var(--text-warning);">40歳未満 (満 ' + age + '歳)</span>'
+            : '<span class="status" style="background:var(--bg-warning); color:var(--text-warning);">74歳超過 (満 ' + age + '歳)</span>';
+
+          var statStyle = r.status === '예약완료' ? 'background:var(--bg-success); color:var(--text-success);'
+            : (r.status === '임시접수' ? 'background:var(--bg-warning); color:var(--text-warning);'
+              : 'background:var(--surface-1); color:var(--text-muted);');
+
+          var tr = document.createElement('tr');
+          tr.innerHTML =
+            '<td style="color:var(--text-muted); font-size:12px;">' + DemoDB.escapeHtml((r.createdAt || '').slice(0, 10)) + '</td>' +
+            '<td><strong>' + DemoDB.escapeHtml(jaPersonName(r.name)) + '</strong></td>' +
+            '<td>' + DemoDB.escapeHtml(r.birth) + ' (満 ' + age + '歳)</td>' +
+            '<td>' + reasonTag + '</td>' +
+            '<td>' + channelBadge(r.channel) + '</td>' +
+            '<td style="color:var(--text-secondary);">' + DemoDB.escapeHtml((jaSite(r.site) || '') + ' · ' + (r.date || '') + ' ' + (r.time || '')) + '</td>' +
+            '<td><span class="status" style="' + statStyle + '">' + DemoDB.escapeHtml(jaStatus(r.status)) + '</span></td>';
+          outBody.appendChild(tr);
+        });
+      }
+    }
+
+    function exportCsvData() { window.DemoDB.exportCsv('csv'); }
+    function exportWeeklyExcel() { window.DemoDB.exportCsv('weekly'); }
+    function exportTakExcel() { window.DemoDB.exportCsv('tak'); }
+  </script>
+
+
+</body>
+
+</html>

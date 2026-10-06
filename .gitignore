@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+*.db
+*.sqlite3
+*.mp4
+*.mov
+*.webm
+__pycache__/
+*.pyc

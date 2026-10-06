@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>健診予約センター (プロトタイプ)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --surface-2: #ffffff;
+    --surface-1: #f8fafc;
+    --bg-page: #f1f5f9;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --fill-accent: #0284c7;
+    --fill-accent-hover: #0369a1;
+    --on-accent: #ffffff;
+    --bg-accent: #f0f9ff;
+    --border-accent: #bae6fd;
+    --text-accent: #0369a1;
+    --text-success: #047857;
+    --bg-success: #ecfdf5;
+    --text-warning: #b45309;
+    --bg-warning: #fffbeb;
+    --text-danger: #b91c1c;
+    --bg-danger: #fef2f2;
+    --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
+    --card-shadow-hover: 0 10px 25px -3px rgba(15, 23, 42, 0.1);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 32px 20px 60px;
+    background: var(--bg-page);
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+  p { margin: 0; }
+  a { color: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+  .wrap { max-width: 960px; margin: 0 auto; }
+
+  /* ヘッダー */
+  header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+  .brand { display:flex; align-items:center; gap:10px; font-size:17px; font-weight:600; }
+  .brand .logo { width:34px; height:34px; border-radius:9px; background:var(--fill-accent); color:var(--on-accent); display:flex; align-items:center; justify-content:center; font-size:17px; }
+  .fontToggle { display:flex; align-items:center; gap:2px; background:var(--surface-2); border:1px solid var(--border-strong); border-radius:9px; padding:3px; }
+  .fontToggle span { font-size:13px; color:var(--text-secondary); padding:0 8px; }
+  .fontToggle button { padding:7px 14px; font-size:13px; border:none; border-radius:7px; background:transparent; color:var(--text-secondary); }
+  .fontToggle button.active { background:var(--fill-accent); color:var(--on-accent); font-weight:500; }
+  .headerControls { display:flex; align-items:center; gap:10px; }
+  .langToggle { display:flex; align-items:center; gap:2px; background:var(--surface-2); border:1px solid var(--border-strong); border-radius:9px; padding:3px; }
+  .langToggle a { padding:7px 12px; font-size:13px; border-radius:7px; color:var(--text-secondary); text-decoration:none; }
+  .langToggle a.active { background:var(--fill-accent); color:var(--on-accent); font-weight:500; }
+  body.zoom-lg { zoom: 1.15; }
+  body.zoom-xl { zoom: 1.3; }
+
+  /* ヒーロー */
+  .hero { background:var(--surface-2); border:1px solid var(--border); border-radius:20px; padding:40px; display:grid; grid-template-columns:1.1fr 0.9fr; gap:36px; align-items:center; margin-bottom:40px; box-shadow:var(--card-shadow); transition:transform 0.2s ease, box-shadow 0.2s ease; }
+  .hero:hover { box-shadow:var(--card-shadow-hover); }
+  .badge { display:inline-flex; align-items:center; gap:6px; background:var(--bg-accent); color:var(--text-accent); border:1px solid var(--border-accent); font-size:13px; font-weight:600; padding:7px 14px; border-radius:20px; margin-bottom:18px; }
+  .hero h1 { font-size:34px; font-weight:700; line-height:1.35; margin:0 0 14px; letter-spacing:-0.02em; }
+  .hero p.lead { font-size:15px; color:var(--text-secondary); line-height:1.7; margin:0 0 26px; max-width:440px; }
+  .heroBtns { display:flex; gap:12px; flex-wrap:wrap; }
+  .btn { display:inline-flex; align-items:center; gap:8px; padding:14px 22px; font-size:15px; font-weight:600; border-radius:10px; border:none; text-decoration:none; transition:all 0.2s ease; }
+  .btn-primary { background:var(--fill-accent); color:var(--on-accent); box-shadow:0 4px 12px rgba(2, 132, 199, 0.25); }
+  .btn-primary:hover { background:var(--fill-accent-hover); transform:translateY(-1px); box-shadow:0 6px 16px rgba(2, 132, 199, 0.35); }
+  .btn-outline { background:var(--surface-2); color:var(--text-primary); border:1px solid var(--border-strong); }
+  .btn-outline:hover { background:var(--surface-1); border-color:var(--fill-accent); color:var(--text-accent); }
+  .heroArt { width:100%; aspect-ratio:1/0.85; border-radius:16px; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05); }
+
+  /* 進行ステップ */
+  section.steps h2 { font-size:20px; font-weight:600; margin:0 0 18px; letter-spacing:-0.01em; }
+  .stepGrid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:40px; }
+  .stepCard { background:var(--surface-2); border:1px solid var(--border); border-radius:14px; padding:24px 22px; box-shadow:var(--card-shadow); transition:all 0.2s ease; }
+  .stepCard:hover { transform:translateY(-3px); box-shadow:var(--card-shadow-hover); border-color:var(--border-accent); }
+  .stepCard .icon { width:38px; height:38px; border-radius:10px; background:var(--bg-accent); color:var(--text-accent); display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:14px; }
+  .stepCard .n { font-size:12px; color:var(--text-accent); font-weight:600; margin-bottom:6px; }
+  .stepCard .t { font-size:16px; font-weight:600; margin-bottom:8px; }
+  .stepCard .d { font-size:13px; color:var(--text-secondary); line-height:1.6; }
+
+  /* お知らせボックス */
+  .noticeBox { background:var(--bg-success); border-radius:16px; padding:26px 28px; }
+  .noticeBox .title { display:flex; align-items:center; gap:8px; font-size:16px; font-weight:600; color:var(--text-success); margin-bottom:16px; }
+  .noticeGrid { display:grid; grid-template-columns:1fr 1fr; gap:12px 24px; }
+  .noticeGrid li { list-style:none; font-size:14px; color:var(--text-primary); line-height:1.6; display:flex; gap:8px; }
+  .noticeGrid li::before { content:'●'; color:var(--text-success); font-size:8px; margin-top:7px; flex-shrink:0; }
+  .noticeGrid ul { margin:0; padding:0; }
+
+  footer { text-align:center; font-size:12px; color:var(--text-muted); margin-top:40px; }
+  footer .contactPhone { display:block; font-size:22px; font-weight:700; color:var(--text-primary); margin-bottom:8px; }
+
+  /* 予約内容確認 */
+  .backLink { font-size:13px; color:var(--text-secondary); text-decoration:none; cursor:pointer; background:none; border:none; font-family:inherit; padding:0; margin-bottom:16px; display:inline-block; }
+  .backLink:hover { text-decoration:underline; }
+  .lookupCard { background:var(--surface-2); border:1px solid var(--border); border-radius:20px; padding:32px; max-width:520px; margin:0 auto 40px; }
+  .lookupCard h1 { font-size:19px; font-weight:600; margin:0 0 6px; }
+  .lookupCard p.lead { font-size:13px; color:var(--text-secondary); margin:0 0 22px; line-height:1.6; }
+  .lookupCard label { display:block; font-size:13px; color:var(--text-secondary); margin-bottom:6px; }
+  .lookupCard input { width:100%; font-size:15px; padding:11px 12px; border:1px solid var(--border-strong); border-radius:8px; font-family:inherit; background:var(--surface-2); }
+  .lookupCard input:focus { outline:none; border-color:var(--fill-accent); box-shadow:0 0 0 3px var(--bg-accent); }
+  .lookupCard .field { margin-bottom:16px; }
+  .lookupCard .btn-submit { width:100%; padding:13px; font-size:15px; font-weight:500; background:var(--fill-accent); color:var(--on-accent); border:none; border-radius:8px; margin-top:6px; cursor:pointer; font-family:inherit; }
+  .lookupCard #err { display:none; background:var(--bg-danger); color:var(--text-danger); border-radius:8px; padding:10px 14px; font-size:13px; margin-top:14px; line-height:1.6; }
+  .lookupCard #result { display:none; margin-top:22px; }
+  .lookupCard #result .sentBanner { background:var(--bg-success); color:var(--text-success); border-radius:8px; padding:12px 14px; font-size:13px; margin-bottom:16px; line-height:1.6; }
+  .lookupCard #result .rcard { background:var(--bg-page); border-radius:10px; padding:18px 20px; font-size:13px; }
+  .lookupCard #result .rcard .resno { font-size:19px; font-weight:600; text-align:center; margin-bottom:14px; }
+  .lookupCard #result .rcard .row { display:flex; justify-content:space-between; padding:5px 0; border-top:0.5px solid var(--border); }
+  .lookupCard #result .rcard .row:first-of-type { border-top:none; }
+  .lookupCard .demoNote { font-size:11px; color:var(--text-muted); margin-top:10px; text-align:center; }
+
+  @media (max-width: 720px) {
+    body { padding: 0 0 40px; }
+    header { padding: 14px 16px; margin-bottom:0; position:sticky; top:0; background:var(--surface-2); border-bottom:1px solid var(--border); z-index:100; }
+    .brand { font-size:15px; }
+    .fontToggle span { display:none; }
+    .fontToggle button { padding:5px 9px; font-size:12px; }
+    .langToggle a { padding:5px 9px; font-size:12px; }
+    .wrap { padding: 0 14px; }
+    .hero { grid-template-columns:1fr; padding:22px 18px; margin-top:16px; }
+    .heroArt { display:none; }
+    .hero h1 { font-size:26px; margin-bottom:10px; }
+    .hero p.lead { font-size:14px; margin-bottom:18px; }
+    .heroBtns { flex-direction:column; }
+    .heroBtns .btn { justify-content:center; padding:15px 18px; font-size:16px; }
+    .stepGrid { grid-template-columns:1fr; gap:10px; }
+    .noticeGrid { grid-template-columns:1fr; }
+    .noticeBox { padding:18px 16px; }
+    .qrSection { flex-direction:column; align-items:center; text-align:center; }
+    .lookupCard { padding:22px 16px; }
+  }
+</style>
+<style>html:lang(ja) body{word-break:auto-phrase;line-break:strict}</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="logo">🩺</span> 健診予約センター</div>
+    <div class="headerControls">
+      <div class="langToggle">
+        <a href="./main-prototype.html">한국어</a>
+        <a href="./main-prototype-ja.html" class="active">日本語</a>
+      </div>
+      <div class="fontToggle">
+        <span>文字サイズ</span>
+        <button data-zoom="" class="active">標準</button>
+        <button data-zoom="zoom-lg">大きく</button>
+        <button data-zoom="zoom-xl">もっと大きく</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="homeView">
+  <div class="hero">
+    <div>
+      <div class="badge">✨ 会員登録不要の3分かんたん健診予約</div>
+      <h1>健やかな明日のための<br>もっとも快適な健診予約</h1>
+      <p class="lead">複雑な会員登録やログインは不要です。受診される方の年齢・性別に合わせたオプション検査と、ご希望の病院・日程を簡単にお申し込みいただけます。</p>
+      <div class="heroBtns">
+        <a class="btn btn-primary" href="./user-flow-prototype-ja.html" style="font-size:16px; padding:15px 24px;">📅 健診予約を申し込む</a>
+        <button type="button" class="btn btn-outline" onclick="showLookup()">🔍 予約内容を確認</button>
+      </div>
+    </div>
+    <div class="heroArt">
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%; display:block;">
+        <rect width="400" height="340" fill="var(--bg-accent)"/>
+        <circle cx="330" cy="60" r="70" fill="var(--bg-success)" opacity="0.6"/>
+        <circle cx="40" cy="290" r="90" fill="var(--surface-2)" opacity="0.5"/>
+        <g transform="translate(90,120)">
+          <circle cx="60" cy="30" r="26" fill="#ecb99a"/>
+          <path d="M20 190 Q10 110 60 100 Q110 110 100 190 Z" fill="var(--fill-accent)"/>
+        </g>
+        <g transform="translate(190,140)">
+          <circle cx="50" cy="26" r="24" fill="#e0a37e"/>
+          <path d="M14 180 Q6 100 50 92 Q94 100 86 180 Z" fill="#3f8f6f"/>
+        </g>
+        <g transform="translate(270,110)">
+          <circle cx="46" cy="24" r="22" fill="#f0c9a8"/>
+          <path d="M12 170 Q6 96 46 88 Q86 96 80 170 Z" fill="#8f6f3f"/>
+        </g>
+        <circle cx="120" cy="130" r="30" fill="none" stroke="var(--fill-accent)" stroke-width="4" opacity="0.35"/>
+        <path d="M330 90 l10 10 l20 -20" stroke="var(--text-success)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <section class="steps">
+    <h2>簡単4ステップの健診予約手続き</h2>
+    <div class="stepGrid">
+      <div class="stepCard">
+        <div class="icon">👤</div>
+        <div class="n">STEP 01</div>
+        <div class="t">受診者情報の入力</div>
+        <div class="d">検診を受けられる方の基本情報と、お知らせの受け取り方法(郵送/メール)をご入力ください。</div>
+      </div>
+      <div class="stepCard">
+        <div class="icon">🔬</div>
+        <div class="n">STEP 02</div>
+        <div class="t">追加オプション検査の選択</div>
+        <div class="d">胃・大腸内視鏡、超音波、脳MRIなど、追加で受けたい検査をご自身でお選びいただけます。</div>
+      </div>
+      <div class="stepCard">
+        <div class="icon">🏥</div>
+        <div class="n">STEP 03</div>
+        <div class="t">病院(会場)と日程の選択</div>
+        <div class="d">健診センターの20か所の指定病院の中から、お越しいただきやすい会場とご希望の検診日時を指定します。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- シニアにやさしいカード型のお知らせボックス (Senior-Friendly UI) -->
+  <div class="noticeBox" style="background:var(--surface-2); border:2px solid var(--fill-accent); border-radius:20px; padding:28px 32px; box-shadow:0 8px 24px rgba(2,132,199,0.08); margin-bottom:40px;">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+      <span style="font-size:28px;">📢</span>
+      <h2 style="font-size:22px; font-weight:700; color:var(--text-primary); margin:0;">お申し込み前に必ずご確認ください(重要なお知らせ)</h2>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+      <div style="background:var(--surface-1); border:1px solid var(--border-strong); border-radius:12px; padding:16px 18px;">
+        <div style="font-size:16px; font-weight:700; color:var(--text-accent); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+          <span>🪪</span> <span>検診当日の持ち物</span>
+        </div>
+        <div style="font-size:15px; color:var(--text-primary); line-height:1.6;">検診当日、病院にご来院の際は<strong>健康保険証の現物</strong>または資格確認書・本人確認書類を受付にご提出ください。</div>
+      </div>
+
+      <div style="background:var(--surface-1); border:1px solid var(--border-strong); border-radius:12px; padding:16px 18px;">
+        <div style="font-size:16px; font-weight:700; color:var(--text-accent); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+          <span>🍵</span> <span>検診前の絶食のご案内</span>
+        </div>
+        <div style="font-size:15px; color:var(--text-primary); line-height:1.6;">正確な検診のため、<strong>検診前日の夜9時以降は絶食</strong>(水・飲食禁止)にご協力ください。</div>
+      </div>
+
+      <div style="background:var(--surface-1); border:1px solid var(--border-strong); border-radius:12px; padding:16px 18px;">
+        <div style="font-size:16px; font-weight:700; color:var(--text-accent); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+          <span>📅</span> <span>年1回の申込み制限</span>
+        </div>
+        <div style="font-size:15px; color:var(--text-primary); line-height:1.6;">当該年度(4月1日〜翌年3月31日)中は<strong>年1回のみ</strong>ご予約が可能です。</div>
+      </div>
+
+      <div style="background:var(--surface-1); border:1px solid var(--border-strong); border-radius:12px; padding:16px 18px;">
+        <div style="font-size:16px; font-weight:700; color:var(--text-accent); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+          <span>👨‍👩‍👧</span> <span>ご家族による代理申込み可</span>
+        </div>
+        <div style="font-size:15px; color:var(--text-primary); line-height:1.6;">オンラインでのご入力が難しい場合は<strong>ご家族や介護者の方が代理でお申し込み</strong>いただいても構いません。</div>
+      </div>
+
+      <div style="background:var(--surface-1); border:1px solid var(--border-strong); border-radius:12px; padding:16px 18px;">
+        <div style="font-size:16px; font-weight:700; color:var(--text-accent); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+          <span>📞</span> <span>変更・キャンセルはお電話で</span>
+        </div>
+        <div style="font-size:15px; color:var(--text-primary); line-height:1.6;">予約日の変更・キャンセルは<strong>検診の3日前までにお電話</strong>にてお申し込みください。</div>
+      </div>
+
+      <div style="background:var(--surface-1); border:1px solid var(--border-strong); border-radius:12px; padding:16px 18px;">
+        <div style="font-size:16px; font-weight:700; color:var(--text-accent); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+          <span>🔍</span> <span>ログイン不要の簡単照会</span>
+        </div>
+        <div style="font-size:15px; color:var(--text-primary); line-height:1.6;">パスワード不要で<strong>【予約番号+生年月日】</strong>によりいつでも照会が可能です。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🏥 受付可能な指定病院のご案内 (20施設) -->
+  <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:20px; padding:28px 32px; box-shadow:0 4px 16px rgba(0,0,0,0.03);">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+      <h2 style="font-size:20px; font-weight:700; margin:0;">健診センター 健診指定病院 (20施設)</h2>
+    </div>
+    <p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">健診センターと連携し精密健診を提供するサンプル地域の20指定健診医療機関のご案内です。</p>
+
+    <div id="homeHospitalGrid" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;"></div>
+  </div>
+  </div>
+
+  <div id="lookupView" style="display:none;">
+    <button type="button" class="backLink" onclick="showHome()">← トップへ戻る</button>
+    <div class="lookupCard">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+        <h1 style="margin:0;">予約内容の確認</h1>
+        <button type="button" class="btn" style="font-size:12px; padding:4px 10px; background:var(--bg-accent); color:var(--text-accent); border:1px solid var(--fill-accent); border-radius:6px; cursor:pointer; font-weight:600;" onclick="fillLookupDemo()">🧪 テスト用予約番号を自動入力</button>
+      </div>
+      <p class="lead">予約番号と生年月日を入力すると、お申し込み時にご登録いただいたメールアドレスに確認用URLをお送りします。ログインは不要です。</p>
+
+      <div class="field"><label>予約番号</label><input id="lkResNo" placeholder="例: AS-KD-260901-0032"></div>
+      <div class="field"><label>生年月日 (YYYY-MM-DD)</label><input id="lkBirth" placeholder="1968-03-12"></div>
+      <button type="button" class="btn-submit" onclick="lookup()">確認メールを受け取る</button>
+      <div id="err"></div>
+
+      <div id="result">
+        <div class="sentBanner">✉️ ご登録のメールアドレスに確認用URLを送信しました。(プロトタイプではデモとして下に直接表示します)</div>
+        <div class="rcard">
+          <p class="resno" id="rResNo">-</p>
+          <div class="row"><span style="color:var(--text-secondary);">申込者</span><span id="rName">-</span></div>
+          <div class="row"><span style="color:var(--text-secondary);">生年月日</span><span id="rBirth">-</span></div>
+          <div class="row"><span style="color:var(--text-secondary);">コース</span><span id="rCourse">-</span></div>
+          <div class="row"><span style="color:var(--text-secondary);">会場/日時</span><span id="rSlot">-</span></div>
+          <div class="row"><span style="color:var(--text-secondary);">状態</span><span id="rStatus">-</span></div>
+        </div>
+        </div>
+        <div style="margin-top:14px; text-align:center;">
+          <button type="button" class="btn btn-outline" style="width:100%; padding:10px; font-size:14px; font-weight:600; cursor:pointer;" onclick="printVoucher()">📄 予約確認証を印刷/出力</button>
+        </div>
+        <p class="demoNote">予約の変更・キャンセルはオンラインでは承っておりません。お電話にてご依頼ください。</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="contactPhone">📞 健診センター 健診予約に関するお問い合わせ 0000-00-0000</span>
+    (平日 09:00〜17:00)<br>
+    本画面はプロトタイプであり、実際のサービスとは文言・デザインが異なる場合があります。
+  </footer>
+</div>
+
+<script src="./demo-shared-data.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded', async function(){
+  await DemoDB.init();
+  renderHospitalList();
+});
+
+var HOSPITAL_INFOS = {
+  "サンプル病院D": { address: "サンプル市 中央1丁目", phone: "0000-00-0000", hours: "平日 09:00~17:00 / 土曜 09:00~12:00" },
+  "サンプル病院A": { address: "サンプル市 中央2丁目", phone: "0000-00-0000", hours: "平日 09:00~17:00 (水曜は夜間診療あり)" },
+  "サンプル病院F": { address: "サンプル市 中央3丁目", phone: "0000-00-0000", hours: "平日 08:30~17:00" },
+  "サンプルクリニックD": { address: "サンプル市 中央4丁目", phone: "0000-00-0000", hours: "平日 09:00~18:00 (木曜午後休診)" },
+  "サンプルクリニックF": { address: "サンプル市 中央5丁目", phone: "0000-00-0000", hours: "平日 09:00~17:30 / 土曜 09:00~12:30" },
+  "サンプル病院G": { address: "サンプル市 中央6丁目", phone: "0000-00-0000", hours: "平日 09:00~17:00" },
+  "サンプルクリニックG": { address: "サンプル市 中央7丁目", phone: "0000-00-0000", hours: "平日 09:00~18:00" },
+  "サンプル医院C": { address: "サンプル市 中央8丁目", phone: "0000-00-0000", hours: "平日 09:00~17:00" },
+  "サンプルクリニックE": { address: "サンプル市 中央9丁目", phone: "0000-00-0000", hours: "平日 09:00~17:00" },
+  "サンプルクリニックB": { address: "サンプル市 中央1丁目", phone: "0000-00-0000", hours: "平日 09:00~18:00" },
+  "サンプル病院H": { address: "サンプル市 中央2丁目", phone: "0000-00-0000", hours: "平日 09:00~17:00" },
+  "サンプル診療所A": { address: "サンプル市 中央3丁目", phone: "0000-00-0000", hours: "平日 09:00~16:00" },
+  "サンプルクリニックH": { address: "サンプル市 中央4丁目", phone: "0000-00-0000", hours: "平日 09:00~17:30" },
+  "サンプル医院A": { address: "サンプル市 中央5丁目", phone: "0000-00-0000", hours: "平日 09:00~17:00" },
+  "サンプル病院C": { address: "サンプル市 中央6丁目", phone: "0000-00-0000", hours: "平日 09:00~17:00" },
+  "サンプルクリニックA": { address: "サンプル市 中央7丁目", phone: "0000-00-0000", hours: "平日 09:00~18:00" },
+  "サンプル医院B": { address: "サンプル市 中央8丁目", phone: "0000-00-0000", hours: "平日 09:00~17:00" },
+  "サンプル病院E": { address: "サンプル市 中央9丁目", phone: "0000-00-0000", hours: "平日 09:00~17:00" },
+  "サンプルクリニックC": { address: "サンプル市 中央1丁目", phone: "0000-00-0000", hours: "平日 09:00~18:00" },
+  "サンプル病院B": { address: "サンプル市 中央2丁目", phone: "0000-00-0000", hours: "平日 09:00~17:00" }
+};
+
+function renderHospitalList() {
+  var grid = document.getElementById('homeHospitalGrid');
+  if (!grid) return;
+  grid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:14px; margin-top:14px;';
+  grid.innerHTML = '';
+  DemoDB.SITES.forEach(function (siteName) {
+    var info = HOSPITAL_INFOS[siteName] || { address: "情報準備中", phone: "お問い合わせ電話をご参照ください", hours: "平日 09:00~17:00" };
+    var item = document.createElement('div');
+    item.style.cssText = 'background:var(--surface-1); border:1px solid var(--border-strong); border-radius:14px; padding:18px 20px; font-size:13px; font-weight:500; display:flex; flex-direction:column; gap:8px; box-shadow:0 2px 8px rgba(0,0,0,0.02);';
+    item.innerHTML =
+      '<div>' +
+        '<div style="font-weight:700; color:var(--text-primary); font-size:15px; margin-bottom:8px; display:flex; align-items:center; gap:6px;"><span>' + DemoDB.escapeHtml(siteName) + '</span></div>' +
+        '<div style="color:var(--text-secondary); font-size:12px; margin-bottom:4px; display:flex; flex-direction:column; gap:2px;">' +
+          '<div>住所: ' + DemoDB.escapeHtml(info.address) + '</div>' +
+          '<div>電話: ' + DemoDB.escapeHtml(info.phone) + '</div>' +
+          '<div>診療時間: ' + DemoDB.escapeHtml(info.hours) + '</div>' +
+        '</div>' +
+        '<div style="font-size:12px; color:var(--text-success); font-weight:600; margin-top:4px;">受付可能 ○</div>' +
+      '</div>' +
+      '<a class="btn btn-outline" href="./user-flow-prototype-ja.html" style="padding:6px 12px; font-size:12px; text-align:center; justify-content:center; text-decoration:none;">この病院で予約</a>';
+    grid.appendChild(item);
+  });
+}
+
+// バックエンド(main.py)は共通データベースのため、状態・コース名は韓国語の値で保存されている。
+// 表示時のみ日本語に変換する(API に送信する値はそのまま)。
+
+// バックエンド(main.py)は共通データベースのため、状態・コース名は韓国語の値で保存されている。
+// 表示時のみ日本語に変換する(API に送信する値はそのまま)。
+var JA_STATUS_MAP = { '예약완료': '予約完了', '확인대기': '確認待ち', '임시접수': '仮受付', '취소': 'キャンセル' };
+var JA_COURSE_MAP = { '기본 건강검진 (특정검진 포함)': '基本健診(特定健診含む)' };
+function jaStatus(s){ return JA_STATUS_MAP[s] || s || '-'; }
+function jaCourse(c){ return JA_COURSE_MAP[c] || c || '-'; }
+
+function fillLookupDemo(){
+  document.getElementById('lkResNo').value = 'AS-KD-260901-0032';
+  document.getElementById('lkBirth').value = '1968-03-12';
+}
+function showLookup(){
+  document.getElementById('homeView').style.display = 'none';
+  document.getElementById('lookupView').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+function showHome(){
+  document.getElementById('lookupView').style.display = 'none';
+  document.getElementById('homeView').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+async function lookup(){
+  var resNo = document.getElementById('lkResNo').value.trim();
+  var birth = document.getElementById('lkBirth').value.trim();
+  var err = document.getElementById('err');
+  var result = document.getElementById('result');
+  err.style.display = 'none';
+  result.style.display = 'none';
+
+  if (!resNo || !birth) {
+    err.style.display = 'block';
+    err.textContent = '予約番号と生年月日を両方入力してください。';
+    return;
+  }
+  var r = await DemoDB.lookupReservation(resNo, birth);
+  if (!r) {
+    err.style.display = 'block';
+    err.textContent = '該当する予約が見つかりませんでした。予約番号と生年月日をもう一度ご確認ください。';
+    return;
+  }
+  document.getElementById('rResNo').textContent = r.resNo;
+  document.getElementById('rName').textContent = r.name;
+  document.getElementById('rBirth').textContent = r.birth;
+  document.getElementById('rCourse').textContent = jaCourse(r.course);
+  document.getElementById('rSlot').textContent = r.site ? (r.site + ' · ' + r.date + ' ' + r.time) : '(未確定)';
+  document.getElementById('rStatus').textContent = jaStatus(r.status);
+  result.style.display = 'block';
+}
+
+function printVoucher(){
+  var w = window.open('', '_blank', 'width=650,height=750');
+  var resNo = document.getElementById('rResNo').textContent;
+  var name = document.getElementById('rName').textContent;
+  var birth = document.getElementById('rBirth').textContent;
+  var course = document.getElementById('rCourse').textContent;
+  var slot = document.getElementById('rSlot').textContent;
+  var status = document.getElementById('rStatus').textContent;
+
+  w.document.write('<html><head><title>健診予約確認書 - ' + name + '</title>');
+  w.document.write('<style>body{font-family:sans-serif; padding:36px; color:#0f172a; line-height:1.6;} h1{font-size:22px; color:#0284c7; margin-bottom:4px;} table{width:100%; border-collapse:collapse; margin-top:20px;} th,td{padding:12px; border:1px solid #cbd5e1; font-size:14px; text-align:left;} th{background:#f1f5f9; color:#475569; width:30%;}</style></head><body>');
+  w.document.write('<h1>🩺 健診予約確認書</h1>');
+  w.document.write('<p style="font-size:13px; color:#64748b; margin:0 0 16px;">社団法人 健診センター 健診予約センター (TEL: 0000-00-0000)</p><hr>');
+  w.document.write('<table>');
+  w.document.write('<tr><th>予約番号</th><td><strong style="font-size:18px; color:#0284c7;">' + resNo + '</strong></td></tr>');
+  w.document.write('<tr><th>受診者氏名</th><td>' + name + '様</td></tr>');
+  w.document.write('<tr><th>生年月日</th><td>' + birth + '</td></tr>');
+  w.document.write('<tr><th>検診コース</th><td>' + course + '</td></tr>');
+  w.document.write('<tr><th>検診会場及び日時</th><td><strong>' + slot + '</strong></td></tr>');
+  w.document.write('<tr><th>受付状況</th><td>' + status + '</td></tr>');
+  w.document.write('</table>');
+  w.document.write('<div style="margin-top:24px; background:#f8fafc; border:1px solid #cbd5e1; padding:18px; font-size:13px; border-radius:10px;">');
+  w.document.write('<strong style="font-size:14px; color:#0284c7;">【検診当日のご注意事項】</strong><br>');
+  w.document.write('・検診当日は<strong>健康保険証</strong>または資格確認書を必ずご持参ください。<br>');
+  w.document.write('・正確な検診のため、<strong>検診前日の夜9時以降は絶食</strong>(水・飲食禁止)にご協力ください。<br>');
+  w.document.write('・予約の変更及びキャンセルは検診日の3日前までにお電話(0000-00-0000)でお願いいたします。');
+  w.document.write('</div>');
+  w.document.write('<script>window.onload = function(){ window.print(); };<\/script>');
+  w.document.write('</body></html>');
+  w.document.close();
+}
+</script>
+
+<script>
+document.querySelectorAll('.fontToggle button').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.body.classList.remove('zoom-lg', 'zoom-xl');
+    if (btn.dataset.zoom) document.body.classList.add(btn.dataset.zoom);
+    document.querySelectorAll('.fontToggle button').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
