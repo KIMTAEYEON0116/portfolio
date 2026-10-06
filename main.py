@@ -665,6 +665,14 @@ async def security_headers(request: Request, call_next):
 
 SITE_URL = os.getenv("SITE_URL", "").rstrip("/")
 
+NOT_FOUND_HTML = """<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>ページが見つかりません</title>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#EDF2FA;color:#2C3E50;
+font-family:'Noto Sans JP','Noto Sans KR',sans-serif}div{text-align:center;padding:24px}
+h1{font-size:20px;margin:0 0 8px}p{margin:4px 0;font-size:14px;color:#5B6B7F}a{color:#2C3E50;font-weight:700}</style>
+</head><body><div><h1>ページが見つかりません</h1><p>페이지를 찾을 수 없습니다</p>
+<p style="margin-top:14px"><a href="/" target="_top">ホームへ戻る / 홈으로</a></p></div></body></html>"""
+
 
 def _site_origin(request: Request) -> str:
     """og:image 같은 절대 URL 용 출처. SITE_URL 이 있으면 그것을, 없으면 요청에서 만든다."""
@@ -702,8 +710,9 @@ def _file(request: Request, path: str, headers: dict):
     return resp
 
 
-@app.get("/", include_in_schema=False)
-@app.get("/{full_path:path}", include_in_schema=False)
+# HEAD 도 받는다: 링크 미리보기 봇·가동 감시 도구는 GET 전에 HEAD 를 보내는 경우가 있다 (예전엔 405)
+@app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/{full_path:path}", methods=["GET", "HEAD"], include_in_schema=False)
 def serve_index(request: Request, full_path: str = ""):
     """정적 파일(.css/.js/.png/.html 등)은 직접 반환, 나머지는 메인 index.html (SPA)"""
     if full_path in ("index.html", "/index.html"):
@@ -726,7 +735,11 @@ def serve_index(request: Request, full_path: str = ""):
         # SPA fallback 으로 index.html 을 돌려주면 이미지가 200 으로 응답돼
         # 브라우저가 깨진 이미지를 그리고, onerror 도 늦게 걸린다.
         ext = pathlib.Path(full_path).suffix.lower()
-        if ext and ext in STATIC_EXTENSIONS and ext != ".html":
+        if ext == ".html":
+            # 없는 .html 주소에 홈 화면을 돌려주면, 목업 폴더 안에서는 CSS 를 못 찾아
+            # 스타일이 다 빠진 홈 화면이 보였다. 안내 페이지로 404 를 돌려준다.
+            return Response(NOT_FOUND_HTML, status_code=404, media_type="text/html; charset=utf-8")
+        if ext and ext in STATIC_EXTENSIONS:
             raise HTTPException(status_code=404, detail=f"{full_path} 을(를) 찾을 수 없습니다.")
 
     if os.path.exists(os.path.join(STATIC_DIR, "index.html")):

@@ -2811,10 +2811,8 @@ function renderProject(projectId) {
     if (db.liveUrl) {
       const a = document.getElementById('project-live-link');
       const t = document.getElementById('project-live-text');
-      const lb = document.getElementById('project-live-label');
       if (a) a.href = db.liveUrl;
       if (t) t.textContent = currentLanguage === 'ja' ? 'サイトを見る' : '사이트 보기';
-      if (lb) lb.textContent = currentLanguage === 'ja' ? '公開中' : '공개 중';
       liveRow.style.display = '';
     } else {
       liveRow.style.display = 'none';
