@@ -670,7 +670,10 @@ async function renderLogPage() {
   const match = tags => logTag === 'all' || tags.includes(logTag);
   let shown = 0;
 
-  host.innerHTML = d.months.map(mo => {
+  // 데이터가 아직 없는 달(연수 기간 안의 이번 달·다음 달)도 자리를 만들어 둔다.
+  // 내용을 지어내지 않고 「진행 중 / 예정」만 표시한다.
+  const months = withPlannedMonths(d);
+  host.innerHTML = months.map(mo => {
     const deeps = d.deep.filter(x => x.month === mo.m && match(x.tags));
     const chips = d.concepts.filter(x => x.month === mo.m && match(x.tags));
     // 프로젝트 카드도 걸러진 결과에 포함된다. 여기서 먼저 세지 않으면
@@ -680,6 +683,21 @@ async function renderLogPage() {
     if (logTag !== 'all' && !deeps.length && !chips.length && !projs.length) return '';
 
     const rv = ja ? mo.review_ja : mo.review;
+    if (mo.plan) {
+      const now = mo.plan === 'now';
+      return `<section class="lg-mo-sec lg-plan" id="lg-m-${parseInt(mo.m, 10)}">
+      <div class="lg-mh"><span class="lg-mn">${ja ? mo.mj : mo.m}</span>
+        <span class="lg-mlb">${ja ? mo.lb_ja : mo.lb}</span>
+        <span class="lg-mline"></span>
+        <span class="lg-mc">${now ? (ja ? '記録中' : '기록 중') : (ja ? '予定' : '예정')}</span>
+        <span class="lg-mtg">▴</span></div>
+      <div class="lg-mbody"><div class="lg-rev empty"><div class="lg-rvh">
+        <span class="lg-rvl">${now ? (ja ? '進行中' : '진행 중') : (ja ? '予定' : '예정')}</span>
+        <span class="lg-rvp">${now
+          ? (ja ? 'この月の記録と振り返りは月末にまとめて追加します。' : '이 달의 기록과 회고는 월말에 정리해 추가합니다.')
+          : (ja ? '研修の最終月です。始まったら記録を追加します。' : '연수의 마지막 달입니다. 시작되면 기록을 추가합니다.')}</span>
+      </div></div><div class="lg-mrest"></div></div></section>`;
+    }
     const first = (rv || '').split('\n')[0];
     const review = rv
       ? `<div class="lg-rev"><div class="lg-rvh"><span class="lg-rvl">${ja ? '振り返り' : '회고'}</span>
@@ -788,13 +806,35 @@ async function renderLogPage() {
   if (allBtn) allBtn.textContent = (i18n[currentLanguage] || {}).log_fold_all
     || (ja ? 'すべて閉じる' : '전체 접기');
 
-  renderLogRail(d, ja, dayCnt);
+  renderLogRail(Object.assign({}, d, { months }), ja, dayCnt);
   bindLogEvents();
 }
 
 /* 좌측 월 레일 — 6개월치를 스크롤할 때 현재 위치를 잃지 않도록 고정해 둔다.
    IntersectionObserver 로 화면 상단에 걸린 달을 표시한다 (rAF 에 의존하지 않는다). */
 let logRailScroll = null;
+
+// 연수 기간(period.end) 안에서 데이터가 없는 달을 「진행 중(이번 달) / 예정(앞으로)」으로 채운다
+function withPlannedMonths(d) {
+  const months = d.months.slice();
+  const last = Math.max(...months.map(mo => parseInt(mo.m, 10)));
+  const end = d.period && d.period.end ? new Date(d.period.end) : null;
+  if (!end) return months;
+  const endM = end.getMonth() + 1;
+  const today = new Date();
+  const curM = today.getFullYear() === end.getFullYear() ? today.getMonth() + 1 : 0;
+  const LB = {
+    now: { ko: '진행 중', ja: '進行中' },
+    plan: { ko: '연수 마지막 달 (예정)', ja: '研修最終月（予定）' }
+  };
+  for (let m = last + 1; m <= endM; m++) {
+    const plan = m <= curM ? 'now' : 'plan';
+    months.push({ m: m + '월', mj: m + '月', n: 0, plan,
+      lb: m === endM && plan === 'plan' ? LB.plan.ko : LB[plan].ko,
+      lb_ja: m === endM && plan === 'plan' ? LB.plan.ja : LB[plan].ja });
+  }
+  return months;
+}
 
 function renderLogRail(d, ja, dayCnt) {
   const rail = document.getElementById('lg-rail');
@@ -807,8 +847,9 @@ function renderLogRail(d, ja, dayCnt) {
     const m = parseInt(mo.m, 10);
     if (!document.getElementById('lg-m-' + m)) return '';
     const days = dayCnt[m] ? `${dayCnt[m]}${ja ? '日' : '일'}` : '';
-    return `<button class="lg-rb" data-m="${m}" title="${escapeHTML(ja ? mo.lb_ja : mo.lb)}">
-      <b>${ja ? mo.mj : mo.m}</b><span>${mo.n}</span><i>${days}</i></button>`;
+    const n = mo.plan ? (mo.plan === 'now' ? (ja ? '記録中' : '기록 중') : (ja ? '予定' : '예정')) : mo.n;
+    return `<button class="lg-rb${mo.plan ? ' plan' : ''}" data-m="${m}" title="${escapeHTML(ja ? mo.lb_ja : mo.lb)}">
+      <b>${ja ? mo.mj : mo.m}</b><span>${n}</span><i>${days}</i></button>`;
   }).join('');
 
   rail.querySelectorAll('.lg-rb').forEach(b => b.addEventListener('click', () => {

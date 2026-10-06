@@ -3304,3 +3304,8 @@ p, li, dd, td, .tst, .pl-v { overflow-wrap: anywhere; }
 /* 장 수가 많은 캐러셀(발표 슬라이드 45장)은 점 대신 쪽수 */
 .wf-car-count { text-align: center; margin-top: 10px; font-size: 0.85rem; color: #5B6B7F; font-variant-numeric: tabular-nums; }
 .wf-car-count b { color: var(--dark-color); font-family: var(--font-header); }
+/* 일지 — 아직 기록이 없는 달(진행 중·예정) */
+.lg-rb.plan { border-style: dashed; }
+.lg-rb.plan:not(.on) { background: transparent; }
+.lg-rb.plan span { font-size: 0.6rem; }
+.lg-mo-sec.lg-plan .lg-mn { color: #8A9BB0; }
