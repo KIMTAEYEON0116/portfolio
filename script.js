@@ -1258,8 +1258,60 @@ const projectDatabase = {
         ] }
     ],
     // 기획서 — 팀 기획서 원문(한국어)을 구조 그대로 옮긴 것. 일본어는 번역.
-    planningSrc: "https://docs.google.com/presentation/d/1kQf1nwmfNaimHtlzccqtmuaH8q0EbJ7Fl87nuaJR6ic/edit?slide=id.p1#slide=id.p1",
     planning: {
+      // 팀 발표 자료(PPT)를 장별 이미지로 옮긴 것. 원본 구글 슬라이드는 비공개라 링크 대신 싣는다.
+      gallery: {
+        ja: "企画発表スライド（全45枚）", ko: "기획 발표 슬라이드 (전 45장)", icon: "bi-easel",
+        note: { ja: "※ チーム3名（ソ・ドウォン、チェ・ソウ、キム・テヨン）で作成した発表資料です。技術設計のページはチーム全体で作ったシステムをまとめたものです。",
+                ko: "※ 팀 3명(서도원, 최서우, 김태연)이 만든 발표 자료입니다. 기술 설계 페이지는 팀 전체가 만든 시스템을 정리한 것입니다." },
+        items: [
+          { src: "./project_images/ep_slides/ep_slide_01.webp", ja: "表紙", ko: "표지" },
+          { src: "./project_images/ep_slides/ep_slide_02.webp", ja: "目次", ko: "목차" },
+          { src: "./project_images/ep_slides/ep_slide_03.webp", ja: "サービス名の由来", ko: "서비스 이름의 유래" },
+          { src: "./project_images/ep_slides/ep_slide_04.webp", ja: "プロジェクト概要", ko: "프로젝트 개요" },
+          { src: "./project_images/ep_slides/ep_slide_05.webp", ja: "企画の目的", ko: "기획 목적" },
+          { src: "./project_images/ep_slides/ep_slide_06.webp", ja: "提供するコンテンツ①", ko: "제공 콘텐츠 ①" },
+          { src: "./project_images/ep_slides/ep_slide_07.webp", ja: "提供するコンテンツ②", ko: "제공 콘텐츠 ②" },
+          { src: "./project_images/ep_slides/ep_slide_08.webp", ja: "プレイ方式", ko: "플레이 방식" },
+          { src: "./project_images/ep_slides/ep_slide_09.webp", ja: "プロジェクトの目標", ko: "프로젝트 목표" },
+          { src: "./project_images/ep_slides/ep_slide_10.webp", ja: "画面設計：メイン画面", ko: "화면 설계: 메인 화면" },
+          { src: "./project_images/ep_slides/ep_slide_11.webp", ja: "画面設計：メイン画面（2）", ko: "화면 설계: 메인 화면 (2)" },
+          { src: "./project_images/ep_slides/ep_slide_12.webp", ja: "画面設計：メイン画面（3）", ko: "화면 설계: 메인 화면 (3)" },
+          { src: "./project_images/ep_slides/ep_slide_13.webp", ja: "画面設計：ログイン", ko: "화면 설계: 로그인" },
+          { src: "./project_images/ep_slides/ep_slide_14.webp", ja: "画面設計：会員登録", ko: "화면 설계: 회원가입" },
+          { src: "./project_images/ep_slides/ep_slide_15.webp", ja: "画面設計：お知らせ", ko: "화면 설계: 공지" },
+          { src: "./project_images/ep_slides/ep_slide_16.webp", ja: "画面設計：タイピングリスト", ko: "화면 설계: 타이핑 목록" },
+          { src: "./project_images/ep_slides/ep_slide_17.webp", ja: "画面設計：タイピング作成", ko: "화면 설계: 타이핑 만들기" },
+          { src: "./project_images/ep_slides/ep_slide_18.webp", ja: "画面設計：タイピングプレイ", ko: "화면 설계: 타이핑 플레이" },
+          { src: "./project_images/ep_slides/ep_slide_19.webp", ja: "画面設計：クイズリスト", ko: "화면 설계: 퀴즈 목록" },
+          { src: "./project_images/ep_slides/ep_slide_20.webp", ja: "画面設計：クイズ作成", ko: "화면 설계: 퀴즈 만들기" },
+          { src: "./project_images/ep_slides/ep_slide_21.webp", ja: "画面設計：クイズプレイ", ko: "화면 설계: 퀴즈 플레이" },
+          { src: "./project_images/ep_slides/ep_slide_22.webp", ja: "画面設計：ランキング", ko: "화면 설계: 랭킹" },
+          { src: "./project_images/ep_slides/ep_slide_23.webp", ja: "画面設計：曲別ランキング", ko: "화면 설계: 곡별 랭킹" },
+          { src: "./project_images/ep_slides/ep_slide_24.webp", ja: "画面設計：対戦リスト", ko: "화면 설계: 대전 목록" },
+          { src: "./project_images/ep_slides/ep_slide_25.webp", ja: "画面設計：対戦待機室", ko: "화면 설계: 대전 대기실" },
+          { src: "./project_images/ep_slides/ep_slide_26.webp", ja: "画面設計：タイピング対戦", ko: "화면 설계: 타이핑 대전" },
+          { src: "./project_images/ep_slides/ep_slide_27.webp", ja: "画面設計：クイズ対戦", ko: "화면 설계: 퀴즈 대전" },
+          { src: "./project_images/ep_slides/ep_slide_28.webp", ja: "使用技術：バックエンド", ko: "사용 기술: 백엔드" },
+          { src: "./project_images/ep_slides/ep_slide_29.webp", ja: "使用技術：フロントエンド・インフラ", ko: "사용 기술: 프런트엔드·인프라" },
+          { src: "./project_images/ep_slides/ep_slide_30.webp", ja: "全体システムアーキテクチャ", ko: "전체 시스템 아키텍처" },
+          { src: "./project_images/ep_slides/ep_slide_31.webp", ja: "DBマイグレーションと初期化", ko: "DB 마이그레이션과 초기화" },
+          { src: "./project_images/ep_slides/ep_slide_32.webp", ja: "タイピング機能の実装", ko: "타이핑 기능 구현" },
+          { src: "./project_images/ep_slides/ep_slide_33.webp", ja: "タイピングアルゴリズム詳細", ko: "타이핑 알고리즘 상세" },
+          { src: "./project_images/ep_slides/ep_slide_34.webp", ja: "歌詞自動変換API", ko: "가사 자동 변환 API" },
+          { src: "./project_images/ep_slides/ep_slide_35.webp", ja: "クイズ機能の実装", ko: "퀴즈 기능 구현" },
+          { src: "./project_images/ep_slides/ep_slide_36.webp", ja: "リアルタイム対戦", ko: "실시간 대전" },
+          { src: "./project_images/ep_slides/ep_slide_37.webp", ja: "ランキングシステム", ko: "랭킹 시스템" },
+          { src: "./project_images/ep_slides/ep_slide_38.webp", ja: "検索・お知らせ", ko: "검색·공지" },
+          { src: "./project_images/ep_slides/ep_slide_39.webp", ja: "ホーム画面", ko: "홈 화면" },
+          { src: "./project_images/ep_slides/ep_slide_40.webp", ja: "マイページ：履歴・プロフィール", ko: "마이페이지: 이력·프로필" },
+          { src: "./project_images/ep_slides/ep_slide_41.webp", ja: "マイページ：タイプミス分析", ko: "마이페이지: 오타 분석" },
+          { src: "./project_images/ep_slides/ep_slide_42.webp", ja: "マイページ：出席チェック", ko: "마이페이지: 출석 체크" },
+          { src: "./project_images/ep_slides/ep_slide_43.webp", ja: "多言語（i18n）の実装", ko: "다국어(i18n) 구현" },
+          { src: "./project_images/ep_slides/ep_slide_44.webp", ja: "設計の要約", ko: "설계 요약" },
+          { src: "./project_images/ep_slides/ep_slide_45.webp", ja: "デモ動画", ko: "데모 영상" }
+        ]
+      },
       ja: {
         "sections": [
           {
@@ -2457,7 +2509,7 @@ function renderPlanning(pl, src, label) {
     <div class="pl-card">${secs}</div>
     ${pl.gallery ? `
       <div class="embed-header" style="margin-top:30px">
-        <i class="bi bi-calendar3 embed-header-icon" aria-hidden="true"></i>
+        <i class="bi ${pl.gallery.icon || 'bi-calendar3'} embed-header-icon" aria-hidden="true"></i>
         <span class="embed-header-title">${ja ? pl.gallery.ja : pl.gallery.ko}</span>
       </div>
       <p class="embed-note">${ja ? pl.gallery.note.ja : pl.gallery.note.ko}</p>
@@ -2468,7 +2520,9 @@ function renderPlanning(pl, src, label) {
             <div class="wf-shot"><img src="${g.src}" alt="${ja ? g.ja : g.ko}" loading="lazy"></div></figure>`).join('')}</div>
         <button type="button" class="wf-car-btn next" aria-label="next"><i class="bi bi-chevron-right"></i></button>
       </div>
-      <div class="wf-car-dots">${pl.gallery.items.map((_, i) => `<button type="button" class="wf-car-dot${i === 0 ? ' active' : ''}" aria-label="${i + 1}"></button>`).join('')}</div>` : ''}`;
+      ${pl.gallery.items.length > 12
+        ? `<div class="wf-car-count"><b>1</b> / ${pl.gallery.items.length}</div>`
+        : `<div class="wf-car-dots">${pl.gallery.items.map((_, i) => `<button type="button" class="wf-car-dot${i === 0 ? ' active' : ''}" aria-label="${i + 1}"></button>`).join('')}</div>`}` : ''}`;
 }
 
 // 설계 단계의 와이어프레임을 보여준다.
@@ -2546,12 +2600,14 @@ function bindWfCarousel(area) {
   const dots = [...area.querySelectorAll('.wf-car-dot')];
   const prev = area.querySelector('.wf-car-btn.prev');
   const next = area.querySelector('.wf-car-btn.next');
+  const counter = area.querySelector('.wf-car-count b');
   let idx = 0;
   const paint = () => {
     // 가장 긴 장의 높이에 묶이지 않도록, 보이는 장의 높이로 맞춘다
     const h = slides[idx].offsetHeight;
     if (h) track.style.height = h + 'px';
     dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    if (counter) counter.textContent = idx + 1;
     prev.disabled = idx === 0;
     next.disabled = idx === slides.length - 1;
   };

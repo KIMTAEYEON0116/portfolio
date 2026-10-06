@@ -3301,3 +3301,6 @@ p, li, dd, td, .tst, .pl-v { overflow-wrap: anywhere; }
   font-size: 0.75rem; padding: 2px 10px; border-radius: 999px;
 }
 @media (max-width: 600px) { .featured-link { font-size: 0.85rem; padding: 9px 14px; } }
+/* 장 수가 많은 캐러셀(발표 슬라이드 45장)은 점 대신 쪽수 */
+.wf-car-count { text-align: center; margin-top: 10px; font-size: 0.85rem; color: #5B6B7F; font-variant-numeric: tabular-nums; }
+.wf-car-count b { color: var(--dark-color); font-family: var(--font-header); }
