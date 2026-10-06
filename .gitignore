@@ -8,3 +8,4 @@
 *.webm
 __pycache__/
 *.pyc
+.venv/
