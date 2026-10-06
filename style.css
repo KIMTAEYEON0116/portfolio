@@ -3309,3 +3309,7 @@ p, li, dd, td, .tst, .pl-v { overflow-wrap: anywhere; }
 .lg-rb.plan:not(.on) { background: transparent; }
 .lg-rb.plan span { font-size: 0.6rem; }
 .lg-mo-sec.lg-plan .lg-mn { color: #8A9BB0; }
+/* 개요 — 공개 주소·저장소 주소 */
+.link-list { line-height: 2; word-break: break-all; }
+.link-list .link-k { display: inline-block; min-width: 4.5em; font-size: 0.78rem; font-weight: 700; color: #5B6B7F; }
+.link-list a { color: var(--dark-color); font-weight: 600; text-underline-offset: 3px; }

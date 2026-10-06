@@ -38,6 +38,7 @@ const i18n = {
     p_label_period: "開発期間",
     p_label_reason: "開発理由",
     p_label_result: "成果",
+    p_label_links: "公開・ソース",
     about_birth_year: "1998年生まれ",
     featured_tag: "注目",
     featured_text: "実案件：健康診断予約システム（BtoB）",
@@ -115,6 +116,7 @@ const i18n = {
     p_label_period: "개발 기간",
     p_label_reason: "개발 이유",
     p_label_result: "성과",
+    p_label_links: "공개·소스",
     about_birth_year: "1998년생",
     featured_tag: "주목",
     featured_text: "실제 기업 안건: 건강검진 예약 시스템 (B2B)",
@@ -1103,7 +1105,9 @@ function closeLogDetail() {
 // { type: "image", src: "./파일명.png" } 또는 { type: "video", src: "./파일명.mp4" }
 const projectDatabase = {
   portfolio: {
+    liveUrl: "http://3.38.86.228/",
     githubUrl: "https://github.com/KIMTAEYEON0116/portfolio",
+    showLinkRow: true,   // 개요 표에 공개 주소·저장소 주소를 글자로도 보여 준다
     // 설계 단계에서 직접 그린 와이어프레임. 한국어로 그렸기 때문에
     // 일본어로 볼 때는 overlays 가 해당 위치의 글자를 덮는다.
     // x/y/w 는 이미지 대비 % 이고, 글자 크기는 컨테이너 폭에 따라 커진다.
@@ -1162,8 +1166,8 @@ const projectDatabase = {
       title: "ポートフォリオウェブサイト",
       period: "2026.03 - 2026.11",
       reason: "自己紹介とプロジェクトを整理するために制作しました。従来はPDF形式の履歴書のみを使用していましたが、ウェブサイトを通じてよりインタラクティブかつ視覚的に表現することで、自身の強みを効果的にアピールできるよう設計・制作しました。",
-      role: "企画から画面実装まで一人で進めています。<br><br>**① 企画・設計** — Figma でワイヤーフレームを描き、画面構成と遷移の流れを決めました。<br><br>**② フロントエンド** — フレームワークを使わず Vanilla HTML/CSS/JS でコンポーネント構造を設計し実装しました。<br><br>**③ データ連動** — LocalStorage をもとに、言語設定と画面の状態が再読み込み後も保持されるようにしました。<br><br>**④ サーバー** — FastAPI でゲストブックの API（SQLite に保存）をつくり、Notion の学習日誌を取り込んで日誌ページに表示しています。",
-      tools: "HTML5, CSS3, JavaScript (Vanilla JS), Python (FastAPI), SQLite, Notion API, Figma, Git, GitHub, LocalStorage",
+      role: "企画から画面実装まで一人で進めています。<br><br>**① 企画・設計** — Figma でワイヤーフレームを描き、画面構成と遷移の流れを決めました。<br><br>**② フロントエンド** — フレームワークを使わず Vanilla HTML/CSS/JS でコンポーネント構造を設計し実装しました。<br><br>**③ データ連動** — LocalStorage をもとに、言語設定と画面の状態が再読み込み後も保持されるようにしました。<br><br>**④ サーバー** — FastAPI でゲストブックの API（SQLite に保存）をつくり、Notion の学習日誌を取り込んで日誌ページに表示しています。<br><br>**⑤ 公開** — AWS EC2（Ubuntu）に nginx と systemd で公開し、サーバーを再起動しても自動で立ち上がるようにしました。ゲストブックに投稿があるとメールで通知が届きます。",
+      tools: "HTML5, CSS3, JavaScript (Vanilla JS), Python (FastAPI), SQLite, Notion API, AWS EC2, nginx, Figma, Git, GitHub, LocalStorage",
       troubleTitles: ["日誌ページの見せ方を変更", "ページ単位の画面遷移とホームボタン", "記録の載せ方を2つに分ける"],
       troubles: [
         "日誌ページは、当初ワイヤーフレームではカレンダーの下に内容を並べる形で考えていました。ところが実際に内容を入れてみると量が多く、そのまま続けるとスクロールが長くなりそうでした。カレンダー表示そのものは良いのですが、何をアピールしたいのかが伝わりにくいと感じたため、月ごとに学んだことの中から重要なものを選んで見せる形に変えました。",
@@ -1176,8 +1180,8 @@ const projectDatabase = {
       title: "포트폴리오 웹사이트",
       period: "2026.03 - 2026.11",
       reason: "자기소개와 프로젝트를 정리하기 위해 제작하였습니다. 기존에는 PDF 형태의 이력서만 사용했지만, 웹사이트를 통해 더 인터랙티브하고 시각적으로 표현하여 저의 강점을 효과적으로 어필하고자 제작하였습니다.",
-      role: "기획부터 화면 구현까지 혼자 진행하고 있습니다.<br><br>**① 기획·설계** — Figma로 와이어프레임을 그리고 화면 구성과 이동 흐름을 정했습니다.<br><br>**② 프런트엔드** — 프레임워크 없이 Vanilla HTML/CSS/JS 로 컴포넌트 구조를 설계하고 구현했습니다.<br><br>**③ 데이터 연동** — LocalStorage 기반으로 언어 설정과 화면 상태가 새로고침 후에도 유지되게 했습니다.<br><br>**④ 서버** — FastAPI 로 방명록 API(SQLite 저장)를 만들고, 노션 학습 일지를 가져와 일지 페이지에 보여 줍니다.",
-      tools: "HTML5, CSS3, JavaScript (Vanilla JS), Python (FastAPI), SQLite, Notion API, Figma, Git, GitHub, LocalStorage",
+      role: "기획부터 화면 구현까지 혼자 진행하고 있습니다.<br><br>**① 기획·설계** — Figma로 와이어프레임을 그리고 화면 구성과 이동 흐름을 정했습니다.<br><br>**② 프런트엔드** — 프레임워크 없이 Vanilla HTML/CSS/JS 로 컴포넌트 구조를 설계하고 구현했습니다.<br><br>**③ 데이터 연동** — LocalStorage 기반으로 언어 설정과 화면 상태가 새로고침 후에도 유지되게 했습니다.<br><br>**④ 서버** — FastAPI 로 방명록 API(SQLite 저장)를 만들고, 노션 학습 일지를 가져와 일지 페이지에 보여 줍니다.<br><br>**⑤ 공개** — AWS EC2(Ubuntu)에 nginx 와 systemd 로 공개해, 서버를 재부팅해도 자동으로 켜지게 했습니다. 방명록에 글이 올라오면 메일로 알림이 옵니다.",
+      tools: "HTML5, CSS3, JavaScript (Vanilla JS), Python (FastAPI), SQLite, Notion API, AWS EC2, nginx, Figma, Git, GitHub, LocalStorage",
       troubleTitles: ["일지 페이지 구성 변경", "페이지 단위 이동과 홈 버튼", "기록을 두 곳으로 나눠 싣기"],
       troubles: [
         "일지 페이지는 처음 와이어프레임에서 달력 아래에 내용을 늘어놓는 형태로 구상했습니다. 그런데 막상 내용을 넣어보니 양이 많아, 그대로 이어 붙이면 스크롤이 길어질 것 같았습니다. 달력으로 보여주는 것 자체는 좋지만 무엇을 어필하고 싶은지가 분명히 드러나지 않는다고 느껴, 달마다 배운 것 중 중요한 것을 골라 보여주는 형태로 바꿨습니다.",
@@ -2922,6 +2926,18 @@ function renderProject(projectId) {
   if (resultRow && resultEl) {
     resultRow.style.display = data.result ? '' : 'none';
     resultEl.textContent = data.result || '';
+  }
+
+  // 공개 주소·저장소 주소를 글자로 (버튼만으로는 주소가 안 보여서)
+  const linkRow = document.getElementById('project-links-row');
+  const linkEl = document.getElementById('project-links-el');
+  if (linkRow && linkEl) {
+    const rows = [];
+    if (db.showLinkRow && db.liveUrl) rows.push([currentLanguage === 'ja' ? 'サイト' : '사이트', db.liveUrl]);
+    if (db.showLinkRow && db.githubUrl) rows.push(['GitHub', db.githubUrl]);
+    linkRow.style.display = rows.length ? '' : 'none';
+    linkEl.innerHTML = rows.map(([k, u]) =>
+      `<span class="link-k">${k}</span><a href="${escapeHTML(u)}" target="_blank" rel="noopener">${escapeHTML(u.replace(/^https?:\/\//, '').replace(/\/$/, ''))}</a>`).join('<br>');
   }
 
   // 안건 구분 배지 — 개인/팀, 자체 기획인지 실제 클라이언트 안건인지 한눈에
