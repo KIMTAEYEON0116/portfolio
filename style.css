@@ -2159,7 +2159,16 @@ body {
 .lg-mline { flex: 1; min-width: 20px; height: 2px; background-color: var(--dark-color); border-radius: 2px; }
 .lg-mc { font-size: 0.68rem; color: #94A3B8; white-space: nowrap; }
 .lg-mtg { font-size: 0.72rem; color: var(--blue-color); }
-.lg-mo-sec.fold .lg-mbody { display: none; }
+/* 접힌 달: 회고는 남기고 카드·자료만 숨긴다 (성장 흐름은 회고만 읽어도 따라갈 수 있게) */
+.lg-mo-sec.fold .lg-mrest { display: none; }
+.lg-mopen { display: none; }
+.lg-mo-sec.fold .lg-mopen {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin: 2px 0 6px; padding: 5px 14px;
+  font-family: inherit; font-size: 0.78rem; font-weight: 600; color: var(--dark-color);
+  background: var(--white); border: 1.5px solid var(--dark-color); border-radius: 999px; cursor: pointer;
+}
+.lg-mo-sec.fold .lg-mopen:hover { background: var(--dark-color); color: var(--white); }
 .lg-none { font-size: 0.78rem; color: #94A3B8; padding: 4px 2px 8px; }
 
 .lg-rev {

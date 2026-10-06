@@ -776,7 +776,8 @@ async function renderLogPage() {
         <span class="lg-mc">${ja ? '日誌' : '일지'} ${mo.n}${ja ? '件' : '건'}${
           dayCnt[parseInt(mo.m, 10)] ? ` / ${dayCnt[parseInt(mo.m, 10)]}${ja ? '日' : '일'}` : ''}</span>
         <span class="lg-mtg">${folded ? '▾' : '▴'}</span></div>
-      <div class="lg-mbody">${review}${body}</div></section>`;
+      <div class="lg-mbody">${review}<div class="lg-mrest">${body}</div>
+        <button type="button" class="lg-mopen">${ja ? 'この月の記録を見る' : '이 달의 기록 보기'} ▾</button></div></section>`;
   }).join('');
 
   const c = document.getElementById('lg-tgc');
@@ -1003,6 +1004,11 @@ function bindLogEvents() {
     a.classList.toggle('open');
     hd.querySelector('.lg-dtg').textContent = a.classList.contains('open')
       ? (ja ? '閉じる ▴' : '접기 ▴') : (ja ? '詳しく ▾' : '자세히 ▾');
+  }));
+  document.querySelectorAll('#lg-months .lg-mopen').forEach(btn => btn.addEventListener('click', () => {
+    const sc = btn.closest('.lg-mo-sec');
+    sc.classList.remove('fold');
+    sc.querySelector('.lg-mtg').textContent = '▴';
   }));
   document.querySelectorAll('#lg-months .lg-mh').forEach(hd => hd.addEventListener('click', () => {
     const sc = hd.parentElement;
