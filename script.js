@@ -37,6 +37,10 @@ const i18n = {
     p_label_kind: "案件区分",
     p_label_period: "開発期間",
     p_label_reason: "開発理由",
+    p_label_result: "成果",
+    about_birth_year: "1998年生まれ",
+    featured_tag: "注目",
+    featured_text: "実案件：健康診断予約システム（BtoB）",
     p_label_role: "担当業務",
     p_label_tools: "使用技術・ツール",
     p_label_troubles: "困難だった点・エラー改善",
@@ -110,6 +114,10 @@ const i18n = {
     p_label_kind: "안건 구분",
     p_label_period: "개발 기간",
     p_label_reason: "개발 이유",
+    p_label_result: "성과",
+    about_birth_year: "1998년생",
+    featured_tag: "주목",
+    featured_text: "실제 기업 안건: 건강검진 예약 시스템 (B2B)",
     p_label_role: "담당 업무",
     p_label_tools: "사용 기술 · 툴",
     p_label_troubles: "어려웠던 점 · 오류 개선",
@@ -283,8 +291,8 @@ function initPage() {
   if (lgX) lgX.addEventListener('click', closeLogDetail);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLogDetail(); });
 
-  // 프로젝트 첫 렌더링 (탭 클릭 전 기본값)
-  renderProject('portfolio');
+  // 프로젝트 첫 렌더링 (탭 클릭 전 기본값) — 가장 강한 실제 기업 안건을 먼저 보여 준다
+  renderProject('hospital');
 
   // 주소에 #/project/hospital 처럼 화면이 적혀 있으면 그 화면으로 연다
   // (스크립트 끝의 라우팅 코드가 모두 읽힌 뒤 실행되도록 한 박자 미룬다)
@@ -370,7 +378,7 @@ function setLanguage(lang) {
     const activeProjId = activeProjTab.id.replace('p-tab-', '');
     if (typeof renderProject === 'function') renderProject(activeProjId);
   } else {
-    if (typeof renderProject === 'function') renderProject('portfolio');
+    if (typeof renderProject === 'function') renderProject('hospital');
   }
 
   // 일지 페이지 재렌더링
@@ -520,7 +528,7 @@ async function renderGuestbook() {
   listContainer.innerHTML = '';
 
   if (messages.length === 0) {
-    const noMsg = currentLanguage === 'ja' ? '最初のゲストブックを残してみてください！ ✍️' : '첫 방명록을 남겨보세요! ✍️';
+    const noMsg = currentLanguage === 'ja' ? '最初のゲストブックを残してみてください！' : '첫 방명록을 남겨보세요!';
     listContainer.innerHTML = `<p style="font-size: 0.85rem; color:#888; text-align:center; padding: 20px 0;">${noMsg}</p>`;
     return;
   }
@@ -724,7 +732,7 @@ async function renderLogPage() {
       `<div class="lg-chip${x.slide ? ' slide' : ''}" data-lg="${x.id}">
          ${x.thumb
            ? `<img class="lg-cith" src="${escapeHTML(x.thumb)}" alt="" loading="lazy" decoding="async">`
-           : `<span class="lg-ci">${x.slide ? '🖥' : '📄'}</span>`}
+           : `<span class="lg-ci"><i class="bi ${x.slide ? 'bi-easel' : 'bi-file-earmark-text'}" aria-hidden="true"></i></span>`}
          <span class="lg-cn">${escapeHTML(ja ? x.ja : x.ko)}</span>
          <span class="lg-cm">${x.rows ? x.rows + (ja ? '行' : '행') : 'Google Slides'}${x.img ? (ja ? ' · 画像 ' : ' · 이미지 ') + x.img : ''}</span>
          ${x.hasJa ? `<span class="lg-cja">${ja ? '韓/日' : '한/일'}</span>` : ''}
@@ -758,13 +766,16 @@ async function renderLogPage() {
       : (rv ? ''                       // 회고가 본문 역할을 하는 달에는 안내문을 붙이지 않는다
             : `<div class="lg-none">${ja ? 'この月は授業・課題の記録のみです。' : '이 달은 수업·과제 기록만 있습니다.'}</div>`);
 
-    return `<section class="lg-mo-sec" id="lg-m-${parseInt(mo.m, 10)}">
+    // 성장 흐름(3월→9월)은 그대로 두고, 처음 열 때는 3~6월을 접어 최근 실전 프로젝트가 먼저 보이게 한다.
+    // 태그로 걸러 볼 때는 결과를 숨기지 않도록 모두 펼친다.
+    const folded = logTag === 'all' && parseInt(mo.m, 10) <= 6;
+    return `<section class="lg-mo-sec${folded ? ' fold' : ''}" id="lg-m-${parseInt(mo.m, 10)}">
       <div class="lg-mh"><span class="lg-mn">${ja ? mo.mj : mo.m}</span>
         <span class="lg-mlb">${ja ? mo.lb_ja : mo.lb}</span>
         <span class="lg-mline"></span>
         <span class="lg-mc">${ja ? '日誌' : '일지'} ${mo.n}${ja ? '件' : '건'}${
           dayCnt[parseInt(mo.m, 10)] ? ` / ${dayCnt[parseInt(mo.m, 10)]}${ja ? '日' : '일'}` : ''}</span>
-        <span class="lg-mtg">▴</span></div>
+        <span class="lg-mtg">${folded ? '▾' : '▴'}</span></div>
       <div class="lg-mbody">${review}${body}</div></section>`;
   }).join('');
 
@@ -1188,10 +1199,11 @@ const projectDatabase = {
       reason: "韓国では最近オンライン読書会が流行しています。オンライン読書会を調べている途中で、日本の「架空読書会」というオフラインイベントの記事を目にし、そこから着想を得ました。実在しない本を実在すると仮定して熱心に議論する様子が面白そうだと感じ、それをオンラインで再現したいと考えて制作しました。",
       role: "企画から開発・デプロイまで一人で進めている個人プロジェクトです。<br><br>**① 画面** — ホーム・書籍詳細・読書室・私の書斎・アーカイブの画面をつくりました。<br><br>**② 読書室チャット** — 返信・編集・削除・リアクション、AI 司会者の呼び出し、議題を固定するバナーを入れました。<br><br>**③ AI 書籍生成** — Gemini で書籍情報と表紙をつくり、**AI の呼び出しが失敗してもサービスが止まらない**ようにしました。<br><br>**④ 読書室の運用** — 読書室は10日で締め切られ、締めの挨拶のあとアーカイブへ移り、新しい本が自動で補充されます。<br><br>**⑤ 公開** — AWS 上に公開し、実際に動く状態を保っています。<br><br>**⑥ 韓国語・日本語** — 画面の文言300あまりを2言語で管理し、検査ツールで3回検証して誤訳を直しました。",
       tools: "FastAPI, Python, MySQL, HTML5, Vanilla JS, CSS3, Gemini API, AWS",
-      troubleTitles: ["表紙生成の待ち時間を短縮", "日本語画面の誤訳を修正"],
+      troubleTitles: ["表紙生成の待ち時間を短縮", "ログイン制限が悪用できる状態だった", "スマートフォンでレイアウトが崩れる"],
       troubles: [
         "AI による表紙の生成に最悪で数十秒かかり、「表紙を生成中…」の表示が長く続いていました。待ち時間の上限を短くし、候補3冊の表紙を同時につくるようにして、待ち時間をおよそ20秒以内に縮めました。",
-        "日本語の画面に誤訳が残っていました。画面の文言300あまりを韓国語・日本語の2言語で管理し、検査ツールで3回検証して直しました。"
+        "ログイン失敗の回数をメールアドレス単位で数えていたため、他人のメールで5回失敗させるだけで、その人を15分間ログインできなくできる状態でした。会員登録とパスワード再設定には制限そのものがありませんでした。制限の仕組みを1か所にまとめ、ログインは IP（15分に10回）とアカウント（15分に20回）の2つの基準に分け、登録（1時間に5回）とパスワード再設定（1時間に3回）にも適用しました。",
+        "5,000行あまりの CSS にスマートフォン向けの指定が1つもなく、375px の画面では書籍カードの幅が78pxまで潰れ、メニューもヘッダーからはみ出していました。デスクトップの表示はそのままに、上書き専用のモバイル用 CSS を追加し、3段階の画面幅に合わせて調整しました。ホームや書籍詳細など11画面すべてで横スクロールが出ないことを確認しました。"
       ]
     },
     ko: {
@@ -1201,10 +1213,11 @@ const projectDatabase = {
       reason: "한국에서 최근 온라인 독서회가 유행하고 있는데, 온라인 독서회를 찾아보던 도중 일본의 오프라인 가공 독서회에 대한 기사를 보고 영감을 얻었습니다. 실제 존재하지 않는 책을 있다고 가정하고 열심히 토론하는 모습이 재밌어 보이기도 하여, 이를 온라인으로 구현해보고자 제작하였습니다.",
       role: "기획부터 개발·배포까지 혼자 진행하는 개인 프로젝트입니다.<br><br>**① 화면** — 홈·도서 상세·독서방·내 서재·아카이브 화면을 만들었습니다.<br><br>**② 독서방 채팅** — 답장·수정·삭제·공감 반응, AI 사회자 호출, 토론 질문 고정 배너를 넣었습니다.<br><br>**③ AI 도서 생성** — Gemini 로 책 정보와 표지를 만들고, **AI 호출이 실패해도 서비스가 멈추지 않게** 했습니다.<br><br>**④ 독서방 운영** — 독서방은 10일이면 마감되고, 마무리 인사 뒤 아카이브로 옮겨지며, 새 책이 자동으로 채워집니다.<br><br>**⑤ 공개** — AWS 에 올려 실제로 돌아가는 상태를 유지하고 있습니다.<br><br>**⑥ 한국어·일본어** — 화면 문구 300여 개를 두 언어로 관리하고, 검사 도구로 3차례 검증해 오역을 바로잡았습니다.",
       tools: "FastAPI, Python, MySQL, HTML5, Vanilla JS, CSS3, Gemini API, AWS",
-      troubleTitles: ["표지 생성 대기 시간 단축", "일본어 화면 오역 수정"],
+      troubleTitles: ["표지 생성 대기 시간 단축", "로그인 제한이 악용될 수 있는 상태", "스마트폰에서 레이아웃이 무너짐"],
       troubles: [
         "AI 표지 생성이 최악의 경우 수십 초까지 걸려 「표지 생성 중…」 표시가 오래 이어졌습니다. 대기 시간 상한을 줄이고 후보 3권의 표지를 동시에 만들도록 해, 대기 시간을 약 20초 이내로 줄였습니다.",
-        "일본어 화면에 오역이 남아 있었습니다. 화면 문구 300여 개를 한국어·일본어 두 언어로 관리하고, 검사 도구로 3차례 검증해 바로잡았습니다."
+        "로그인 실패 횟수를 이메일 단위로 세고 있어서, 남의 이메일로 5번 실패시키기만 해도 그 사람을 15분간 로그인하지 못하게 만들 수 있었습니다. 회원가입과 비밀번호 재설정에는 제한 자체가 없었습니다. 제한 장치를 한 곳으로 모으고, 로그인은 IP(15분에 10회)와 계정(15분에 20회) 두 기준으로 나눴으며, 가입(1시간에 5회)과 비밀번호 재설정(1시간에 3회)에도 적용했습니다.",
+        "5,000줄이 넘는 CSS에 스마트폰용 지정이 하나도 없어, 375px 화면에서는 책 카드 폭이 78px까지 찌그러지고 메뉴도 헤더 밖으로 삐져나왔습니다. 데스크톱 화면은 그대로 두고 덮어쓰기 전용 모바일 CSS를 추가해 화면 폭 3단계에 맞춰 조정했습니다. 홈·도서 상세 등 11개 화면 모두에서 가로 스크롤이 생기지 않는 것을 확인했습니다."
       ]
     }
   },
@@ -1455,7 +1468,7 @@ const projectDatabase = {
       reason: "日本文化（J-POP・ドラマ・アニメなど）に関心のある人が、好きなコンテンツを受け身ではなく能動的に楽しめるようにしたいと考えて企画しました。日本語の初級学習者でも歌を楽しみながら歌詞をタイピングできるウェブアプリで、J-POPの同期再生と平仮名/ローマ字の対応表示に対応しています。",
       role: "専攻者・非専攻者の3名チームです。各自が同じ機能を作って共有し、完成度の高いものを採用する進め方で取り組みました。<br><br>**① UI/UXプロトタイプ** — サイト全体の画面構成と遷移の流れをプロトタイプにして提案し、**チームで採用されました。**<br><br>**② 利用ガイド** — タイピング練習には案内が必要だと感じ、**自分から提案して作成**しました。初めて使う人が迷わないことを基準にしました。<br><br>**③ 機能の制作** — タイピング機能は自分の案が採用されませんでしたが、期限内に最後まで形にしました。",
       tools: "HTML5, CSS3, Vanilla JS, YouTube Player API, LocalStorage",
-      troubleTitles: ["自分の案が不採用でも最後まで形に"],
+      troubleTitles: ["利用ガイドの修正版が採用されるまで"],
       troubles: [
         "3名が同じ機能をそれぞれつくり、ミーティングで採用案を決める進め方だったため、自分の案が採用されないこともありました。それでも期限内に最後まで形にし、利用ガイドは自分から提案して作成して、6月19日のミーティングで修正版が採用されました。"
       ]
@@ -1467,7 +1480,7 @@ const projectDatabase = {
       reason: "일본 문화(J-POP·드라마·애니메이션 등)에 관심 있는 사람이 좋아하는 콘텐츠를 수동적이 아닌 능동적으로 즐길 수 있게 하고 싶어 기획했습니다. 일본어 기초 학습자도 노래를 즐기며 가사를 타자로 칠 수 있는 웹 앱으로, J-POP 싱크 재생과 히라가나/로마자 대응 표시를 지원합니다.",
       role: "전공자·비전공자 3명 팀입니다. 각자 같은 기능을 만들어 공유하고 완성도가 높은 것을 채택하는 방식으로 진행했습니다.<br><br>**① UI/UX 프로토타입** — 사이트 전체의 화면 구성과 이동 흐름을 프로토타입으로 만들어 제안했고, **팀에서 채택되었습니다.**<br><br>**② 이용 가이드** — 타이핑 연습에는 안내가 필요하다고 느껴 **직접 제안하고 작성**했습니다. 처음 쓰는 사람이 헤매지 않는 것을 기준으로 삼았습니다.<br><br>**③ 기능 제작** — 타이핑 기능은 제 안이 채택되지 않았지만, 기한 안에 끝까지 형태로 만들었습니다.",
       tools: "HTML5, CSS3, Vanilla JS, YouTube Player API, LocalStorage",
-      troubleTitles: ["제 안이 채택되지 않아도 끝까지 완성"],
+      troubleTitles: ["이용 가이드 수정판이 채택되기까지"],
       troubles: [
         "3명이 같은 기능을 각자 만들고 회의에서 채택안을 정하는 방식이라, 제 안이 채택되지 않을 때도 있었습니다. 그래도 기한 안에 끝까지 형태로 만들었고, 이용 가이드는 직접 제안해 작성해서 6월 19일 회의에서 수정판이 채택되었습니다."
       ]
@@ -1734,6 +1747,7 @@ const projectDatabase = {
       kind: ["BtoB 業務システム", "実企業の案件", "チーム開発", "要件定義から実装まで"],
       title: "病院予約 — 健康診断予約システム",
       period: "2026.07 - 2026.09",
+      result: "9月29日の最終発表で完了。成果物について「使いやすく仕上がっている」というフィードバックをいただきました。",
       reason: "日本の医療法人から提示された実案件で、法人のお客様の社内業務を置き換える BtoB の業務システムです。同法人の予防医療センターは毎年約2万人の健康診断予約を郵便で受け付けており、開封・定員照合・返信をすべて手作業で行っているため、現在の人員では処理が限界に近い状態でした。このアナログな予約プロセスをオンライン化することが目的です。",
       role: "事前調査・企画から UI モックアップと画面実装までを担当しました。<br><br>**① 事前調査** — クライアントのサイトを調査して対象が予防医療センター（健診部）であることを特定し、日本の健康診断制度や公的医療保険、類似の予約システムもあわせて調べました。<br><br>**② 企画** — 利用者と病院の管理者という2つの視点に分けて整理しました。利用者「会社に指示された検診を数クリックで」/ 病院「郵便の開封・手作業の照合をシステムが代わるように」<br><br>**③ UIモックアップ** — 4ステップの申込フローを作成しました。<br><br>**④ 利用者画面の実装** — FAQ・お問い合わせ案内、40〜74歳に合わせた生年月日入力の改善、狭い画面への対応。<br><br>**⑤ 管理画面の実装** — 担当者が**その日に対応すべきことを先に見られるよう**ダッシュボードを再構成。CSV出力は必要な表だけ選べるよう改修。予約キャンセルを事前・当日に分け、統計と一覧に同じ基準を適用。",
       tools: "要件定義, 業務フロー設計, 市場・競合調査, UIモックアップ, Python, FastAPI, SQLAlchemy, MySQL, Vanilla JS",
@@ -1751,6 +1765,7 @@ const projectDatabase = {
       kind: ["B2B 업무 시스템", "실제 기업 안건", "팀 개발", "요구사항 정의부터 구현까지"],
       title: "병원 예약 — 건강검진 예약 시스템",
       period: "2026.07 - 2026.09",
+      result: "9월 29일 최종 발표로 마무리했습니다. 결과물에 대해 「사용하기 쉽게 만들어졌다」는 피드백을 받았습니다.",
       reason: "일본의 의료법인이 제시한 실제 안건으로, 법인 고객의 사내 업무를 대체하는 B2B 업무 시스템입니다. 이 법인의 예방의료센터는 매년 약 2만 명의 건강검진 예약을 우편으로 접수하는데, 개봉·정원 대조·회신을 전부 수작업으로 하고 있어 현재 인력으로는 처리가 한계에 가까운 상태였습니다. 이 아날로그 예약 프로세스를 온라인화하는 것이 목표입니다.",
       role: "사전 조사·기획부터 UI 목업과 화면 구현까지 담당했습니다.<br><br>**① 사전 조사** — 클라이언트 사이트를 조사해 대상이 예방의료센터(건진부)임을 특정하고, 일본의 건강진단 제도와 공적 의료보험, 유사 예약 시스템을 함께 조사했습니다.<br><br>**② 기획** — 이용자와 병원 관리자 두 시점으로 나눠 정리했습니다. 이용자 「회사가 시키는 검진을 몇 번 클릭으로」 / 병원 「우편 개봉·수기 대조를 시스템이 대신하도록」<br><br>**③ UI 목업** — 4단계 신청 흐름을 만들었습니다.<br><br>**④ 이용자 화면 구현** — FAQ·문의처 안내, 40~74세에 맞춘 생년월일 입력 개선, 좁은 화면 대응.<br><br>**⑤ 관리자 화면 구현** — 담당자가 **그날 처리할 일을 먼저 보도록** 대시보드를 재구성. CSV 추출은 필요한 표만 골라 받도록 개편. 예약 취소를 사전·당일로 나눠 통계와 목록에 같은 기준을 적용.",
       tools: "요구사항 정의, 업무 흐름 설계, 시장·경쟁 조사, UI 목업, Python, FastAPI, SQLAlchemy, MySQL, Vanilla JS",
@@ -1906,7 +1921,7 @@ async function renderTroubleArea() {
     '🐞 버그': '🐞 バグ', '📋 기획·설계': '📋 企画・設計',
     '🔐 보안·권한': '🔐 セキュリティ・権限'
   };
-  const themeName = n => (ja && THEME_JA[n]) ? THEME_JA[n] : n;
+  const themeName = n => ((ja && THEME_JA[n]) ? THEME_JA[n] : n).replace(/^[^\p{L}\p{N}]+/u, '').trim();
 
   // 건수는 JSON 에 적힌 값이 아니라 실제 항목에서 센다 (항목을 추가·복원하면 어긋났다)
   const themeCount = name => data.items.filter(b => b.t === name).length;
@@ -2090,7 +2105,7 @@ function renderEmbedArea() {
 
     embedArea.innerHTML += `
       <div class="embed-header">
-        <span class="embed-header-icon">📊</span>
+        <i class="bi bi-table embed-header-icon" aria-hidden="true"></i>
         <span class="embed-header-title">${currentLanguage === 'ja' ? '設計ドキュメント (Google スプレッドシート)' : '기획 문서 (Google Spreadsheet)'}</span>
         <a href="${db.planningUrl}" target="_blank" rel="noopener" class="embed-open-btn">
           <i class="bi bi-box-arrow-up-right"></i>
@@ -2121,7 +2136,7 @@ function renderEmbedArea() {
 
     embedArea.innerHTML += `
       <div class="embed-header">
-        <span class="embed-header-icon">🖥️</span>
+        <i class="bi bi-window embed-header-icon" aria-hidden="true"></i>
         <span class="embed-header-title">${currentLanguage === 'ja' ? '企画発表書 (Google スライド)' : '기획 발표서 (Google Slides)'}</span>
         <a href="${db.planningUrl}" target="_blank" rel="noopener" class="embed-open-btn">
           <i class="bi bi-box-arrow-up-right"></i>
@@ -2157,7 +2172,7 @@ function renderEmbedArea() {
     if (isEbd) {
       embedArea.innerHTML += `
         <div class="embed-header" style="${isSheets || isSlides ? 'margin-top: 35px;' : ''}">
-          <span class="embed-header-icon">📋</span>
+          <i class="bi bi-clipboard-check embed-header-icon" aria-hidden="true"></i>
           <span class="embed-header-title">${title}</span>
           <a href="${notionUrl}" target="_blank" rel="noopener" class="embed-open-btn" style="background-color: #000000; color: #ffffff; border-color: #333333;">
             <i class="bi bi-box-arrow-up-right"></i>
@@ -2185,7 +2200,7 @@ function renderEmbedArea() {
 
       embedArea.innerHTML += `
         <div class="embed-header" style="${isSheets || isSlides ? 'margin-top: 35px;' : ''}">
-          <span class="embed-header-icon">📋</span>
+          <i class="bi bi-clipboard-check embed-header-icon" aria-hidden="true"></i>
           <span class="embed-header-title">${title}</span>
         </div>
         <div class="notion-embed-card">
@@ -2215,7 +2230,7 @@ function renderEmbedArea() {
 
     embedArea.innerHTML += `
       <div class="embed-header" style="margin-top: 35px;">
-        <span class="embed-header-icon">🎨</span>
+        <i class="bi bi-palette embed-header-icon" aria-hidden="true"></i>
         <span class="embed-header-title">${figmaTitle}</span>
         <a href="${db.figmaUrl}" target="_blank" rel="noopener" class="embed-open-btn" style="background-color: #0ACF83; color: #ffffff; border-color: #02B873;">
           <i class="bi bi-box-arrow-up-right"></i>
@@ -2259,7 +2274,7 @@ function renderStructureArea() {
 
   structureArea.innerHTML = `
     <div class="embed-header">
-      <span class="embed-header-icon">🗺️</span>
+      <i class="bi bi-diagram-3 embed-header-icon" aria-hidden="true"></i>
       <span class="embed-header-title">${title}</span>
       <a href="${structureUrl}" target="_blank" rel="noopener" class="embed-open-btn" style="background-color: #0055FF; color: #ffffff; border-color: #0044CC;">
         <i class="bi bi-box-arrow-up-right"></i>
@@ -2321,7 +2336,7 @@ function renderDemoArea() {
 
   demoArea.innerHTML += `
     <div class="embed-header">
-      <span class="embed-header-icon">▶️</span>
+      <i class="bi bi-play-circle embed-header-icon" aria-hidden="true"></i>
       <span class="embed-header-title">${title}</span>
     </div>
     <div class="demo-video-card">
@@ -2405,7 +2420,7 @@ function renderDemoArea() {
     const presGap = demoArea.innerHTML.trim() ? 48 : 0;
     demoArea.innerHTML += `
       <div class="embed-header" style="margin-top: ${presGap}px;">
-        <span class="embed-header-icon">🎤</span>
+        <i class="bi bi-mic embed-header-icon" aria-hidden="true"></i>
         <span class="embed-header-title">${presTitle}</span>
       </div>
       ${presBodyHtml}
@@ -2428,7 +2443,7 @@ function renderPlanning(pl, src, label) {
     </section>`).join('');
   return `
     <div class="embed-header">
-      <span class="embed-header-icon">📝</span>
+      <i class="bi bi-file-earmark-text embed-header-icon" aria-hidden="true"></i>
       <span class="embed-header-title">${label ? (ja ? label.ja : label.ko) : (ja ? '企画書' : '기획서')}</span>
       ${src ? `<a href="${src}" target="_blank" rel="noopener" class="embed-open-btn">
         <i class="bi bi-box-arrow-up-right"></i>${/docs\.google\.com\/presentation/.test(src) ? (ja ? '企画発表スライド' : '기획 발표 슬라이드') : (ja ? 'Notion 原本' : 'Notion 원본')}</a>` : ''}
@@ -2436,7 +2451,7 @@ function renderPlanning(pl, src, label) {
     <div class="pl-card">${secs}</div>
     ${pl.gallery ? `
       <div class="embed-header" style="margin-top:30px">
-        <span class="embed-header-icon">🗓️</span>
+        <i class="bi bi-calendar3 embed-header-icon" aria-hidden="true"></i>
         <span class="embed-header-title">${ja ? pl.gallery.ja : pl.gallery.ko}</span>
       </div>
       <p class="embed-note">${ja ? pl.gallery.note.ja : pl.gallery.note.ko}</p>
@@ -2474,7 +2489,7 @@ function renderWireframes(area, db) {
   const items = db.wireframes.map(fig).join('');
   const screens = db.screens ? `
     <div class="embed-header">
-      <span class="embed-header-icon">🖥️</span>
+      <i class="bi bi-window embed-header-icon" aria-hidden="true"></i>
       <span class="embed-header-title">${ja ? db.screensLabel.ja : db.screensLabel.ko}</span>
       ${db.prototypeLink ? `<a href="${db.prototypeLink}" target="_blank" rel="noopener" class="embed-open-btn">
         <i class="bi bi-box-arrow-up-right"></i>${ja ? 'プロトタイプを開く' : '프로토타입 열기'}</a>` : ''}
@@ -2485,7 +2500,7 @@ function renderWireframes(area, db) {
 
   area.innerHTML = `${screens}
     <div class="embed-header">
-      <span class="embed-header-icon">✏️</span>
+      <i class="bi bi-pencil embed-header-icon" aria-hidden="true"></i>
       <span class="embed-header-title">${db.wfLabel ? (ja ? db.wfLabel.ja : db.wfLabel.ko) : (ja ? '設計時のワイヤーフレーム' : '설계 단계 와이어프레임')}</span>
     </div>
     <p class="embed-note">${db.wfNote ? (ja ? db.wfNote.ja : db.wfNote.ko) : (ja
@@ -2501,7 +2516,7 @@ function renderWireframes(area, db) {
       : `<div class="wf-grid">${items}</div>`}
     ${db.figmaUrl ? `
       <div class="embed-header" style="margin-top: 30px;">
-        <span class="embed-header-icon">🎨</span>
+        <i class="bi bi-palette embed-header-icon" aria-hidden="true"></i>
         <span class="embed-header-title">${ja ? '構想ボード（Figma 原本）' : '구상 보드 (Figma 원본)'}</span>
         <a href="${db.figmaUrl}" target="_blank" rel="noopener" class="embed-open-btn"
            style="background-color:#0ACF83;color:#fff;border-color:#02B873;">
@@ -2587,7 +2602,7 @@ function renderPrototypeArea() {
 
   area.innerHTML = `
     <div class="embed-header">
-      <span class="embed-header-icon">🖥️</span>
+      <i class="bi bi-window embed-header-icon" aria-hidden="true"></i>
       <span class="embed-header-title">${headerTitle}</span>
       <a id="proto-open-btn" href="${firstUrl}" target="_blank" rel="noopener" class="embed-open-btn"
         style="background-color: var(--dark-color); color: var(--white); border-color: var(--dark-color);">
@@ -2771,6 +2786,14 @@ function renderProject(projectId) {
   // 상세 텍스트 갱신
   const periodEl = document.getElementById('project-period-el');
   if (periodEl) periodEl.textContent = data.period;
+
+  // 성과 — 근거가 있는 프로젝트에만 표시 (병원: 9월 일지 회고에 적힌 피드백)
+  const resultRow = document.getElementById('project-result-row');
+  const resultEl = document.getElementById('project-result-el');
+  if (resultRow && resultEl) {
+    resultRow.style.display = data.result ? '' : 'none';
+    resultEl.textContent = data.result || '';
+  }
 
   // 안건 구분 배지 — 개인/팀, 자체 기획인지 실제 클라이언트 안건인지 한눈에
   const kindRow = document.getElementById('project-kind-row');
@@ -2969,13 +2992,13 @@ function moveProjectMedia(direction) {
 //   - 브라우저 뒤로가기가 사이트 밖으로 튕기지 않고 이전 화면으로 간다
 // ==========================================================================
 const ROUTE_VIEWS = { '': 'main-view', about: 'about-view', log: 'log-view', contact: 'contact-view', project: 'project-view' };
-const ROUTE_PROJECTS = ['portfolio', 'gakong', 'typing', 'hospital'];
+const ROUTE_PROJECTS = ['hospital', 'gakong', 'typing', 'portfolio'];
 let applyingRoute = false;
 let routeSyncPending = false;
 
 function activeProjectId() {
   const t = document.querySelector('.project-tab.active');
-  return t ? t.id.replace('p-tab-', '') : 'portfolio';
+  return t ? t.id.replace('p-tab-', '') : 'hospital';
 }
 function activeInnerTab() {
   const t = document.querySelector('.project-inner-tab.active');

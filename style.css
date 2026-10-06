@@ -1411,7 +1411,9 @@ body {
 }
 
 .embed-header-icon {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
+  color: var(--dark-color);   /* 탭 버튼의 선 아이콘과 같은 색·모양 (예전엔 이모지) */
+  line-height: 1;
 }
 
 .embed-header-title {
@@ -3269,3 +3271,24 @@ p, li, dd, td, .tst, .pl-v { overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
+/* 성과 — 한 줄이라도 눈에 띄게 */
+.info-value-box.result-box { border-color: var(--blue-color); background: #F4F8FD; }
+.info-value-box.result-box p { font-weight: 600; color: var(--dark-color); }
+
+/* 홈 — 실제 기업 안건 바로가기 */
+.featured-link {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin: -10px auto 26px;
+  padding: 10px 18px;
+  border: 2px solid var(--dark-color); border-radius: 999px;
+  background: var(--white); color: var(--dark-color);
+  font-weight: 700; font-size: 0.95rem; text-decoration: none;
+  box-shadow: 3px 3px 0 var(--dark-color);
+  transition: var(--transition);
+}
+.featured-link:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--dark-color); }
+.featured-tag {
+  background: var(--blue-color); color: var(--white);
+  font-size: 0.75rem; padding: 2px 10px; border-radius: 999px;
+}
+@media (max-width: 600px) { .featured-link { font-size: 0.85rem; padding: 9px 14px; } }

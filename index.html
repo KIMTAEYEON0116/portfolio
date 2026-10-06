@@ -25,7 +25,7 @@
   <!-- Google Fonts & Bootstrap Icons CDN -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="style.css?v=14.9">
+  <link rel="stylesheet" href="style.css?v=15.1">
 </head>
 
 <body>
@@ -76,6 +76,13 @@
             <p data-i18n="welcome_desc3">好きなことは<strong>日本語</strong>と<strong>プログラミング</strong>です。</p>
             <p data-i18n="welcome_desc4">どんな人か気になりましたら、下のメニューをご覧ください。</p>
           </div>
+
+          <!-- 가장 강한 프로젝트(실제 기업 안건)로 바로 가는 버튼 -->
+          <a href="#/project/hospital" class="featured-link" onclick="goProject('hospital','overview'); return false;">
+            <span class="featured-tag" data-i18n="featured_tag">注目</span>
+            <span data-i18n="featured_text">実案件：健康診断予約システム（BtoB）</span>
+            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+          </a>
 
           <!-- 메인 바로가기 4개 넓은 카드 버튼 -->
           <div class="main-nav-cards">
@@ -142,7 +149,7 @@
           </h3>
           <span class="about-birthdate"
             style="font-family: var(--font-header); font-size: 0.95rem; font-weight: 600; color: var(--dark-color); border: 2px solid var(--dark-color); padding: 4px 10px; border-radius: var(--radius-sm); background-color: var(--bg-color); box-shadow: 2px 2px 0px var(--dark-color); display: inline-flex; align-items: center; gap: 6px;">
-            <i class="bi bi-calendar3" style="color: var(--blue-color);"></i> 1998.01.16
+            <i class="bi bi-calendar3" style="color: var(--blue-color);"></i> <span data-i18n="about_birth_year">1998年生まれ</span>
           </span>
         </div>
         <div class="about-intro-desc">
@@ -360,14 +367,14 @@
 
       <!-- 프로젝트 전환용 상단 탭바 -->
       <div class="project-tab-bar">
-        <div class="project-tab active" id="p-tab-portfolio" onclick="switchProjectTab('portfolio')" role="button" tabindex="0"
-          data-i18n="p_tab_portfolio">포트폴리오 웹사이트</div>
+        <div class="project-tab active" id="p-tab-hospital" onclick="switchProjectTab('hospital')" role="button" tabindex="0"
+          data-i18n="p_tab_hospital">건강검진 예약</div>
         <div class="project-tab" id="p-tab-gakong" onclick="switchProjectTab('gakong')" role="button" tabindex="0" data-i18n="p_tab_gakong">가공독서회
         </div>
         <div class="project-tab" id="p-tab-typing" onclick="switchProjectTab('typing')" role="button" tabindex="0" data-i18n="p_tab_typing">타이핑 연습
           플랫폼</div>
-        <div class="project-tab" id="p-tab-hospital" onclick="switchProjectTab('hospital')" role="button" tabindex="0"
-          data-i18n="p_tab_hospital">건강검진 예약</div>
+        <div class="project-tab" id="p-tab-portfolio" onclick="switchProjectTab('portfolio')" role="button" tabindex="0"
+          data-i18n="p_tab_portfolio">포트폴리오 웹사이트</div>
       </div>
 
       <!-- 프로젝트 세부 대시보드 박스 -->
@@ -453,6 +460,13 @@
                 <div class="info-label" data-i18n="p_label_period">개발 기간</div>
                 <div class="info-value-box">
                   <p id="project-period-el">2026.03 - 2026.11</p>
+                </div>
+              </div>
+
+              <div class="project-info-row" id="project-result-row" style="display: none;">
+                <div class="info-label" data-i18n="p_label_result">성과</div>
+                <div class="info-value-box result-box">
+                  <p id="project-result-el"></p>
                 </div>
               </div>
 
@@ -639,7 +653,7 @@
     </p>
     <style>#loading-screen{display:none!important}</style>
   </noscript>
-  <script src="script.js?v=14.9"></script>
+  <script src="script.js?v=15.1"></script>
 </body>
 
 </html>
