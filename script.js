@@ -21,10 +21,10 @@ const i18n = {
     nav_project: "プロジェクト",
     nav_contact: "連絡先",
     about_sub_title: "自己紹介・プロフィール",
-    about_intro_title: "👤 自己紹介（自己PR）",
+    about_intro_title: "<i class=\"bi bi-person-fill\" aria-hidden=\"true\"></i> 自己紹介（自己PR）",
     about_intro_desc1: "こんにちは。2026年3月から開発を学んでいる金兌衍（キム・テヨン）と申します。日本語通訳翻訳を専攻し、在学中に2回の交換留学を経験しました。JLPT N1も取得しています。",
     about_intro_desc2: "利用者に長く使われるサービスほど、多くの人に愛され、関心を持ち続けてもらえていると思います。そして、その関心があるからこそ、改善点も見えてきて、サービスがさらに良くなっていくのではないかと考えています。私は、そうした好循環を生み出せるサービス作りに携わりたいと考えています。",
-    about_intro_desc3: "転機は7月です。140文字制限のコメント欄にカウンターがなく、長く書いた人が何の案内もなく失敗していました。130文字から色が変わるように直して以来、UI/UX・モバイル対応の改善を13件記録しています。",
+    about_intro_desc3: "転機は7月です。140文字制限のコメント欄にカウンターがなく、長く書いた人が何の案内もなく失敗していました。130文字から色が変わるように直して以来、UI/UX・モバイル対応の改善を<a href='#/project/gakong/trouble' class='inline-ev' data-go='gakong/trouble'>13件</a>記録しています。",
     about_intro_desc4: "もともと製品を見るたびに「どんな不便を解決するために生まれたのか」を考える習慣があり、同じことを画面でもやっているのだと後から気づきました。分からないことはそのままにせず、原因を最後まで突き止める姿勢を大切にしています。",
     card_edu: "学歴",
     card_certs: "資格",
@@ -46,7 +46,7 @@ const i18n = {
     p_label_tools: "使用技術・ツール",
     p_label_troubles: "困難だった点・エラー改善",
     contact_left_title: "Contact",
-    contact_footer_text: "お気軽にご連絡ください 😊",
+    contact_footer_text: "お気軽にご連絡ください。",
     contact_photo_msg: "写真は私の好きな花です。",
     guestbook_title: "ゲストブック",
     gb_title_placeholder: "タイトルを入力してください",
@@ -54,7 +54,8 @@ const i18n = {
     gb_content_placeholder: "温かい一言を残してください！",
     gb_btn_submit: "登録",
     gb_list_title: "メッセージ一覧",
-    hero_tag_bridge: "🌐 日韓 Bridge",
+    hero_tag_bridge: "<i class=\"bi bi-translate\" aria-hidden=\"true\"></i> 日韓バイリンガル",
+    hero_tag_it: "<i class=\"bi bi-code-slash\" aria-hidden=\"true\"></i> Web開発",
     skill_stack_title: "Tech Stack",
     skill_biz_ja: "ビジネス会話",
     skill_note_lang: "Python（FastAPI）と JavaScript でプロジェクトを制作。",
@@ -66,7 +67,7 @@ const i18n = {
     exp_coupang: "株式会社 COUPANG",
     exp_coupang_desc: "契約社員として勤務（契約満了に伴う退職）。リモート勤務で1日平均30件の対応を低いエラー率で維持し、入社4か月でメンターに抜擢。約10名を支援し、エラー率20%超のメンバーを4〜6%まで改善しました。",
     cert_jlpt_title: "JLPT N1（日本語能力試験）",
-    skill_cat_jp: "🇯🇵 日本語",
+    skill_cat_jp: "日本語",
     cert_jlpt_date: "2025.08.12 取得",
     edu_cyber: "サイバー韓国外国語大学 日本語学部 卒業（3年生編入）",
     edu_tohoku: "東北文教大学 人間関係学科 交換留学",
@@ -99,10 +100,10 @@ const i18n = {
     nav_project: "프로젝트",
     nav_contact: "연락처",
     about_sub_title: "자기소개 · 프로필",
-    about_intro_title: "👤 자기소개 (자기PR)",
+    about_intro_title: "<i class=\"bi bi-person-fill\" aria-hidden=\"true\"></i> 자기소개 (자기PR)",
     about_intro_desc1: "안녕하세요. 2026년 3월부터 개발을 배우고 있는 김태연입니다. 일본어 통번역을 전공했고, 재학 중 두 번의 교환유학을 다녀왔습니다. JLPT N1도 취득했습니다.",
     about_intro_desc2: "사용자에게 오래 쓰이는 서비스일수록 많은 사람에게 사랑받고, 계속 관심을 받는다고 생각합니다. 그리고 그 관심이 있기 때문에 개선점도 보이고, 서비스가 더 좋아지는 게 아닐까 생각합니다. 저는 그런 선순환을 만들어낼 수 있는 서비스 만들기에 참여하고 싶습니다.",
-    about_intro_desc3: "전환점은 7월이었습니다. 140자 제한인 댓글창에 카운터가 없어, 길게 쓴 사람이 아무 안내 없이 실패하고 있었습니다. 130자부터 색이 변하도록 고친 이후로 UI/UX·모바일 대응 개선을 13건 기록했습니다.",
+    about_intro_desc3: "전환점은 7월이었습니다. 140자 제한인 댓글창에 카운터가 없어, 길게 쓴 사람이 아무 안내 없이 실패하고 있었습니다. 130자부터 색이 변하도록 고친 이후로 UI/UX·모바일 대응 개선을 <a href='#/project/gakong/trouble' class='inline-ev' data-go='gakong/trouble'>13건</a> 기록했습니다.",
     about_intro_desc4: "원래 제품을 볼 때마다 \"어떤 불편함을 해결하려고 만들어졌을까\"를 생각하는 습관이 있었고, 같은 일을 화면에서도 하고 있다는 걸 나중에 알았습니다. 모르는 것을 그대로 두지 않고 원인을 끝까지 파고드는 자세를 중요하게 생각합니다.",
     card_edu: "학력",
     card_certs: "자격증",
@@ -124,12 +125,13 @@ const i18n = {
     p_label_tools: "사용 기술 · 툴",
     p_label_troubles: "어려웠던 점 · 오류 개선",
     contact_left_title: "Contact",
-    contact_footer_text: "편하게 연락 주세요 😊",
+    contact_footer_text: "편하게 연락 주세요.",
     contact_photo_msg: "사진은 제가 좋아하는 꽃입니다.",
     guestbook_title: "방명록",
     gb_btn_submit: "등록하기",
     gb_list_title: "방명록 메시지",
-    hero_tag_bridge: "🌐 日韓 Bridge",
+    hero_tag_bridge: "<i class=\"bi bi-translate\" aria-hidden=\"true\"></i> 한일 이중언어",
+    hero_tag_it: "<i class=\"bi bi-code-slash\" aria-hidden=\"true\"></i> 웹 개발",
     skill_stack_title: "Tech Stack",
     skill_biz_ja: "비즈니스 회화",
     skill_note_lang: "Python(FastAPI)과 JavaScript로 프로젝트를 제작했습니다.",
@@ -141,7 +143,7 @@ const i18n = {
     exp_coupang: "주식회사 쿠팡",
     exp_coupang_desc: "계약직 근무 (계약 만료에 따른 퇴사). 리모트 근무로 1일 평균 30건 처리를 낮은 에러율로 유지해 입사 4개월 만에 멘토로 발탁되었고, 약 10명을 지원하며 에러율 20%가 넘던 팀원을 4~6%까지 개선했습니다.",
     cert_jlpt_title: "JLPT N1 (일본어능력시험)",
-    skill_cat_jp: "🇯🇵 일본어",
+    skill_cat_jp: "일본어",
     cert_jlpt_date: "2025.08.12 취득",
     edu_cyber: "사이버한국외국어대학교 일본어학부 졸업 (3학년 편입)",
     edu_tohoku: "도호쿠분쿄대학 인간관계학과 교환학생",
@@ -1112,7 +1114,7 @@ const projectDatabase = {
     // 일본어로 볼 때는 overlays 가 해당 위치의 글자를 덮는다.
     // x/y/w 는 이미지 대비 % 이고, 글자 크기는 컨테이너 폭에 따라 커진다.
     wireframes: [
-      { src: "./project_images/wf_01_home.png", ko: "첫 화면", ja: "トップ画面", fs: 1.7,
+      { src: "./project_images/wf_01_home.png", final: "./project_images/pf_01_home.png", ko: "첫 화면", ja: "トップ画面", fs: 1.7,
         overlays: [
           { x: 2.4, y: 4.2, w: 15.0, h: 4.6, ja: "初回アクセス画面", b: 1 },
           { x: 23.2, y: 22.4, w: 8.5, h: 4.4, ja: "写真", b: 1 },
@@ -1120,7 +1122,7 @@ const projectDatabase = {
             ja: "自己紹介を簡単にまとめています。<br>日本語を活かして IT 業界で働きたいです。<br>好きなものは日本語と○○○です。<br>どんな人か気になる方は下をクリック" },
           { x: 50.2, y: 52.8, w: 7.4, h: 4.2, fs: 1.45, ja: "経歴" }
         ] },
-      { src: "./project_images/wf_02_project.png", ko: "프로젝트", ja: "プロジェクト", fs: 1.65,
+      { src: "./project_images/wf_02_project.png", final: "./project_images/pf_04_project.png", ko: "프로젝트", ja: "プロジェクト", fs: 1.65,
         overlays: [
           { x: 47.2, y: 4.6, w: 44.0, h: 5.0, ja: "プロジェクト名（開発期間）を紹介します", b: 1 },
           { x: 7.4, y: 12.3, w: 25.5, h: 4.8, ja: "プロジェクト紹介の動画または画像", fs: 1.5, b: 1 },
@@ -1131,7 +1133,7 @@ const projectDatabase = {
           { x: 4.9, y: 51.4, w: 31.0, h: 14.5, fs: 1.5,
             ja: "収まらなければポップアップで<br>or 本当に簡潔に書く<br><br>or スクロールして下に追記" }
         ] },
-      { src: "./project_images/wf_03_log.png", ko: "일지", ja: "日誌", fs: 1.35,
+      { src: "./project_images/wf_03_log.png", final: "./project_images/pf_03_log.png", ko: "일지", ja: "日誌", fs: 1.35,
                 overlays: [
           { x: 2.9, y: 6.2, w: 6.8, h: 5.4, ja: "個人日誌", b: 1 },
           { x: 11.6, y: 3.2, w: 7.2, h: 4.6, ja: "（見出し）" },
@@ -1143,7 +1145,7 @@ const projectDatabase = {
           { x: 55.3, y: 18.2, w: 19.0, h: 4.6, ja: "コードを添付（続きを見る）", b: 1 },
           { x: 55.3, y: 35.0, w: 19.5, h: 4.6, ja: "フローチャート構想（画像）", b: 1 }
         ] },
-      { src: "./project_images/wf_04_contact.png", ko: "연락처", ja: "連絡先", fs: 1.65,
+      { src: "./project_images/wf_04_contact.png", final: "./project_images/pf_05_contact.png", ko: "연락처", ja: "連絡先", fs: 1.65,
         overlays: [
           { x: 49.3, y: 4.3, w: 11.0, h: 4.6, ja: "ゲストブック", b: 1 },
           { x: 53.9, y: 15.6, w: 9.5, h: 4.6, ja: "タイトル", b: 1 },
@@ -1168,11 +1170,12 @@ const projectDatabase = {
       reason: "自己紹介とプロジェクトを整理するために制作しました。従来はPDF形式の履歴書のみを使用していましたが、ウェブサイトを通じてよりインタラクティブかつ視覚的に表現することで、自身の強みを効果的にアピールできるよう設計・制作しました。",
       role: "企画から画面実装まで一人で進めています。<br><br>**① 企画・設計** — Figma でワイヤーフレームを描き、画面構成と遷移の流れを決めました。<br><br>**② フロントエンド** — フレームワークを使わず Vanilla HTML/CSS/JS でコンポーネント構造を設計し実装しました。<br><br>**③ データ連動** — LocalStorage をもとに、言語設定と画面の状態が再読み込み後も保持されるようにしました。<br><br>**④ サーバー** — FastAPI でゲストブックの API（SQLite に保存）をつくり、Notion の学習日誌を取り込んで日誌ページに表示しています。<br><br>**⑤ 公開** — AWS EC2（Ubuntu）に nginx と systemd で公開し、サーバーを再起動しても自動で立ち上がるようにしました。ゲストブックに投稿があるとメールで通知が届きます。",
       tools: "HTML5, CSS3, JavaScript (Vanilla JS), Python (FastAPI), SQLite, Notion API, AWS EC2, nginx, Figma, Git, GitHub, LocalStorage",
-      troubleTitles: ["日誌ページの見せ方を変更", "ページ単位の画面遷移とホームボタン", "記録の載せ方を2つに分ける"],
+      troubleTitles: ["日誌ページの見せ方を変更", "ページ単位の画面遷移とホームボタン", "記録の載せ方を2つに分ける", "公開前の点検で見つかった漏えいのリスク"],
       troubles: [
         "日誌ページは、当初ワイヤーフレームではカレンダーの下に内容を並べる形で考えていました。ところが実際に内容を入れてみると量が多く、そのまま続けるとスクロールが長くなりそうでした。カレンダー表示そのものは良いのですが、何をアピールしたいのかが伝わりにくいと感じたため、月ごとに学んだことの中から重要なものを選んで見せる形に変えました。",
         "多くのサイトは1ページを下へスクロールしていく形でしたが、ボタンを押すとそのページへ移る形を考え、どのページからでもホームボタンでメイン画面に戻れるようにしました。",
-        "エラーや改善を日付ごとにすべて残すか、大きな出来事だけを簡単に書くかで迷いました。大きなものは概要の「困難だった点」に、日付順の全記録は「開発ログ」に分けて載せることにしました。"
+        "エラーや改善を日付ごとにすべて残すか、大きな出来事だけを簡単に書くかで迷いました。大きなものは概要の「困難だった点」に、日付順の全記録は「開発ログ」に分けて載せることにしました。",
+        "公開前に点検したところ、設定ファイル（.env）や作業履歴（.git）、公開しない案件の元のソースまで、URLを入力すれば開ける状態でした。公開してよいファイルだけを配信するようにサーバーを直し、さらに作業用のリポジトリには公開前の履歴が残っているため、公開用のリポジトリを別に作って、そちらだけを GitHub とサーバーに載せるようにしました。"
       ]
     },
     ko: {
@@ -1182,11 +1185,12 @@ const projectDatabase = {
       reason: "자기소개와 프로젝트를 정리하기 위해 제작하였습니다. 기존에는 PDF 형태의 이력서만 사용했지만, 웹사이트를 통해 더 인터랙티브하고 시각적으로 표현하여 저의 강점을 효과적으로 어필하고자 제작하였습니다.",
       role: "기획부터 화면 구현까지 혼자 진행하고 있습니다.<br><br>**① 기획·설계** — Figma로 와이어프레임을 그리고 화면 구성과 이동 흐름을 정했습니다.<br><br>**② 프런트엔드** — 프레임워크 없이 Vanilla HTML/CSS/JS 로 컴포넌트 구조를 설계하고 구현했습니다.<br><br>**③ 데이터 연동** — LocalStorage 기반으로 언어 설정과 화면 상태가 새로고침 후에도 유지되게 했습니다.<br><br>**④ 서버** — FastAPI 로 방명록 API(SQLite 저장)를 만들고, 노션 학습 일지를 가져와 일지 페이지에 보여 줍니다.<br><br>**⑤ 공개** — AWS EC2(Ubuntu)에 nginx 와 systemd 로 공개해, 서버를 재부팅해도 자동으로 켜지게 했습니다. 방명록에 글이 올라오면 메일로 알림이 옵니다.",
       tools: "HTML5, CSS3, JavaScript (Vanilla JS), Python (FastAPI), SQLite, Notion API, AWS EC2, nginx, Figma, Git, GitHub, LocalStorage",
-      troubleTitles: ["일지 페이지 구성 변경", "페이지 단위 이동과 홈 버튼", "기록을 두 곳으로 나눠 싣기"],
+      troubleTitles: ["일지 페이지 구성 변경", "페이지 단위 이동과 홈 버튼", "기록을 두 곳으로 나눠 싣기", "공개 전 점검에서 찾은 유출 위험"],
       troubles: [
         "일지 페이지는 처음 와이어프레임에서 달력 아래에 내용을 늘어놓는 형태로 구상했습니다. 그런데 막상 내용을 넣어보니 양이 많아, 그대로 이어 붙이면 스크롤이 길어질 것 같았습니다. 달력으로 보여주는 것 자체는 좋지만 무엇을 어필하고 싶은지가 분명히 드러나지 않는다고 느껴, 달마다 배운 것 중 중요한 것을 골라 보여주는 형태로 바꿨습니다.",
         "대부분의 사이트는 한 페이지를 아래로 스크롤하는 형식이었지만, 버튼을 누르면 해당 페이지로 이동하는 형태를 생각했고, 어느 페이지에서든 홈 버튼으로 메인 화면에 돌아올 수 있게 했습니다.",
-        "오류와 개선을 날짜별로 전부 남길지, 큰 사건만 간단히 적을지 고민했습니다. 큰 것은 개요의 「어려웠던 점」에, 날짜순 전체 기록은 「개발 로그」에 나눠 싣기로 했습니다."
+        "오류와 개선을 날짜별로 전부 남길지, 큰 사건만 간단히 적을지 고민했습니다. 큰 것은 개요의 「어려웠던 점」에, 날짜순 전체 기록은 「개발 로그」에 나눠 싣기로 했습니다.",
+        "공개 전에 점검해 보니 설정 파일(.env)과 작업 이력(.git), 공개하지 않을 안건의 원본 소스까지 주소만 입력하면 열리는 상태였습니다. 공개해도 되는 파일만 내보내도록 서버를 고쳤고, 작업용 저장소에는 공개 전 이력이 남아 있어 공개용 저장소를 따로 만들어 그것만 GitHub와 서버에 올리도록 했습니다."
       ]
     }
   },
@@ -1594,6 +1598,7 @@ const projectDatabase = {
     // 고객사명·병원 실명·지명은 익명화
     planningLabel: { ja: "企画・スケジュール", ko: "기획·일정" },
     planning: {
+      foldFirst: 2,   // Ⅰ 이용자 / Ⅱ 병원 시점의 5W1H 는 길어서 접어 둔다 (컨셉·타깃·목표는 펼친 채)
       gallery: {
         ja: "スケジュール管理", ko: "스케줄 관리",
         note: { ja: "※ 開発日誌と修正履歴に記録した日付をもとに作成しました。", ko: "※ 개발 일지와 수정 이력에 기록한 날짜를 바탕으로 만들었습니다." },
@@ -2536,14 +2541,18 @@ function renderDemoArea() {
 function renderPlanning(pl, src, label) {
   const ja = currentLanguage === 'ja';
   const d = ja ? pl.ja : pl.ko;
-  const secs = d.sections.map(sec => `
-    <section class="pl-sec">
-      <h4 class="pl-sec-title">${sec.title}</h4>
+  // pl.foldFirst: 앞쪽 N개 섹션(긴 5W1H 상세)은 접어 두고 제목만 보인다
+  const secs = d.sections.map((sec, i) => {
+    const inner = `
       <div class="pl-rows">${sec.rows.map(([k, v]) => `
         <div class="pl-row"><div class="pl-k">${k}</div><div class="pl-v">${v}</div></div>`).join('')}
       </div>
-      ${sec.summary ? `<p class="pl-lead"><span>${sec.summaryLabel}</span>${sec.summary}</p>` : ''}
-    </section>`).join('');
+      ${sec.summary ? `<p class="pl-lead"><span>${sec.summaryLabel}</span>${sec.summary}</p>` : ''}`;
+    return i < (pl.foldFirst || 0)
+      ? `<details class="pl-sec pl-fold"><summary class="pl-sec-title">${sec.title}
+           <span class="pl-fold-hint">${ja ? '5W1H の詳細を開く' : '5W1H 상세 펼치기'}</span></summary>${inner}</details>`
+      : `<section class="pl-sec"><h4 class="pl-sec-title">${sec.title}</h4>${inner}</section>`;
+  }).join('');
   return `
     <div class="embed-header">
       <i class="bi bi-file-earmark-text embed-header-icon" aria-hidden="true"></i>
@@ -2585,6 +2594,10 @@ function renderWireframes(area, db) {
           <img src="${w.src}" alt="${ja ? w.ja : w.ko}" loading="lazy">
           ${ovs}
         </div>
+        ${w.final ? `<div class="wf-final">
+          <span class="wf-final-lb"><i class="bi bi-arrow-down" aria-hidden="true"></i>${ja ? '完成画面' : '완성 화면'}</span>
+          <img src="${w.final}" alt="${ja ? w.ja + '（完成）' : w.ko + ' (완성)'}" loading="lazy">
+        </div>` : ''}
         ${w.note ? `<p class="wf-note">
           <b>${ja ? '構想から変えた理由' : '구상에서 바꾼 이유'}</b>
           ${ja ? w.note.ja : w.note.ko}
@@ -2630,8 +2643,8 @@ function renderWireframes(area, db) {
       <span class="embed-header-title">${db.wfLabel ? (ja ? db.wfLabel.ja : db.wfLabel.ko) : (ja ? '設計時のワイヤーフレーム' : '설계 단계 와이어프레임')}</span>
     </div>
     <p class="embed-note">${db.wfNote ? (ja ? db.wfNote.ja : db.wfNote.ko) : (ja
-      ? '※ 実装前に描いた下書きです。韓国語で描いたため、日本語表示では訳を重ねています。'
-      : '※ 구현 전에 그린 밑그림입니다. 화면 순서대로 네 장을 실었습니다.')}</p>
+      ? '※ 実装前に描いた下書きです。韓国語で描いたため、日本語表示では訳を重ねています。各下書きの下に完成した画面を並べました。'
+      : '※ 구현 전에 그린 밑그림입니다. 밑그림마다 아래에 완성된 화면을 함께 실었습니다.')}</p>
     ${db.wfCarousel ? `
       <div class="wf-car">
         <button type="button" class="wf-car-btn prev" aria-label="prev"><i class="bi bi-chevron-left"></i></button>
@@ -3230,4 +3243,14 @@ document.addEventListener('keydown', e => {
     e.preventDefault();
     el.click();
   }
+});
+
+
+// 본문 속 근거 링크(data-go="프로젝트/탭")를 누르면 해당 프로젝트 탭으로 이동
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('a[data-go]');
+  if (!a) return;
+  e.preventDefault();
+  const [pid, tab] = a.dataset.go.split('/');
+  goProject(pid, tab || 'overview');
 });

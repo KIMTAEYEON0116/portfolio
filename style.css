@@ -3313,3 +3313,20 @@ p, li, dd, td, .tst, .pl-v { overflow-wrap: anywhere; }
 .link-list { line-height: 2; word-break: break-all; }
 .link-list .link-k { display: inline-block; min-width: 4.5em; font-size: 0.78rem; font-weight: 700; color: #5B6B7F; }
 .link-list a { color: var(--dark-color); font-weight: 600; text-underline-offset: 3px; }
+/* 본문 속 근거 링크 (예: 自己PR の「13件」 → 개발 로그) */
+.inline-ev { color: var(--blue-color); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.inline-ev:hover { color: var(--dark-color); }
+/* 기획서 — 접힌 섹션 */
+.pl-fold > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pl-fold > summary::-webkit-details-marker { display: none; }
+.pl-fold > summary::before { content: '▸'; color: var(--blue-color); transition: transform .15s; }
+.pl-fold[open] > summary::before { transform: rotate(90deg); }
+.pl-fold-hint { font-size: 0.72rem; font-weight: 600; color: var(--blue-color); border: 1px solid var(--blue-color); border-radius: 999px; padding: 1px 10px; }
+.pl-fold[open] .pl-fold-hint { display: none; }
+.pl-fold[open] > summary { margin-bottom: 12px; }
+/* 와이어프레임 → 완성 화면 비교 */
+.wf-final { margin-top: 10px; }
+.wf-final-lb { display: inline-flex; align-items: center; gap: 4px; margin-bottom: 6px; padding: 2px 10px; font-size: 0.75rem; font-weight: 700; color: var(--white); background: var(--blue-color); border-radius: 999px; }
+.wf-final img { display: block; width: 100%; border: 1.5px solid var(--dark-color); border-radius: 8px; }
+/* 연락처 — 꽃 사진은 남기되 화면을 덜 차지하게 */
+.contact-photo img { max-height: 200px; object-fit: cover; }

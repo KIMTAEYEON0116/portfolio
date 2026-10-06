@@ -25,7 +25,7 @@
   <!-- Google Fonts & Bootstrap Icons CDN -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="style.css?v=16.0">
+  <link rel="stylesheet" href="style.css?v=16.2">
 </head>
 
 <body>
@@ -35,7 +35,7 @@
 
   <!-- ====== 로딩 스크린 ====== -->
   <div id="loading-screen" role="status" aria-label="Loading">
-    <div class="loading-logo">ようこそ！👋</div>
+    <div class="loading-logo">ようこそ！</div>
     <div class="loading-bar-wrapper">
       <div class="loading-bar-fill"></div>
     </div>
@@ -65,9 +65,9 @@
 
           <!-- [추가 1] 직무 포지션 태그라인 -->
           <div class="hero-tagline" style="margin-bottom: 25px; display: flex; justify-content: center; gap: 10px;">
-            <span class="hero-tag tag-jlpt">🇯🇵 JLPT N1</span>
-            <span class="hero-tag tag-it">💻 IT Engineer</span>
-            <span class="hero-tag tag-bridge" data-i18n="hero_tag_bridge">🌐 日韓 Bridge</span>
+            <span class="hero-tag tag-jlpt"><i class="bi bi-award" aria-hidden="true"></i> JLPT N1</span>
+            <span class="hero-tag tag-it" data-i18n="hero_tag_it"><i class="bi bi-code-slash" aria-hidden="true"></i> Web開発</span>
+            <span class="hero-tag tag-bridge" data-i18n="hero_tag_bridge"><i class="bi bi-translate" aria-hidden="true"></i> 日韓バイリンガル</span>
           </div>
 
           <div class="welcome-desc" style="font-size: 1.15rem; line-height: 1.8; margin-bottom: 30px; width: 100%;">
@@ -200,7 +200,7 @@
             <p class="skill-note" data-i18n="skill_note_tools">AWSでログイン・会員登録ページをサーバー連携。Gemini APIで書影の自動生成を実装。</p>
           </div>
           <div class="skill-category">
-            <span class="skill-cat-label" data-i18n="skill_cat_jp">🇯🇵 日本語</span>
+            <span class="skill-cat-label" data-i18n="skill_cat_jp">日本語</span>
             <div class="skill-badges">
               <span class="skill-badge badge-jlpt">JLPT N1</span>
               <span class="skill-badge badge-biz" data-i18n="skill_biz_ja">ビジネス会話</span>
@@ -244,7 +244,7 @@
         </h3>
         <div class="cert-grid">
           <div class="cert-item">
-            <div class="cert-icon-badge">🇯🇵</div>
+            <div class="cert-icon-badge"><i class="bi bi-patch-check" aria-hidden="true"></i></div>
             <div class="cert-details">
               <span class="cert-title" data-i18n="cert_jlpt_title">JLPT N1</span>
               <span class="cert-date" data-i18n="cert_jlpt_date">2025.08.12 취득</span>
@@ -574,7 +574,7 @@
             </div>
           </a>
 
-          <p class="contact-footer-text" data-i18n="contact_footer_text">お気軽にご連絡ください 😊</p>
+          <p class="contact-footer-text" data-i18n="contact_footer_text">お気軽にご連絡ください。</p>
 
           <!-- 남는 공간을 채우는 사진. 파일이 없으면 통째로 숨겨 깨진 아이콘이 뜨지 않게 한다 -->
           <figure class="contact-photo">
@@ -660,7 +660,7 @@
     </p>
     <style>#loading-screen{display:none!important}</style>
   </noscript>
-  <script src="script.js?v=16.0"></script>
+  <script src="script.js?v=16.2"></script>
 </body>
 
 </html>
