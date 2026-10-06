@@ -2547,19 +2547,13 @@ function renderWireframes(area, db) {
       </figure>`;
   };
   const items = db.wireframes.map(fig).join('');
-  const screens = db.screens ? `
+  // 직접 조작할 수 있는 프로토타입을 먼저, 그 아래에 화면 구성 캡처
+  const live = db.prototypeLink ? `
     <div class="embed-header">
-      <i class="bi bi-window embed-header-icon" aria-hidden="true"></i>
-      <span class="embed-header-title">${ja ? db.screensLabel.ja : db.screensLabel.ko}</span>
-      ${db.prototypeLink ? `<a href="${db.prototypeLink}" target="_blank" rel="noopener" class="embed-open-btn">
-        <i class="bi bi-box-arrow-up-right"></i>${ja ? 'プロトタイプを開く' : '프로토타입 열기'}</a>` : ''}
-    </div>
-    <p class="embed-note">${ja ? db.screensNote.ja : db.screensNote.ko}</p>
-    <div class="wf-grid">${db.screens.map(fig).join('')}</div>
-    ${db.prototypeLink ? `
-    <div class="embed-header" style="margin-top:26px">
       <i class="bi bi-hand-index embed-header-icon" aria-hidden="true"></i>
       <span class="embed-header-title">${ja ? '実際に操作できるプロトタイプ（Readdy）' : '직접 조작할 수 있는 프로토타입 (Readdy)'}</span>
+      <a href="${db.prototypeLink}" target="_blank" rel="noopener" class="embed-open-btn">
+        <i class="bi bi-box-arrow-up-right"></i>${ja ? '別タブで開く' : '새 탭으로 열기'}</a>
     </div>
     <p class="embed-note">${ja
       ? '※ 企画・画面設計の段階で作ったため韓国語表示です。利用者数などの数値はデザイン用のダミーです。'
@@ -2574,8 +2568,16 @@ function renderWireframes(area, db) {
           sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
           title="${ja ? 'エンターピング UI/UX プロトタイプ' : '엔터핑 UI/UX 프로토타입'}"></iframe>
       </div>
-    </div>` : ''}
+    </div>
     <div style="height:30px"></div>` : '';
+  const screens = live + (db.screens ? `
+    <div class="embed-header">
+      <i class="bi bi-window embed-header-icon" aria-hidden="true"></i>
+      <span class="embed-header-title">${ja ? db.screensLabel.ja : db.screensLabel.ko}</span>
+    </div>
+    <p class="embed-note">${ja ? db.screensNote.ja : db.screensNote.ko}</p>
+    <div class="wf-grid">${db.screens.map(fig).join('')}</div>
+    <div style="height:30px"></div>` : '');
 
   area.innerHTML = `${screens}
     <div class="embed-header">
