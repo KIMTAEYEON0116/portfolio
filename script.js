@@ -2556,6 +2556,25 @@ function renderWireframes(area, db) {
     </div>
     <p class="embed-note">${ja ? db.screensNote.ja : db.screensNote.ko}</p>
     <div class="wf-grid">${db.screens.map(fig).join('')}</div>
+    ${db.prototypeLink ? `
+    <div class="embed-header" style="margin-top:26px">
+      <i class="bi bi-hand-index embed-header-icon" aria-hidden="true"></i>
+      <span class="embed-header-title">${ja ? '実際に操作できるプロトタイプ（Readdy）' : '직접 조작할 수 있는 프로토타입 (Readdy)'}</span>
+    </div>
+    <p class="embed-note">${ja
+      ? '※ 企画・画面設計の段階で作ったため韓国語表示です。利用者数などの数値はデザイン用のダミーです。'
+      : '※ 기획·화면 설계 단계에서 만든 것이라 한국어로 표시됩니다. 이용자 수 등의 숫자는 디자인용 더미입니다.'}</p>
+    <div class="prototype-iframe-shell">
+      <div class="prototype-browser-bar">
+        <span class="prototype-dot red"></span><span class="prototype-dot yellow"></span><span class="prototype-dot green"></span>
+        <span class="prototype-url-bar">readdy.cc/preview/…</span>
+      </div>
+      <div class="prototype-frame-wrap">
+        <iframe src="${db.prototypeLink}" class="prototype-iframe" loading="lazy" referrerpolicy="no-referrer"
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+          title="${ja ? 'エンターピング UI/UX プロトタイプ' : '엔터핑 UI/UX 프로토타입'}"></iframe>
+      </div>
+    </div>` : ''}
     <div style="height:30px"></div>` : '';
 
   area.innerHTML = `${screens}
@@ -2602,10 +2621,15 @@ function bindWfCarousel(area) {
   const next = area.querySelector('.wf-car-btn.next');
   const counter = area.querySelector('.wf-car-count b');
   let idx = 0;
+  let maxH = 0;
   const paint = () => {
-    // 가장 긴 장의 높이에 묶이지 않도록, 보이는 장의 높이로 맞춘다
-    const h = slides[idx].offsetHeight;
-    if (h) track.style.height = h + 'px';
+    // 높이는 지금까지 본 장 중 가장 긴 장에 맞춘다.
+    // 예전에는 보이는 장의 높이로 줄였는데, 다음 장이 짧거나 이미지가 아직 안 불러와졌으면
+    // 페이지 전체가 짧아지면서 브라우저가 스크롤을 위로 끌어올렸다(넘길 때마다 화면이 튐).
+    slides.forEach(sl => { if (sl.offsetHeight > maxH) maxH = sl.offsetHeight; });
+    if (maxH) track.style.height = maxH + 'px';
+    // 다음·이전 장 이미지를 미리 받아 둔다 (넘긴 순간 빈 칸이 보이지 않게)
+    [idx - 1, idx + 1].forEach(i => slides[i] && slides[i].querySelectorAll('img[loading="lazy"]').forEach(im => { im.loading = 'eager'; }));
     dots.forEach((d, i) => d.classList.toggle('active', i === idx));
     if (counter) counter.textContent = idx + 1;
     prev.disabled = idx === 0;
