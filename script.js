@@ -722,8 +722,8 @@ async function renderLogPage() {
       const thumb = x.thumb
         ? `<button class="lg-cthumb" data-lg="${x.id}"
              aria-label="${ja ? '画像を見る' : '이미지 보기'}">
-             <img src="${escapeHTML(x.thumb)}" alt="" loading="lazy" decoding="async">
-             ${x.img > 1 ? `<i>${x.img}</i>` : ''}</button>`
+             <img src="${escapeHTML((ja && x.thumb_ja) || x.thumb)}" alt="" loading="lazy" decoding="async">
+             ${imgCount(x, ja) > 1 ? `<i>${imgCount(x, ja)}</i>` : ''}</button>`
         : '';
       // 본문(상황·목표·결과)은 접어 두고, 카드는 제목 + 한 줄 흐름으로만 훑게 한다
       return `<article class="lg-card">
@@ -753,10 +753,10 @@ async function renderLogPage() {
     const chipHtml = chips.length ? `<div class="lg-chiprow">` + chips.map(x =>
       `<div class="lg-chip${x.slide ? ' slide' : ''}" data-lg="${x.id}">
          ${x.thumb
-           ? `<img class="lg-cith" src="${escapeHTML(x.thumb)}" alt="" loading="lazy" decoding="async">`
+           ? `<img class="lg-cith" src="${escapeHTML((ja && x.thumb_ja) || x.thumb)}" alt="" loading="lazy" decoding="async">`
            : `<span class="lg-ci"><i class="bi ${x.slide ? 'bi-easel' : 'bi-file-earmark-text'}" aria-hidden="true"></i></span>`}
          <span class="lg-cn">${escapeHTML(ja ? x.ja : x.ko)}</span>
-         <span class="lg-cm">${x.rows ? x.rows + (ja ? '行' : '행') : 'Google Slides'}${x.img ? (ja ? ' · 画像 ' : ' · 이미지 ') + x.img : ''}</span>
+         <span class="lg-cm">${x.rows ? x.rows + (ja ? '行' : '행') : 'Google Slides'}${imgCount(x, ja) ? (ja ? ' · 画像 ' : ' · 이미지 ') + imgCount(x, ja) : ''}</span>
          ${x.hasJa ? `<span class="lg-cja">${ja ? '韓/日' : '한/일'}</span>` : ''}
        </div>`).join('') + `</div>` : '';
 
@@ -1070,19 +1070,45 @@ function bindLogEvents() {
     el.addEventListener('click', e => { e.stopPropagation(); openLogDetail(el.dataset.lg); }));
 }
 
-function openLogDetail(id) {
+function findLogItem(id) {
+  return logData.deep.find(x => x.id === id) || logData.concepts.find(x => x.id === id);
+}
+
+function logItemTitle(item, ja) {
+  if (!item.ko) return '';
+  if (typeof item.ko === 'string') return ja ? item.ja : item.ko;
+  return ja ? item.ja.title : item.ko.title;
+}
+
+// backId: 다른 일지의 「개념 노트로 가기」 버튼으로 열었을 때, 돌아갈 일지
+function openLogDetail(id, backId) {
   if (!logData) return;
   const ja = currentLanguage === 'ja';
-  const item = logData.deep.find(x => x.id === id) || logData.concepts.find(x => x.id === id);
+  const item = findLogItem(id);
   if (!item) return;
-  const title = item.ko ? (typeof item.ko === 'string' ? (ja ? item.ja : item.ko) : (ja ? item.ja.title : item.ko.title)) : '';
+  const title = logItemTitle(item, ja);
+  const back = backId && findLogItem(backId);
+  const backBtn = back
+    ? `<button type="button" class="lg-golink lg-goback" data-back-log="${escapeHTML(backId)}">← ${ja
+        ? `${escapeHTML(logItemTitle(back, ja))} に戻る`
+        : `돌아가기: ${escapeHTML(logItemTitle(back, ja))}`}</button>`
+    : '';
   const body = document.getElementById('lg-mo-body');
-  body.innerHTML = `<div class="lg-mo-t">${escapeHTML(title)}</div>
+  body.innerHTML = `${backBtn}<div class="lg-mo-t">${escapeHTML(title)}</div>
     <div class="lg-mo-w">${item.when}</div>${(ja && item.detail_ja) ? item.detail_ja : item.detail}`;
+  styleSheetTables(body);
+  buildLogGalleries(body);
+  body.querySelectorAll('[data-open-log]').forEach(btn => {
+    btn.addEventListener('click', () => openLogDetail(btn.dataset.openLog, id));
+  });
+  body.querySelectorAll('[data-back-log]').forEach(btn => {
+    btn.addEventListener('click', () => openLogDetail(btn.dataset.backLog));
+  });
   // 본문 캡처는 낮게 묶여 있어 슬라이드 글자가 안 읽힌다. 누르면 그 자리에서 원본 크기로 편다.
-  body.querySelectorAll('.ifig img').forEach(im => {
+  body.querySelectorAll('.ifig img, .lg-fig img, .lg-flowbox svg.flow').forEach(im => {
+    if (im.closest('.lg-gal')) return;  // 여러 장 묶음은 크게 보기 화면에서 넘겨 본다
     im.addEventListener('click', () => {
-      const fig = im.closest('.ifig');
+      const fig = im.closest('.ifig, .lg-fig, .lg-flowbox');
       fig.classList.toggle('full');
       if (!fig.classList.contains('full')) fig.scrollIntoView({ block: 'nearest' });
     });
@@ -1092,6 +1118,127 @@ function openLogDetail(id) {
   ov.classList.add('on');
   ov.querySelector('.lg-mo').scrollTop = 0;
   document.body.style.overflow = 'hidden';
+}
+
+// 이어서 나오는 사진 2장 이상을 좌우로 나란히 놓는다.
+// 깊게 본 기록은 붙어 있는 <figure class="lg-fig">, 개념 노트는 붙어 있는 이미지 줄(tr.imgrow)을 한 묶음으로 본다.
+function buildLogGalleries(root) {
+  const groups = [];
+  const collect = (nodes, isRow) => {
+    const seen = new Set();
+    nodes.forEach(n => {
+      if (seen.has(n)) return;
+      const run = [n];
+      seen.add(n);
+      let next = n.nextElementSibling;
+      while (next && (isRow ? next.matches('tr.imgrow') : next.matches('figure.lg-fig'))) {
+        run.push(next); seen.add(next); next = next.nextElementSibling;
+      }
+      if (run.length >= 2) groups.push({ run, isRow });
+    });
+  };
+  collect([...root.querySelectorAll('tr.imgrow')], true);
+  collect([...root.querySelectorAll('figure.lg-fig')], false);
+
+  groups.forEach(({ run, isRow }) => {
+    const figs = isRow ? run.map(tr => tr.querySelector('figure')).filter(Boolean) : run;
+    if (figs.length < 2) return;
+    const gal = document.createElement('div');
+    gal.className = 'lg-gal';
+    gal.innerHTML = `<div class="lg-gal-track"></div>
+      <button type="button" class="lg-gal-nav prev" aria-label="前へ / 이전">&#8249;</button>
+      <button type="button" class="lg-gal-nav next" aria-label="次へ / 다음">&#8250;</button>
+      <div class="lg-gal-count"></div>`;
+    const track = gal.querySelector('.lg-gal-track');
+    if (isRow) {
+      run[0].querySelector('td').replaceChildren(gal);
+      run.slice(1).forEach(tr => tr.remove());
+    } else {
+      run[0].before(gal);
+    }
+    figs.forEach(f => {
+      f.classList.remove('full');
+      track.appendChild(f);
+    });
+    const imgs = figs.map(f => f.querySelector('img'));
+    imgs.forEach((im, i) => im.addEventListener('click', () => openLogLightbox(imgs, i)));
+
+    const step = () => (track.firstElementChild ? track.firstElementChild.getBoundingClientRect().width + 12 : track.clientWidth);
+    gal.querySelector('.prev').addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    gal.querySelector('.next').addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+    const update = () => {
+      if (!gal.isConnected) return;
+      const scrollable = track.scrollWidth > track.clientWidth + 2;
+      gal.classList.toggle('scrollable', scrollable);
+      const first = Math.round(track.scrollLeft / step());
+      const shown = Math.max(1, Math.round(track.clientWidth / step()));
+      const last = Math.min(figs.length, first + shown);
+      gal.querySelector('.lg-gal-count').textContent =
+        `${first + 1}${last > first + 1 ? '–' + last : ''} / ${figs.length}`;
+      gal.querySelector('.prev').disabled = track.scrollLeft <= 2;
+      gal.querySelector('.next').disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+    };
+    track.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+    window.addEventListener('resize', update);
+    requestAnimationFrame(update);
+  });
+}
+
+// 묶음 사진 크게 보기 — 좌우 버튼과 ← → 키로 넘긴다. Esc 는 이 화면만 닫는다.
+let logLightbox = null;
+function openLogLightbox(imgs, index) {
+  if (!logLightbox) {
+    logLightbox = document.createElement('div');
+    logLightbox.className = 'lg-lb';
+    logLightbox.innerHTML = `<button type="button" class="lg-lb-x" aria-label="閉じる / 닫기">&#10005;</button>
+      <button type="button" class="lg-lb-nav prev" aria-label="前へ / 이전">&#8249;</button>
+      <img alt="">
+      <button type="button" class="lg-lb-nav next" aria-label="次へ / 다음">&#8250;</button>
+      <div class="lg-lb-count"></div>`;
+    document.body.appendChild(logLightbox);
+    const close = () => logLightbox.classList.remove('on');
+    logLightbox.querySelector('.lg-lb-x').addEventListener('click', close);
+    logLightbox.addEventListener('click', e => { if (e.target === logLightbox) close(); });
+    logLightbox.querySelector('.prev').addEventListener('click', () => logLightbox.go(-1));
+    logLightbox.querySelector('.next').addEventListener('click', () => logLightbox.go(1));
+    document.addEventListener('keydown', e => {
+      if (!logLightbox.classList.contains('on')) return;
+      if (e.key === 'Escape') { close(); e.stopPropagation(); }
+      else if (e.key === 'ArrowLeft') logLightbox.go(-1);
+      else if (e.key === 'ArrowRight') logLightbox.go(1);
+    }, true);
+  }
+  let i = index;
+  const show = () => {
+    logLightbox.querySelector('img').src = imgs[i].getAttribute('src');
+    logLightbox.querySelector('.lg-lb-count').textContent = `${i + 1} / ${imgs.length}`;
+    logLightbox.querySelector('.prev').disabled = i === 0;
+    logLightbox.querySelector('.next').disabled = i === imgs.length - 1;
+  };
+  logLightbox.go = d => { i = Math.min(imgs.length - 1, Math.max(0, i + d)); show(); };
+  show();
+  logLightbox.classList.add('on');
+}
+
+// 카드에 보이는 이미지 수 — 일본어 페이지는 한국어 전용 캡처를 빼므로 따로 센다
+function imgCount(x, ja) {
+  return (ja && x.img_ja != null) ? x.img_ja : x.img;
+}
+
+// 노트 표의 날짜 줄을 진한 띠로 구분한다.
+// 제목 칸 색(cg·cp·cy 등)은 원본 스프레드시트의 배경색을 logdata.json 에 옮겨 둔 것이다
+function styleSheetTables(root) {
+  // 왼쪽 제목 칸(td.k)이 있는 3열 표는 제목 칸을 좁게 — 시트처럼 열 너비를 고정한다
+  root.querySelectorAll('table.sheet:not(.wide):not(.wide4)').forEach(tb => {
+    if (!tb.querySelector('td.k') || tb.querySelector('colgroup')) return;
+    tb.insertAdjacentHTML('afterbegin', '<colgroup><col class="c-lbl"><col><col></colgroup>');
+    tb.classList.add('lbl');
+  });
+  root.querySelectorAll('table.sheet tr').forEach(tr => {
+    const td = tr.children[0];
+    if (!td || tr.classList.contains('imgrow') || td.querySelector('img, pre, table, figure')) return;
+    if (/^\d{2}\.\d{2}\.\d{2}/.test(td.textContent.trim())) tr.classList.add('sh-date');
+  });
 }
 
 function closeLogDetail() {
@@ -1857,7 +2004,7 @@ const projectDatabase = {
       kind: ["BtoB 業務システム", "実企業の案件", "チーム開発", "要件定義から実装まで"],
       title: "病院予約 — 健康診断予約システム",
       period: "2026.07 - 2026.09",
-      result: "9月29日の最終発表で完了。成果物について「使いやすく仕上がっている」というフィードバックをいただきました。",
+      result: "9月29日の最終発表で完了。成果物について「使いやすく仕上がっていて良かった」というフィードバックをいただきました。",
       reason: "日本の医療法人から提示された実案件で、法人のお客様の社内業務を置き換える BtoB の業務システムです。同法人の予防医療センターは毎年約2万人の健康診断予約を郵便で受け付けており、開封・定員照合・返信をすべて手作業で行っているため、現在の人員では処理が限界に近い状態でした。このアナログな予約プロセスをオンライン化することが目的です。",
       role: "事前調査・企画から UI モックアップと画面実装までを担当しました。<br><br>**① 事前調査** — クライアントのサイトを調査して対象が予防医療センター（健診部）であることを特定し、日本の健康診断制度や公的医療保険、類似の予約システムもあわせて調べました。<br><br>**② 企画** — 利用者と病院の管理者という2つの視点に分けて整理しました。利用者「会社に指示された検診を数クリックで」/ 病院「郵便の開封・手作業の照合をシステムが代わるように」<br><br>**③ UIモックアップ** — 4ステップの申込フローを作成しました。<br><br>**④ 利用者画面の実装** — FAQ・お問い合わせ案内、40〜74歳に合わせた生年月日入力の改善、狭い画面への対応。<br><br>**⑤ 管理画面の実装** — 担当者が**その日に対応すべきことを先に見られるよう**ダッシュボードを再構成。CSV出力は必要な表だけ選べるよう改修。予約キャンセルを事前・当日に分け、統計と一覧に同じ基準を適用。",
       tools: "要件定義, 業務フロー設計, 市場・競合調査, UIモックアップ, Python, FastAPI, SQLAlchemy, MySQL, Vanilla JS",
@@ -1875,7 +2022,7 @@ const projectDatabase = {
       kind: ["B2B 업무 시스템", "실제 기업 안건", "팀 개발", "요구사항 정의부터 구현까지"],
       title: "병원 예약 — 건강검진 예약 시스템",
       period: "2026.07 - 2026.09",
-      result: "9월 29일 최종 발표로 마무리했습니다. 결과물에 대해 「사용하기 쉽게 만들어졌다」는 피드백을 받았습니다.",
+      result: "9월 29일 최종 발표로 마무리했습니다. 결과물에 대해 「사용하기 쉽게 만들어져서 좋았다」는 피드백을 받았습니다.",
       reason: "일본의 의료법인이 제시한 실제 안건으로, 법인 고객의 사내 업무를 대체하는 B2B 업무 시스템입니다. 이 법인의 예방의료센터는 매년 약 2만 명의 건강검진 예약을 우편으로 접수하는데, 개봉·정원 대조·회신을 전부 수작업으로 하고 있어 현재 인력으로는 처리가 한계에 가까운 상태였습니다. 이 아날로그 예약 프로세스를 온라인화하는 것이 목표입니다.",
       role: "사전 조사·기획부터 UI 목업과 화면 구현까지 담당했습니다.<br><br>**① 사전 조사** — 클라이언트 사이트를 조사해 대상이 예방의료센터(건진부)임을 특정하고, 일본의 건강진단 제도와 공적 의료보험, 유사 예약 시스템을 함께 조사했습니다.<br><br>**② 기획** — 이용자와 병원 관리자 두 시점으로 나눠 정리했습니다. 이용자 「회사가 시키는 검진을 몇 번 클릭으로」 / 병원 「우편 개봉·수기 대조를 시스템이 대신하도록」<br><br>**③ UI 목업** — 4단계 신청 흐름을 만들었습니다.<br><br>**④ 이용자 화면 구현** — FAQ·문의처 안내, 40~74세에 맞춘 생년월일 입력 개선, 좁은 화면 대응.<br><br>**⑤ 관리자 화면 구현** — 담당자가 **그날 처리할 일을 먼저 보도록** 대시보드를 재구성. CSV 추출은 필요한 표만 골라 받도록 개편. 예약 취소를 사전·당일로 나눠 통계와 목록에 같은 기준을 적용.",
       tools: "요구사항 정의, 업무 흐름 설계, 시장·경쟁 조사, UI 목업, Python, FastAPI, SQLAlchemy, MySQL, Vanilla JS",

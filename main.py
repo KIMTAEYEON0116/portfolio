@@ -554,7 +554,10 @@ async def sync_notion_logs(progress=None) -> dict:
     return {"total": len(pages), "filled": filled, "empty": empty}
 
 
-@app.get("/api/logs", summary="일지(노션 페이지 본문) 조회")
+# 노션 원문에는 고객사 이름·개인 메모가 그대로 들어 있다. 사이트 화면은 정리된 logdata.json 만 쓰므로
+# 원문 조회는 관리자 전용으로 둔다.
+@app.get("/api/logs", summary="일지(노션 페이지 본문) 조회 (관리자 전용)",
+         dependencies=[Depends(require_admin)])
 def get_logs(include_empty: bool = False):
     """캐시된 노션 일지를 날짜별로 묶어 반환합니다."""
     conn = get_db()
@@ -579,7 +582,8 @@ def get_logs(include_empty: bool = False):
     return grouped
 
 
-@app.get("/api/logs/stats", summary="일지 통계")
+@app.get("/api/logs/stats", summary="일지 통계 (관리자 전용)",
+         dependencies=[Depends(require_admin)])
 def get_log_stats():
     """히트맵·요약 지표용 집계를 반환합니다."""
     conn = get_db()

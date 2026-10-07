@@ -2347,6 +2347,15 @@ body {
 .lg-p { font-size: 0.83rem; margin: 5px 0; color: #334155; word-break: break-word; }
 .lg-ul { margin: 5px 0 5px 20px; }
 .lg-ul li { font-size: 0.83rem; color: #334155; margin: 2px 0; }
+/* 일지 안의 작은 소제목과 들여쓴 하위 목록 */
+.lg-sh {
+  font-size: 0.86rem; font-weight: 700; color: var(--dark-color);
+  border-left: 3px solid var(--blue-color); padding-left: 8px; margin: 14px 0 6px;
+}
+.lg-ul ul { margin: 3px 0 4px 18px; list-style: circle; }
+.lg-kv { list-style: none; margin-left: 4px; }
+.lg-kv li { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 8px; padding: 4px 0; border-bottom: 1px dashed #DCE3EC; }
+.lg-kv li b { color: var(--dark-color); }
 .lg-code {
   position: relative; background-color: #2C3E50; border-radius: var(--radius-sm);
   padding: 14px 16px; margin: 11px 0;
@@ -2388,6 +2397,15 @@ table.sheet td.k { font-weight: 700; background-color: #F4F8FD; color: var(--dar
 table.sheet td.ja { color: #B9722F; background-color: #FFFBF7; }
 table.sheet tr.imgrow td { border: none; background: none; padding: 10px 0; }
 table.sheet a { color: var(--blue-color); }
+/* 일지 본문 → 개념 노트로 가는 버튼, 개념 노트 → 원래 일지로 돌아가는 버튼 */
+.lg-golink {
+  display: block; width: fit-content; max-width: 100%; margin: 6px 0 10px; padding: 7px 13px;
+  font: inherit; font-size: 0.8rem; font-weight: 700; color: var(--dark-color);
+  background-color: #DCEBFA; border: 1.5px solid var(--blue-color); border-radius: var(--radius-sm);
+  cursor: pointer; text-align: left;
+}
+.lg-golink:hover { background-color: #C9DFF6; }
+.lg-goback { margin: 0 48px 8px 0; background-color: var(--card-bg); font-weight: 600; }
 
 @media (max-width: 640px) {
   .lg-chiprow { flex-direction: column; }
@@ -2925,6 +2943,15 @@ html[lang="ja"] {
   cursor: zoom-in;
 }
 .lg-mo .ifig.full img { max-height: none; cursor: zoom-out; }
+/* 일지(깊게 본 기록) 본문의 캡처와 플로우 차트도 같은 규칙: 낮게 묶고, 누르면 원본 크기 */
+.lg-mo .lg-fig { text-align: center; }
+.lg-mo .lg-fig img {
+  display: inline-block; max-width: 100%; max-height: 260px; width: auto; height: auto;
+  object-fit: contain; border: 1.5px solid var(--light-blue); background-color: var(--bg-color); cursor: zoom-in;
+}
+.lg-mo .lg-fig.full img { max-height: none; cursor: zoom-out; }
+.lg-mo .lg-flowbox svg.flow { max-height: 420px; width: auto; max-width: 100%; cursor: zoom-in; }
+.lg-mo .lg-flowbox.full svg.flow { max-height: none; width: 100%; max-width: 640px; cursor: zoom-out; }
 
 /* 마지막 달도 화면 맨 위로 올라올 수 있게 아래 여백을 둔다.
    이게 없으면 페이지가 짧아 8·9월을 눌러도 7월 자리에서 멈춘다
@@ -3337,3 +3364,86 @@ p, li, dd, td, .tst, .pl-v { overflow-wrap: anywhere; }
 .project-tool-badge.team { opacity: 0.75; border-style: dashed; }
 /* 일지 — 원본 노션 안에서만 열리던 링크(비공개 페이지) */
 .lg-deadlink { color: #8A9BB0; font-size: 0.85em; border-bottom: 1px dashed #B8C4D3; cursor: help; }
+
+/* 일지 노트 표 — 스프레드시트처럼 구역을 나눠 보이게 */
+table.sheet { border: 1.5px solid #C3CEDB; }
+table.sheet td { border: 1px solid #DCE3EC; }
+/* 스프레드시트처럼 열 너비를 고정(같은 폭)하고 칸 여백을 촘촘하게 */
+table.sheet { table-layout: fixed; }
+table.sheet td { padding: 5px 8px; line-height: 1.5; overflow-wrap: anywhere; }
+table.sheet td.k { white-space: normal; }
+table.sheet.lbl col.c-lbl { width: 24%; }
+@media (max-width: 640px) { table.sheet.lbl col.c-lbl { width: 30%; } }
+/* 원본 시트의 열이 4~5개인 표: 폰에서는 좁아지지 않게 가로로 밀어서 본다 */
+table.sheet.wide { min-width: 720px; }
+table.sheet.wide4 { min-width: 600px; }
+/* 원본 스프레드시트에서 배경색을 넣었던 제목 칸 (초록 → 사이트에 맞춘 하늘색, 나머지는 원본 색을 옅게) */
+table.sheet td.cg { background-color: #DCEBFA; color: #1D3A5C; font-weight: 700; box-shadow: inset 3px 0 0 var(--blue-color); }
+table.sheet td.cb { background-color: #CCDCF5; color: #1D3A5C; font-weight: 700; }
+table.sheet td.cp { background-color: #E7E2F3; color: #3B2F5E; font-weight: 700; }
+table.sheet td.cy { background-color: #FFF5D6; color: #5A4512; font-weight: 700; }
+/* 시트에서 빨간 글씨였던 칸 */
+table.sheet td.rd { color: #D93025; font-weight: 700; }
+table.sheet td.cr { background-color: #FBE4E4; color: #6A2C2C; font-weight: 700; }
+table.sheet tr.sh-date td { background: var(--dark-color); color: var(--white); font-weight: 700; letter-spacing: 0.04em; padding-top: 7px; padding-bottom: 7px; box-shadow: none; }
+table.sheet tr.sh-date td * { color: inherit; }
+
+/* ==========================================================================
+   일지 상세 — 이어지는 사진 2장 이상은 좌우로 나란히 (PC 2장씩, 폰 1장씩 넘김)
+   ========================================================================== */
+.lg-gal { position: relative; margin: 12px 0; }
+.lg-gal-track {
+  display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 12px) / 2);
+  gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
+  scrollbar-width: thin; padding-bottom: 6px;
+}
+.lg-mo .lg-gal-track > figure {
+  margin: 0; height: 270px; padding: 6px; scroll-snap-align: start;
+  display: flex; align-items: center; justify-content: center;
+  background-color: var(--bg-color); border: 1.5px solid var(--light-blue); border-radius: var(--radius-sm);
+}
+.lg-mo .lg-gal-track > figure img {
+  max-width: 100%; max-height: 100%; width: auto; height: auto;
+  object-fit: contain; border: 0; background: transparent; border-radius: 4px; cursor: zoom-in;
+}
+.lg-gal-nav {
+  position: absolute; top: calc(50% - 22px); width: 34px; height: 34px; border-radius: 50%;
+  border: 1.5px solid var(--dark-color); background-color: var(--card-bg); color: var(--dark-color);
+  font-size: 1.3rem; line-height: 1; cursor: pointer; display: none; box-shadow: 2px 2px 0 var(--dark-color);
+}
+.lg-gal-nav.prev { left: -8px; }
+.lg-gal-nav.next { right: -8px; }
+.lg-gal-nav:disabled { opacity: 0.3; cursor: default; }
+.lg-gal.scrollable .lg-gal-nav { display: block; }
+.lg-gal-count { display: none; text-align: center; font-size: 0.72rem; color: #64748B; margin-top: 2px; }
+.lg-gal.scrollable .lg-gal-count { display: block; }
+@media (max-width: 640px) {
+  .lg-gal-track { grid-auto-columns: 88%; }
+  .lg-mo .lg-gal-track > figure { height: 230px; }
+}
+
+/* 묶음 사진 크게 보기 */
+.lg-lb {
+  position: fixed; inset: 0; z-index: 1300; display: none;
+  align-items: center; justify-content: center; padding: 48px 56px;
+  background: rgba(15, 23, 42, 0.86);
+}
+.lg-lb.on { display: flex; }
+.lg-lb img { max-width: 100%; max-height: 100%; object-fit: contain; background: #fff; border-radius: 6px; }
+.lg-lb-x {
+  position: absolute; top: 12px; right: 14px; width: 38px; height: 38px; border-radius: 50%;
+  border: 0; background: #fff; color: var(--dark-color); font-size: 1rem; cursor: pointer;
+}
+.lg-lb-nav {
+  position: absolute; top: calc(50% - 22px); width: 44px; height: 44px; border-radius: 50%;
+  border: 0; background: #fff; color: var(--dark-color); font-size: 1.6rem; line-height: 1; cursor: pointer;
+}
+.lg-lb-nav.prev { left: 8px; }
+.lg-lb-nav.next { right: 8px; }
+.lg-lb-nav:disabled { opacity: 0.25; cursor: default; }
+.lg-lb-count { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; color: #fff; font-size: 0.8rem; }
+@media (max-width: 640px) {
+  .lg-lb { padding: 56px 10px; }
+  .lg-lb-nav { top: auto; bottom: 8px; }
+  .lg-lb-count { bottom: 22px; }
+}
