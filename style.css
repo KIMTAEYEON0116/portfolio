@@ -3277,12 +3277,16 @@ html[lang="ja"] {
    (「モックアッ／プ」「しま／す」처럼 단어 중간에서 끊기던 문제)
    ========================================================================== */
 html:lang(ja) body { line-break: strict; }   /* 행두 금칙(。、ー 등이 줄 첫머리에 오지 않게) */
+/* 단어 중간(「卒/業」「メン/バー」 등)에서 끊기지 않도록 일본어는 전체를 문절 단위로 끊는다.
+   코드 블록은 white-space: pre 라 영향이 없다. */
+html:lang(ja) body { word-break: auto-phrase; }
 html:lang(ko) body { word-break: keep-all; }
 /* 제목·라벨·버튼처럼 짧은 글은 문절 단위로 끊는다. 긴 본문은 일본어 조판 관례대로
    글자 단위로 끊어 줄 끝을 고르게 채운다(본문까지 문절 단위로 하면 오른쪽이 들쭉날쭉해진다). */
 html:lang(ja) :is(h1, h2, h3, h4, h5, button, label, .project-title-main, .timeline-title, .tssym,
   .role-step-h, .info-label, .pl-k, .pl-v, .difficulty-card-header, .project-tab, .project-inner-tab,
-  .welcome-desc, .welcome-text, .hobby-point-text, .hobby-intro-text, .edu-name, .badge, .tst) { word-break: auto-phrase; }
+  .welcome-desc, .welcome-text, .hobby-point-text, .hobby-intro-text, .edu-name, .badge, .tst,
+  .about-intro-desc p, .timeline-desc, .edu-value, .skill-note) { word-break: auto-phrase; }
 h1, h2, h3, h4, h5, .project-title-main, .timeline-title, .tssym { text-wrap: balance; }
 p, li, dd, .difficulty-text { text-wrap: pretty; }
 /* 긴 URL·영문 토큰이 칸을 밀어내지 않도록 */
@@ -3294,6 +3298,9 @@ p, li, dd, td, .tst, .pl-v { overflow-wrap: anywhere; }
   .info-label { width: auto; align-self: flex-start; }
   .info-value-box { width: 100%; box-sizing: border-box; }
 }
+/* 어구 묶음 — 자동 어구 나누기가 「もの/づくり」처럼 잘못 자르는 곳은 문구 안에서 직접 묶는다 */
+.ph { display: inline-block; }
+@media (max-width: 480px) { .welcome-desc { font-size: 1.02rem !important; } }
 /* 「③ UIモックアップ」처럼 번호와 제목이 갈라지지 않게 */
 .role-step-h span { word-break: keep-all; }
 
@@ -3324,6 +3331,7 @@ p, li, dd, td, .tst, .pl-v { overflow-wrap: anywhere; }
 }
 .featured-link:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--dark-color); }
 .featured-tag {
+  white-space: nowrap; flex-shrink: 0;
   background: var(--blue-color); color: var(--white);
   font-size: 0.75rem; padding: 2px 10px; border-radius: 999px;
 }
@@ -3379,6 +3387,7 @@ table.sheet.wide { min-width: 720px; }
 table.sheet.wide4 { min-width: 600px; }
 /* 원본 스프레드시트에서 배경색을 넣었던 제목 칸 (초록 → 사이트에 맞춘 하늘색, 나머지는 원본 색을 옅게) */
 table.sheet td.cg { background-color: #DCEBFA; color: #1D3A5C; font-weight: 700; box-shadow: inset 3px 0 0 var(--blue-color); }
+table.sheet td.ct { background-color: #DDEBEE; color: #1F3B44; font-weight: 700; }
 table.sheet td.cb { background-color: #CCDCF5; color: #1D3A5C; font-weight: 700; }
 table.sheet td.cp { background-color: #E7E2F3; color: #3B2F5E; font-weight: 700; }
 table.sheet td.cy { background-color: #FFF5D6; color: #5A4512; font-weight: 700; }
@@ -3446,4 +3455,117 @@ table.sheet tr.sh-date td * { color: inherit; }
   .lg-lb { padding: 56px 10px; }
   .lg-lb-nav { top: auto; bottom: 8px; }
   .lg-lb-count { bottom: 22px; }
+}
+
+/* 프로토타입 제작 도구 표기 */
+.proto-made { margin: 4px 0 10px; font-size: 0.82rem; color: var(--dark-color); }
+.proto-made i { color: var(--blue-color); }
+
+/* ==========================================================================
+   안내견 — 오른쪽 아래에서 자다가, 누르면 검색 말풍선 (buddy.js)
+   ========================================================================== */
+/* 넓은 화면에서는 화면 끝이 아니라 본문(최대 1200px) 오른쪽 모서리에 걸쳐 앉는다 */
+.bd { position: fixed; right: max(16px, calc((100vw - 1200px) / 2 - 64px)); bottom: 12px; z-index: 1100; display: flex; flex-direction: column; align-items: flex-end; pointer-events: none; }
+.bd > * { pointer-events: auto; }
+.bd-dog { position: relative; width: 96px; height: 92px; padding: 0; border: 0; background: none; cursor: pointer; }
+.bd-dog:focus-visible { outline: 2px dashed var(--blue-color); outline-offset: 2px; border-radius: 12px; }
+.px-dog { width: 100%; height: 100%; display: block; overflow: visible; }
+/* 꼬리: 두 장면을 번갈아 (도트식 흔들기) */
+.px-tail-b { visibility: hidden; }
+.bd.awake .px-tail-a, .bd-dog:hover .px-tail-a { animation: px-tail-a .5s steps(1) infinite; }
+.bd.awake .px-tail-b, .bd-dog:hover .px-tail-b { animation: px-tail-b .5s steps(1) infinite; }
+@keyframes px-tail-a { 0% { visibility: visible; } 50% { visibility: hidden; } }
+@keyframes px-tail-b { 0% { visibility: hidden; } 50% { visibility: visible; } }
+/* 눈: 깨어 있으면 가끔 깜빡, 자면 감은 눈 */
+.px-eyes-shut { visibility: hidden; }
+.bd.awake .px-eyes-open { animation: px-blink-o 4.5s steps(1) infinite; }
+.bd.awake .px-eyes-shut { animation: px-blink-s 4.5s steps(1) infinite; }
+@keyframes px-blink-o { 0% { visibility: visible; } 94% { visibility: hidden; } 97% { visibility: visible; } }
+@keyframes px-blink-s { 0% { visibility: hidden; } 94% { visibility: visible; } 97% { visibility: hidden; } }
+.bd.sleep .px-eyes-open { visibility: hidden; }
+.bd.sleep .px-eyes-shut { visibility: visible; }
+.bd.sleep .px-tail-a { visibility: hidden; }
+.bd.sleep .px-tail-b { visibility: visible; }
+.px-sleep { display: none; width: 100%; height: 100%; overflow: visible; }
+/* 잘 때: 앉은 그림 대신 엎드린 그림, 숨쉬듯 몸이 오르내린다 */
+.bd.sleep .bd-dog { width: 112px; height: 52px; }
+.bd.sleep .px-dog { display: none; }
+.bd.sleep .px-sleep { display: block; }
+.bd.sleep .px-sleep-body { animation: px-breathe 2.4s steps(1) infinite; }
+.bd.sleep .bd-dog:hover .px-sleep-body { animation: none; transform: translateY(-1px); }
+@keyframes px-breathe { 0% { transform: translateY(0); } 50% { transform: translateY(.35px); } }
+.bd-z { position: absolute; top: -20px; left: 30px; right: auto; display: none; font-family: 'Courier New', monospace; font-weight: 700; color: var(--blue-color); }
+.bd.sleep .bd-z { display: block; }
+.bd-z i { position: absolute; right: 0; font-style: normal; opacity: 0; animation: bd-z 3s steps(6) infinite; }
+.bd-z i:nth-child(1) { font-size: .7rem; animation-delay: 0s; }
+.bd-z i:nth-child(2) { font-size: .85rem; animation-delay: 1s; }
+.bd-z i:nth-child(3) { font-size: 1rem; animation-delay: 2s; }
+@keyframes bd-z { 0% { opacity: 0; transform: translate(0, 0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(10px, -26px); } }
+.bd-dog.jump { animation: bd-hop .45s steps(4) 2; }
+@keyframes bd-hop { 0%, 100% { transform: translateY(0); } 45% { transform: translateY(-16px); } }
+
+/* 말풍선 — 사이트 카드와 같은 문법(남색 2px 테두리·밀린 그림자)에, 바탕만 옛 도움말 풍선처럼 옅은 노랑 */
+.bd { --bd-tip: #FFFBE3; --bd-tip-hover: #FFF3C2; }
+.bd-balloon { position: relative; width: min(304px, calc(100vw - 32px)); margin: 0 30px 16px 0; padding: 14px 16px 12px;
+  background: var(--bd-tip); border: 2px solid var(--dark-color); border-radius: var(--radius-md); box-shadow: var(--shadow-flat);
+  font-family: var(--font-main); font-size: 13px; color: var(--dark-color); animation: bd-pop .2s ease;
+  line-break: strict; word-break: auto-phrase; }
+.bd-balloon[hidden] { display: none; }
+@keyframes bd-pop { from { opacity: 0; transform: translateY(8px) scale(.97); } to { opacity: 1; transform: none; } }
+.bd-balloon::before, .bd-balloon::after { content: ''; position: absolute; border-style: solid; }
+.bd-balloon::before { right: 26px; bottom: -18px; border-width: 18px 18px 0 0; border-color: var(--dark-color) transparent transparent transparent; }
+.bd-balloon::after { right: 29px; bottom: -13px; border-width: 13px 13px 0 0; border-color: var(--bd-tip) transparent transparent transparent; }
+.bd-x { position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; border: 0; background: none; cursor: pointer; font-size: 12px; color: var(--dark-color); border-radius: 6px; }
+.bd-x:hover { background: var(--bd-tip-hover); }
+.bd-title { font-weight: 700; margin: 0 24px 6px 0; font-size: 14px; }
+.bd-say { min-height: 3.1em; line-height: 1.6; margin-bottom: 10px; color: #4B5563; white-space: pre-line; }
+.bd-say.typing::after { content: '▍'; color: var(--blue-color); animation: bd-caret 1s steps(1) infinite; }
+@keyframes bd-caret { 50% { opacity: 0; } }
+.bd-field { width: 100%; border: 2px solid var(--light-blue); border-radius: var(--radius-sm); background: #fff; padding: 7px 10px;
+  font: inherit; font-size: 14px; color: var(--dark-color); outline: none; }
+.bd-field:focus { border-color: var(--blue-color); }
+.bd-btns { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; }
+.bd-xp { min-width: 92px; padding: 4px 12px; border: 2px solid var(--dark-color); border-radius: 999px; cursor: pointer;
+  background: var(--card-bg); font: inherit; font-size: 12.5px; font-weight: 700; color: var(--dark-color); box-shadow: 2px 2px 0 var(--dark-color); }
+.bd-xp:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--dark-color); }
+.bd-xp:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--dark-color); }
+#bd-find { background: var(--blue-color); color: var(--white); }
+.bd-xp:focus-visible { outline: 2px dashed var(--blue-color); outline-offset: 2px; }
+.bd-opts { display: none; margin-top: 10px; padding-top: 8px; border-top: 1.5px dashed #E3D9A6; }
+.bd-opts.on { display: block; }
+.bd-opts button { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 4px 6px; font: inherit; color: var(--dark-color); cursor: pointer; border-radius: 6px; }
+.bd-opts button::before { content: '› '; color: var(--blue-color); font-weight: 700; }
+.bd-opts button:hover { background: var(--bd-tip-hover); }
+.bd-note { margin-top: 9px; font-size: 10.5px; line-height: 1.5; color: #7A7350; white-space: pre-line; }
+/* 강아지 아래 쿠션 — 사이트 버튼과 같은 테두리·그림자 */
+.bd-dog { isolation: isolate; }
+.bd-dog::before { content: ''; position: absolute; z-index: -1; left: 2%; right: 2%; bottom: -5px; height: 15px;
+  background: var(--light-blue); border: 2px solid var(--dark-color); border-radius: 999px; box-shadow: 2px 2px 0 var(--dark-color); }
+.bd.sleep .bd-dog::before { left: 0; right: 0; }
+@media (max-width: 640px) {
+  .bd { right: 8px; bottom: 6px; }
+  .bd-dog { width: 72px; height: 69px; }
+  .bd.sleep .bd-dog { width: 84px; height: 39px; }
+  /* 폰: 자는 동안은 화면 오른쪽 끝에 반쯤 숨어 머리만 보인다 (본문을 가리지 않게) */
+  .bd.sleep .bd-dog { transform: translateX(42%); transition: transform .25s ease; }
+  .bd.sleep .bd-dog:focus-visible { transform: none; }
+  .bd.sleep .bd-z { left: 6px; }
+  .bd-balloon { margin-right: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .px-tail-a, .px-tail-b, .px-eyes-open, .px-eyes-shut, .px-sleep-body, .bd-z i, .bd-dog.jump, .bd-balloon { animation: none !important; }
+  .bd-z i { opacity: 1; position: static; }
+}
+@media print { .bd { display: none; } }
+
+/* 손가락으로 누르기 쉽게 — 보이는 크기는 그대로 두고 누르는 영역만 넓힌다 (WCAG 2.2 최소 24px) */
+.media-dot { position: relative; }
+.media-dot::after { content: ''; position: absolute; inset: -9px; }
+.role-all { padding: 7px 0; min-height: 32px; }
+.footer-icon-link { padding: 6px 0; min-height: 32px; }
+@media (max-width: 640px) {
+  .media-dots { gap: 14px; }
+}
+@media (max-width: 576px) {
+  .lang-btn { min-height: 30px; padding: 5px 10px; }
 }

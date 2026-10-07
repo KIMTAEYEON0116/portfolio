@@ -3,10 +3,10 @@ const i18n = {
   ja: {
     page_title: "金兌衍（キム・テヨン） | ポートフォリオ",
     welcome_title: "ようこそ！",
-    welcome_desc1: "金兌衍（キム・テヨン）と申します。",
-    welcome_desc2: "2026年3月から開発を学び始め、これまでに4つのプロジェクトを手がけ、11月までに2件目の企業案件に取り組みます。",
-    welcome_desc3: "利用者視点で課題を捉え、利用者体験を設計するものづくりに携わりたいと考えています。",
-    welcome_desc4: "詳しい経歴や自己PRは、以下のボタンからご確認ください。",
+    welcome_desc1: "<span class='ph'>金兌衍（キム・テヨン）</span><span class='ph'>と申します。</span>",
+    welcome_desc2: "<span class='ph'>2026年3月から</span><span class='ph'>開発を学び始め、</span><span class='ph'>これまでに</span><span class='ph'>4つのプロジェクトを</span><span class='ph'>手がけ、</span><span class='ph'>11月までに</span><span class='ph'>2件目の</span><span class='ph'>企業案件に</span><span class='ph'>取り組みます。</span>",
+    welcome_desc3: "<span class='ph'>利用者視点で</span><span class='ph'>課題を捉え、</span><span class='ph'>利用者体験を</span><span class='ph'>設計する</span><span class='ph'>ものづくりに</span><span class='ph'>携わりたいと</span><span class='ph'>考えています。</span>",
+    welcome_desc4: "<span class='ph'>詳しい経歴や</span><span class='ph'>自己PRは、</span><span class='ph'>以下のボタンから</span><span class='ph'>ご確認ください。</span>",
     nav_about: "自己紹介",
     nav_log: "日誌",
     log_sub_title: "学習日誌 · 2026.03 – 11",
@@ -41,7 +41,7 @@ const i18n = {
     p_label_links: "公開・ソース",
     about_birth_year: "1998年生まれ",
     featured_tag: "注目",
-    featured_text: "実案件：健康診断予約システム（BtoB）",
+    featured_text: "<span class='ph'>実案件：</span><span class='ph'>健康診断予約システム</span><span class='ph'>（BtoB）</span>",
     p_label_role: "担当業務",
     p_label_tools: "使用技術・ツール",
     p_label_troubles: "困難だった点・エラー改善",
@@ -665,7 +665,7 @@ async function renderLogPage() {
       + LOG_TAG_ORDER.filter(t => cnt[t]).map(t =>
         `<span class="lg-tg${logTag === t ? ' on' : ''}" data-f="${t}" role="button" tabindex="0">#${ja ? LOG_TAG_JA[t] : t}<i>${cnt[t]}</i></span>`
       ).join('')
-      + `<span class="lg-tgc">${ja ? '表示' : '표시'} <b id="lg-tgc">0</b></span>`;
+      + `<span class="lg-tgc">${ja ? '表示' : '표시'} <b id="lg-tgc">0</b>${ja ? '件' : '건'}</span>`;
     bar.querySelectorAll('.lg-tg').forEach(t => t.addEventListener('click', () => {
       logTag = t.dataset.f; renderLogPage();
     }));
@@ -1269,7 +1269,7 @@ const projectDatabase = {
             ja: "自己紹介を簡単にまとめています。<br>日本語を活かして IT 業界で働きたいです。<br>好きなものは日本語と○○○です。<br>どんな人か気になる方は下をクリック" },
           { x: 50.2, y: 52.8, w: 7.4, h: 4.2, fs: 1.45, ja: "経歴" }
         ] },
-      { src: "./project_images/wf_02_project.png", final: "./project_images/pf_04_project.png", ko: "프로젝트", ja: "プロジェクト", fs: 1.65,
+      { src: "./project_images/wf_02_project.png", final: "./project_images/pf_04_project.webp", ko: "프로젝트", ja: "プロジェクト", fs: 1.65,
         overlays: [
           { x: 47.2, y: 4.6, w: 44.0, h: 5.0, ja: "プロジェクト名（開発期間）を紹介します", b: 1 },
           { x: 7.4, y: 12.3, w: 25.5, h: 4.8, ja: "プロジェクト紹介の動画または画像", fs: 1.5, b: 1 },
@@ -1292,7 +1292,7 @@ const projectDatabase = {
           { x: 55.3, y: 18.2, w: 19.0, h: 4.6, ja: "コードを添付（続きを見る）", b: 1 },
           { x: 55.3, y: 35.0, w: 19.5, h: 4.6, ja: "フローチャート構想（画像）", b: 1 }
         ] },
-      { src: "./project_images/wf_04_contact.png", final: "./project_images/pf_05_contact.png", ko: "연락처", ja: "連絡先", fs: 1.65,
+      { src: "./project_images/wf_04_contact.png", final: "./project_images/pf_05_contact.webp", ko: "연락처", ja: "連絡先", fs: 1.65,
         overlays: [
           { x: 49.3, y: 4.3, w: 11.0, h: 4.6, ja: "ゲストブック", b: 1 },
           { x: 53.9, y: 15.6, w: 9.5, h: 4.6, ja: "タイトル", b: 1 },
@@ -1304,10 +1304,10 @@ const projectDatabase = {
     // 사이트 자체의 완성 화면 (일본어 표시로 촬영)
     media: [
       { type: "image", src: "./project_images/pf_01_home.png" },
-      { type: "image", src: "./project_images/pf_02_about.png" },
+      { type: "image", src: "./project_images/pf_02_about.webp" },
       { type: "image", src: "./project_images/pf_03_log.png" },
-      { type: "image", src: "./project_images/pf_04_project.png" },
-      { type: "image", src: "./project_images/pf_05_contact.png" }
+      { type: "image", src: "./project_images/pf_04_project.webp" },
+      { type: "image", src: "./project_images/pf_05_contact.webp" }
     ],
     figmaUrl: "https://www.figma.com/board/6nRewCGbnkmsocJddJTvKI/%EC%9E%90%EA%B8%B0%EC%86%8C%EA%B0%9C-%EC%82%AC%EC%9D%B4%ED%8A%B8-%EA%B5%AC%EC%83%81?node-id=0-1&t=CDyFAXigiv8xTaR3-1",
     ja: {
@@ -1385,13 +1385,13 @@ const projectDatabase = {
     },
     troubleshooting: "./troubleshooting.json",
     media: [
-      { type: "image", src: "./project_images/gakong_01_top.png" },
-      { type: "image", src: "./project_images/gakong_02_top2.png" },
-      { type: "image", src: "./project_images/gakong_03_book.png" },
-      { type: "image", src: "./project_images/gakong_04_shelf.png" },
-      { type: "image", src: "./project_images/gakong_05_chat.png" },
+      { type: "image", src: "./project_images/gakong_01_top.webp" },
+      { type: "image", src: "./project_images/gakong_02_top2.webp" },
+      { type: "image", src: "./project_images/gakong_03_book.webp" },
+      { type: "image", src: "./project_images/gakong_04_shelf.webp" },
+      { type: "image", src: "./project_images/gakong_05_chat.webp" },
       { type: "image", src: "./project_images/gakong_590b0c395a3b.png" },
-      { type: "image", src: "./project_images/gakong_ec95ade939a7.png" },
+      { type: "image", src: "./project_images/gakong_ec95ade939a7.webp" },
       { type: "image", src: "./project_images/gakong_7a758a01950a.png" },
     ],
     ja: {
@@ -1701,16 +1701,16 @@ const projectDatabase = {
       ja: "3名が同じ機能をそれぞれ作って共有し、ミーティングで採用案を決める進め方でした。以下は当時使っていた資料です。"
     },
     wireframes: [
-      { src: "./project_images/ep_01_schedule.png", wide: 1, ko: "상세 일정표", ja: "詳細日程表" },
-      { src: "./project_images/ep_02_meeting.png", wide: 1, ko: "회의 내용 정리", ja: "ミーティング内容まとめ" },
-      { src: "./project_images/ep_03_gantt.png", wide: 1, ko: "간트 차트", ja: "ガントチャート" }
+      { src: "./project_images/ep_01_schedule.webp", wide: 1, ko: "상세 일정표", ja: "詳細日程表" },
+      { src: "./project_images/ep_02_meeting.webp", wide: 1, ko: "회의 내용 정리", ja: "ミーティング内容まとめ" },
+      { src: "./project_images/ep_03_gantt.webp", wide: 1, ko: "간트 차트", ja: "ガントチャート" }
     ],
     liveUrl: "https://www.enterping.com/",
     media: [
-      { type: "image", src: "./project_images/typing_01_top.png" },
-      { type: "image", src: "./project_images/typing_02_list.png" },
-      { type: "image", src: "./project_images/typing_03_play.png" },
-      { type: "image", src: "./project_images/typing_04_quiz.png" },
+      { type: "image", src: "./project_images/typing_01_top.webp" },
+      { type: "image", src: "./project_images/typing_02_list.webp" },
+      { type: "image", src: "./project_images/typing_03_play.webp" },
+      { type: "image", src: "./project_images/typing_04_quiz.webp" },
     ],
     githubUrl: "https://github.com/Si9r/enter-typing",
     demoVideoUrl: "https://www.youtube.com/watch?v=rmBvx0SeZWM",
@@ -1752,7 +1752,7 @@ const projectDatabase = {
         ja: "スケジュール管理", ko: "스케줄 관리",
         note: { ja: "※ 開発日誌と修正履歴に記録した日付をもとに作成しました。", ko: "※ 개발 일지와 수정 이력에 기록한 날짜를 바탕으로 만들었습니다." },
         items: [
-          { src: "./project_images/hosp_sched_table.png", ja: "詳細日程表", ko: "상세 일정표" },
+          { src: "./project_images/hosp_sched_table.webp", ja: "詳細日程表", ko: "상세 일정표" },
           { src: "./project_images/hosp_sched_gantt.png", ja: "ガントチャート", ko: "간트 차트" }
         ]
       },
@@ -1984,8 +1984,8 @@ const projectDatabase = {
       { type: "image", src: "./project_images/hosp_02_identify.png" },
       { type: "image", src: "./project_images/hosp_03_detail.png" },
       { type: "image", src: "./project_images/hosp_04_dashboard.png" },
-      { type: "image", src: "./project_images/hosp_05_venue.png" },
-      { type: "image", src: "./project_images/hosp_06_postal.png" },
+      { type: "image", src: "./project_images/hosp_05_venue.webp" },
+      { type: "image", src: "./project_images/hosp_06_postal.webp" },
     ],
     troubleshooting: "./hospital_devlog.json",
     // 실제 기업 안건이라 고객사명·제휴 병원 실명·지역·연락처를 모두 더미로 바꾼
@@ -1996,6 +1996,11 @@ const projectDatabase = {
       { id: 'admin',    labelJa: '管理者画面',  labelKo: '관리자 화면',   url: '/projects/hospital/mockup/admin-prototype-ja.html' }
     ],
     prototypeUrl: '/projects/hospital/mockup/main-prototype-ja.html',
+    // 목업은 Claude 로 만들었다 — 프로토타입 탭 맨 위에 밝힌다
+    prototypeMadeWith: {
+      ja: 'このUIプロトタイプは、Claude（生成AI）を使って作成しました。',
+      ko: '이 UI 프로토타입은 Claude(생성형 AI)를 활용해 만들었습니다.'
+    },
     clientNote: {
       ja: "本案件はクライアント企業の実案件のため、施設名・地域・連絡先はすべてサンプルに置き換えています。",
       ko: "본 안건은 고객사의 실제 프로젝트이므로 시설명·지역·연락처를 모두 샘플로 바꿔 게재합니다."
@@ -2006,15 +2011,15 @@ const projectDatabase = {
       period: "2026.07 - 2026.09",
       result: "9月29日の最終発表で完了。成果物について「使いやすく仕上がっていて良かった」というフィードバックをいただきました。",
       reason: "日本の医療法人から提示された実案件で、法人のお客様の社内業務を置き換える BtoB の業務システムです。同法人の予防医療センターは毎年約2万人の健康診断予約を郵便で受け付けており、開封・定員照合・返信をすべて手作業で行っているため、現在の人員では処理が限界に近い状態でした。このアナログな予約プロセスをオンライン化することが目的です。",
-      role: "事前調査・企画から UI モックアップと画面実装までを担当しました。<br><br>**① 事前調査** — クライアントのサイトを調査して対象が予防医療センター（健診部）であることを特定し、日本の健康診断制度や公的医療保険、類似の予約システムもあわせて調べました。<br><br>**② 企画** — 利用者と病院の管理者という2つの視点に分けて整理しました。利用者「会社に指示された検診を数クリックで」/ 病院「郵便の開封・手作業の照合をシステムが代わるように」<br><br>**③ UIモックアップ** — 4ステップの申込フローを作成しました。<br><br>**④ 利用者画面の実装** — FAQ・お問い合わせ案内、40〜74歳に合わせた生年月日入力の改善、狭い画面への対応。<br><br>**⑤ 管理画面の実装** — 担当者が**その日に対応すべきことを先に見られるよう**ダッシュボードを再構成。CSV出力は必要な表だけ選べるよう改修。予約キャンセルを事前・当日に分け、統計と一覧に同じ基準を適用。",
-      tools: "要件定義, 業務フロー設計, 市場・競合調査, UIモックアップ, Python, FastAPI, SQLAlchemy, MySQL, Vanilla JS",
+      role: "事前調査・企画からUIモックアップと画面実装までを担当しました。<br><br>**① 事前調査** — クライアントのサイトを調査して対象が予防医療センター（健診部）であることを特定し、日本の健康診断制度や公的医療保険、類似の予約システムもあわせて調べました。<br><br>**② 企画** — 利用者と病院の管理者という2つの視点に分けて整理しました。利用者「会社に指示された検診を数クリックで」/ 病院「郵便の開封・手作業の照合をシステムが代わるように」<br><br>**③ UIモックアップ** — 4ステップの申込フローを、Claude（生成AI）を使って作成しました。<br><br>**④ 利用者画面の実装** — FAQ・お問い合わせ案内、40〜74歳に合わせた生年月日入力の改善、狭い画面への対応。<br><br>**⑤ 管理画面の実装** — 担当者が**その日に対応すべきことを先に見られるよう**ダッシュボードを再構成。CSV出力は必要な表だけ選べるよう改修。予約キャンセルを事前・当日に分け、統計と一覧に同じ基準を適用。",
+      tools: "要件定義, 業務フロー設計, 市場・競合調査, UIモックアップ（Claude）, Python, FastAPI, SQLAlchemy, MySQL, Vanilla JS",
       troubleTitles: ["対象施設の特定", "保険証の確認方法を整理", "対象制度を先に判定する流れ", "会場の場所を地図で確認", "発表が「報告」になっていた", "CSVが一目で読めなかった"],
       troubles: [
         "案件書には「病院の予約システム」としか書かれておらず、グループ内のどの施設が対象なのかが不明確でした。グループを保健・医療・福祉に分けて施設ごとのサイトを調べたところ、人間ドックにはすでに Web 予約フォームがある一方、予防医療センター（健診部）だけはお問い合わせ窓口しかなく、案件書の「郵便で受け付けてきた」という記述と一致したため、対象を特定できました。",
         "案件書の「保険証を確認する」が、番号の入力なのか、写真のアップロードなのか、電子的な確認なのかが分かりませんでした。調べてみると持参書類は健康保険証・マイナ保険証・資格確認書に分かれており、紙の保険証の経過措置が7月で終わるという報道もあったため、どの書類でも選べるように整理しました。",
         "健診は年齢だけで無料かどうかが決まるわけではなく、会社の定期健診・40〜74歳の特定健診・75歳以上の後期高齢者健診など、どの制度の対象者かが先に決まります。そのため、生年月日と加入している保険を先に受け取り、対象の制度を判定してからコースと費用を見せる流れが必要だと整理しました。",
         "受診会場は名前だけでは場所が分からず、どこを選べばよいか迷ってしまう点が気になりました。そこで、会場を選ぶとその位置を地図で確認できるようにしました。緯度・経度が登録されていない会場でも住所から検索して表示されるため、会場が増えても運用が止まりません。",
-        "最終フィードバックで「この発表の目的は何か」と指摘されました。以前に指摘された点を直した内容を技術的に説明すればよいと考えていましたが、お客様の立場で聞いていた担当者の方は「お客様として聞くべきか、先輩エンジニアとして聞くべきか」戸惑われたそうです。IT 用語や実装の話で説明していて、発表ではなく報告になっていました。最終発表は、利用者の立場で理解・納得できるよう、シナリオと大きな流れを中心に直すことにしました。",
+        "最終フィードバックで「この発表の目的は何か」と指摘されました。以前に指摘された点を直した内容を技術的に説明すればよいと考えていましたが、お客様の立場で聞いていた担当者の方は「お客様として<wbr>聞くべきか、<wbr>先輩エンジニアとして<wbr>聞くべきか」戸惑われたそうです。IT 用語や実装の話で説明していて、発表ではなく報告になっていました。最終発表は、利用者の立場で理解・納得できるよう、シナリオと大きな流れを中心に直すことにしました。",
         "統計を日別・週別・月別に出して CSV で保存する形にしましたが、CSV はタブが分かれないため、データが下へ長く続くだけになっていました。見づらく、一目で分からないという点を考えられていませんでした。自分たちではなくお客様の立場で一目で理解できることが大事で、そう見えるようにデータを整えるのが私たちの役目だと感じました。"
       ]
     },
@@ -2024,8 +2029,8 @@ const projectDatabase = {
       period: "2026.07 - 2026.09",
       result: "9월 29일 최종 발표로 마무리했습니다. 결과물에 대해 「사용하기 쉽게 만들어져서 좋았다」는 피드백을 받았습니다.",
       reason: "일본의 의료법인이 제시한 실제 안건으로, 법인 고객의 사내 업무를 대체하는 B2B 업무 시스템입니다. 이 법인의 예방의료센터는 매년 약 2만 명의 건강검진 예약을 우편으로 접수하는데, 개봉·정원 대조·회신을 전부 수작업으로 하고 있어 현재 인력으로는 처리가 한계에 가까운 상태였습니다. 이 아날로그 예약 프로세스를 온라인화하는 것이 목표입니다.",
-      role: "사전 조사·기획부터 UI 목업과 화면 구현까지 담당했습니다.<br><br>**① 사전 조사** — 클라이언트 사이트를 조사해 대상이 예방의료센터(건진부)임을 특정하고, 일본의 건강진단 제도와 공적 의료보험, 유사 예약 시스템을 함께 조사했습니다.<br><br>**② 기획** — 이용자와 병원 관리자 두 시점으로 나눠 정리했습니다. 이용자 「회사가 시키는 검진을 몇 번 클릭으로」 / 병원 「우편 개봉·수기 대조를 시스템이 대신하도록」<br><br>**③ UI 목업** — 4단계 신청 흐름을 만들었습니다.<br><br>**④ 이용자 화면 구현** — FAQ·문의처 안내, 40~74세에 맞춘 생년월일 입력 개선, 좁은 화면 대응.<br><br>**⑤ 관리자 화면 구현** — 담당자가 **그날 처리할 일을 먼저 보도록** 대시보드를 재구성. CSV 추출은 필요한 표만 골라 받도록 개편. 예약 취소를 사전·당일로 나눠 통계와 목록에 같은 기준을 적용.",
-      tools: "요구사항 정의, 업무 흐름 설계, 시장·경쟁 조사, UI 목업, Python, FastAPI, SQLAlchemy, MySQL, Vanilla JS",
+      role: "사전 조사·기획부터 UI 목업과 화면 구현까지 담당했습니다.<br><br>**① 사전 조사** — 클라이언트 사이트를 조사해 대상이 예방의료센터(건진부)임을 특정하고, 일본의 건강진단 제도와 공적 의료보험, 유사 예약 시스템을 함께 조사했습니다.<br><br>**② 기획** — 이용자와 병원 관리자 두 시점으로 나눠 정리했습니다. 이용자 「회사가 시키는 검진을 몇 번 클릭으로」 / 병원 「우편 개봉·수기 대조를 시스템이 대신하도록」<br><br>**③ UI 목업** — 4단계 신청 흐름을 Claude(생성형 AI)를 활용해 만들었습니다.<br><br>**④ 이용자 화면 구현** — FAQ·문의처 안내, 40~74세에 맞춘 생년월일 입력 개선, 좁은 화면 대응.<br><br>**⑤ 관리자 화면 구현** — 담당자가 **그날 처리할 일을 먼저 보도록** 대시보드를 재구성. CSV 추출은 필요한 표만 골라 받도록 개편. 예약 취소를 사전·당일로 나눠 통계와 목록에 같은 기준을 적용.",
+      tools: "요구사항 정의, 업무 흐름 설계, 시장·경쟁 조사, UI 목업(Claude), Python, FastAPI, SQLAlchemy, MySQL, Vanilla JS",
       troubleTitles: ["대상 시설 특정", "보험증 확인 방법 정리", "대상 제도를 먼저 판정하는 흐름", "회장 위치를 지도로 확인", "발표가 「보고」가 되어 있었음", "CSV가 한눈에 읽히지 않았음"],
       troubles: [
         "안건서에는 「병원 예약 시스템」이라고만 적혀 있어, 그룹 내 어느 시설이 대상인지 분명하지 않았습니다. 그룹을 보건·의료·복지로 나눠 시설별 사이트를 조사해 보니, 인간도크에는 이미 웹 예약 폼이 있는 반면 예방의료센터(건진부)만 문의 창구뿐이었고, 안건서의 「우편으로 접수해 왔다」는 서술과 일치해 대상을 특정할 수 있었습니다.",
@@ -2815,7 +2820,7 @@ function renderWireframes(area, db) {
         ? '※ 上の4枚はこのボードから起こしたものです。ボードは韓国語のままで、検討の途中経過もそのまま残しています。'
         : '※ 위 네 장은 이 보드에서 옮긴 것입니다. 보드에는 검토 중간 과정도 그대로 남아 있습니다.'}</p>
       <a class="wf-board" href="${db.figmaUrl}" target="_blank" rel="noopener">
-        <img src="./project_images/pf_figma_board.png" alt="${ja ? '構想ボード' : '구상 보드'}" loading="lazy">
+        <img src="./project_images/pf_figma_board.webp" alt="${ja ? '構想ボード' : '구상 보드'}" loading="lazy">
       </a>` : ''}`;
   if (db.wfCarousel) bindWfCarousel(area);
 }
@@ -2905,6 +2910,7 @@ function renderPrototypeArea() {
         ${openLabel}
       </a>
     </div>
+    ${db.prototypeMadeWith ? `<p class="proto-made"><i class="bi bi-stars" aria-hidden="true"></i> ${ja ? db.prototypeMadeWith.ja : db.prototypeMadeWith.ko}</p>` : ''}
     <div class="mockup-tab-bar">${tabsHtml}</div>
     <div class="prototype-iframe-shell">
       <div class="prototype-browser-bar">
