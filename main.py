@@ -657,6 +657,23 @@ MEDIA_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".webp",
                     ".woff", ".woff2", ".ttf", ".mp4", ".webm", ".pdf"}
 
 
+CSP = "; ".join([
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net",
+    "font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net",
+    "img-src 'self' data: blob: https://img.youtube.com",
+    "media-src 'self'",
+    "connect-src 'self' https://zipcloud.ibsnet.co.jp",
+    "frame-src 'self' https://readdy.cc https://www.youtube.com https://www.youtube-nocookie.com "
+    "https://docs.google.com https://*.notion.site https://www.figma.com https://embed.figma.com",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'self'",
+])
+
+
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
     response = await call_next(request)
@@ -665,6 +682,10 @@ async def security_headers(request: Request, call_next):
     # 다른 사이트가 이 페이지를 iframe 으로 감싸지 못하게 (같은 사이트 안의 목업 iframe 은 허용)
     response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
     response.headers.setdefault("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+    # 불러올 수 있는 곳을 사이트가 실제로 쓰는 곳으로만 제한한다 (끼어든 스크립트가 외부로 보내거나 불러오지 못하게).
+    # 인라인 onclick·style 을 쓰고 있어 'unsafe-inline' 은 남긴다.
+    response.headers.setdefault("Content-Security-Policy", CSP)
+    response.headers.setdefault("Cross-Origin-Opener-Policy", "same-origin")
     return response
 
 SITE_URL = os.getenv("SITE_URL", "").rstrip("/")
