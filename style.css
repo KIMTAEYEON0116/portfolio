@@ -3569,3 +3569,102 @@ table.sheet tr.sh-date td * { color: inherit; }
 @media (max-width: 576px) {
   .lang-btn { min-height: 30px; padding: 5px 10px; }
 }
+
+/* ==========================================================================
+   첫 방문 입장 화면 (intro.js) — 안내견 말풍선 → 프로젝트 캡처 → 문이 좌우로 열림
+   ========================================================================== */
+body.intro-open { overflow: hidden; }
+body.intro-open .bd { visibility: hidden; }
+.it { position: fixed; inset: 0; z-index: 10000; font-family: var(--font-main); perspective: 1800px; }
+/* 여닫이 문 두 짝 — 패널(홈)·금색 손잡이·가운데 틈으로 「문」임이 보이게 */
+.it-door { position: absolute; top: 0; bottom: 0; width: 50%; overflow: hidden; backface-visibility: hidden;
+  transition: transform 1.1s cubic-bezier(.6, 0, .2, 1); }
+.it-door.left { left: 0; transform-origin: left center; border-right: 3px solid #101A26;
+  background: linear-gradient(90deg, #22344B 0%, #2B425D 82%, #233650 100%); }
+.it-door.right { right: 0; transform-origin: right center; border-left: 3px solid #101A26;
+  background: linear-gradient(270deg, #22344B 0%, #2B425D 82%, #233650 100%); }
+.it-panel { position: absolute; left: 13%; right: 13%; border: 3px solid rgba(198, 216, 238, .30); border-radius: 14px;
+  box-shadow: inset 0 0 0 7px rgba(10, 18, 28, .22), inset 0 0 0 9px rgba(198, 216, 238, .10); }
+.it-panel.top { top: 7%; height: 38%; }
+.it-panel.bottom { top: 51%; height: 42%; }
+.it-knob { position: absolute; top: calc(76% - 13px); width: 26px; height: 26px; border-radius: 50%;
+  background: #E8B25A; border: 3px solid #101A26; box-shadow: 2px 2px 0 #101A26, inset -3px -3px 0 rgba(0, 0, 0, .18); }
+.it-door.left .it-knob { right: 26px; }
+.it-door.right .it-knob { left: 26px; }
+/* 문틀 */
+.it-jamb { position: absolute; inset: 0; border: 14px solid #101A26; border-bottom-width: 22px; pointer-events: none; transition: opacity .4s ease; }
+.it.open .it-jamb { opacity: 0; }
+.it.open .it-door.left { transform: rotateY(-100deg); }
+.it.open .it-door.right { transform: rotateY(100deg); }
+@media (max-width: 480px) {
+  .it-knob { width: 20px; height: 20px; top: calc(76% - 10px); }
+  .it-door.left .it-knob { right: 14px; }
+  .it-door.right .it-knob { left: 14px; }
+  .it-jamb { border-width: 8px; border-bottom-width: 12px; }
+}
+
+.it-lang { position: absolute; top: 24px; right: 24px; display: flex; border: 1.5px solid var(--light-blue); border-radius: 999px; overflow: hidden; z-index: 3; }
+.it-lang button { border: 0; background: transparent; padding: 5px 12px; min-height: 30px; font: inherit; font-size: .75rem; font-weight: 700; cursor: pointer; color: var(--light-blue); }
+.it-lang button.on { background: var(--light-blue); color: #23344A; }
+.it.sent .it-lang, .it.open .it-lang { opacity: 0; pointer-events: none; }
+
+.it-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 16px; transition: opacity .45s ease; }
+.it.open .it-stage { opacity: 0; pointer-events: none; }
+.it-buddy { display: flex; flex-direction: column; align-items: center; transition: opacity .35s ease, transform .35s ease; }
+.it.sent .it-buddy { opacity: 0; transform: translateY(14px); pointer-events: none; }
+
+.it-balloon { position: relative; width: min(340px, 92vw); background: #FFFBE3; border: 2px solid var(--dark-color); border-radius: 12px;
+  padding: 14px 16px 12px; box-shadow: 4px 4px 0 #0F1B2A; font-size: 14px; color: var(--dark-color); line-break: strict; word-break: auto-phrase; }
+.it-balloon::before, .it-balloon::after { content: ''; position: absolute; border-style: solid; }
+.it-balloon::before { left: 60%; bottom: -19px; border-width: 19px 0 0 20px; border-color: var(--dark-color) transparent transparent transparent; }
+.it-balloon::after { left: calc(60% + 3px); bottom: -14px; border-width: 14px 0 0 14px; border-color: #FFFBE3 transparent transparent transparent; }
+.it-title { font-weight: 700; margin-bottom: 8px; }
+.it-say { white-space: pre-line; min-height: 3.2em; font-size: 13px; line-height: 1.6; margin-bottom: 8px; color: #4B5563; }
+.it-say.typing::after { content: '\258D'; color: var(--blue-color); animation: bd-caret 1s steps(1) infinite; }
+.it-field { width: 100%; border: 2px solid var(--light-blue); border-radius: 8px; background: #fff; padding: 7px 10px; font: inherit; font-size: 14px; color: var(--dark-color); outline: none; }
+.it-field:focus { border-color: var(--blue-color); }
+.it-btns { display: flex; justify-content: space-between; margin-top: 10px; }
+.it-xp { min-width: 96px; padding: 4px 12px; border: 2px solid var(--dark-color); border-radius: 999px; cursor: pointer; background: #fff;
+  font: inherit; font-size: 13px; font-weight: 700; color: var(--dark-color); box-shadow: 2px 2px 0 var(--dark-color); }
+.it-xp.it-find { background: var(--blue-color); color: #fff; }
+.it-xp:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--dark-color); }
+.it-opts { display: none; margin-top: 10px; border-top: 1.5px dashed #E3D9A6; padding-top: 8px; }
+.it-opts.on { display: block; }
+.it-opts button { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 4px 6px; font: inherit; font-size: 13px; color: var(--dark-color); cursor: pointer; border-radius: 6px; }
+.it-opts button::before { content: '\203A  '; color: var(--blue-color); font-weight: 700; }
+.it-opts button:hover { background: #FFF3C2; }
+.it-hint { margin-top: 8px; font-size: 11px; color: #7A7350; display: flex; justify-content: space-between; gap: 8px; }
+.it-skip { border: 0; background: none; padding: 0; font: inherit; color: #7A7350; text-decoration: underline; cursor: pointer; }
+
+.it-dog { position: relative; isolation: isolate; width: 144px; height: 138px; margin: 18px 0 0 90px; cursor: pointer; }
+.it-dog .px-dog { width: 100%; height: 100%; display: block; overflow: visible;
+  filter: drop-shadow(2px 0 0 #C6D8EE) drop-shadow(-2px 0 0 #C6D8EE) drop-shadow(0 2px 0 #C6D8EE) drop-shadow(0 -2px 0 #C6D8EE); }
+.it-dog::before { content: ''; position: absolute; z-index: -1; left: 4%; right: 4%; bottom: -6px; height: 20px;
+  background: var(--light-blue); border: 2px solid #0F1B2A; border-radius: 999px; box-shadow: 3px 3px 0 #0F1B2A; }
+.it-dog .px-tail-a { animation: px-tail-a .5s steps(1) infinite; }
+.it-dog .px-tail-b { animation: px-tail-b .5s steps(1) infinite; }
+.it-dog .px-eyes-open { animation: px-blink-o 4.5s steps(1) infinite; }
+.it-dog .px-eyes-shut { animation: px-blink-s 4.5s steps(1) infinite; }
+.it-dog.jump { animation: bd-hop .5s steps(4) 2; }
+
+.it-montage { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 16px;
+  opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+.it.montage-on .it-montage { opacity: 1; }
+.it.open .it-montage { opacity: 0; }
+.it-frame { width: min(760px, 92vw); aspect-ratio: 16 / 10; border: 2px solid var(--light-blue); border-radius: 14px; overflow: hidden; background: #fff;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .45); position: relative; }
+.it-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: 0;
+  transform: scale(1.04); transition: opacity .25s ease, transform 1.2s ease; }
+.it-frame img.on { opacity: 1; transform: none; }
+.it-cap { color: #fff; font-size: .95rem; font-weight: 700; min-height: 1.4em; text-align: center; }
+.it-cap small { display: block; font-weight: 500; font-size: .72rem; color: var(--light-blue); margin-top: 2px; font-family: var(--font-header); letter-spacing: .08em; }
+.it-dots { display: flex; gap: 6px; }
+.it-dots i { width: 22px; height: 4px; border-radius: 2px; background: rgba(198, 216, 238, .3); }
+.it-dots i.on { background: var(--light-blue); }
+.it-note { position: absolute; left: 0; right: 0; bottom: 10px; text-align: center; font-size: .7rem; color: rgba(198, 216, 238, .75); padding: 0 12px; }
+.it.open .it-note { opacity: 0; }
+@media (max-width: 480px) { .it-dog { width: 120px; height: 115px; margin-left: 70px; } }
+@media (prefers-reduced-motion: reduce) {
+  .it-door, .it-stage, .it-buddy, .it-montage, .it-frame img, .it-jamb { transition: none !important; }
+  .it-dog .px-tail-a, .it-dog .px-tail-b, .it-dog .px-eyes-open, .it-dog .px-eyes-shut, .it-dog.jump { animation: none !important; }
+}
