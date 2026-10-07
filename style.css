@@ -3330,3 +3330,10 @@ p, li, dd, td, .tst, .pl-v { overflow-wrap: anywhere; }
 .wf-final img { display: block; width: 100%; border: 1.5px solid var(--dark-color); border-radius: 8px; }
 /* 연락처 — 꽃 사진은 남기되 화면을 덜 차지하게 */
 .contact-photo img { max-height: 200px; object-fit: cover; }
+/* 팀 프로젝트 기술: 담당 / 팀 전체 구분 */
+.tool-group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; width: 100%; }
+.tool-group + .tool-group { margin-top: 8px; }
+.tool-group-lb { min-width: 5.5em; font-size: 0.72rem; font-weight: 700; color: #5B6B7F; }
+.project-tool-badge.team { opacity: 0.75; border-style: dashed; }
+/* 일지 — 원본 노션 안에서만 열리던 링크(비공개 페이지) */
+.lg-deadlink { color: #8A9BB0; font-size: 0.85em; border-bottom: 1px dashed #B8C4D3; cursor: help; }

@@ -1575,6 +1575,7 @@ const projectDatabase = {
       reason: "日本文化（J-POP・ドラマ・アニメなど）に関心のある人が、好きなコンテンツを受け身ではなく能動的に楽しめるようにしたいと考えて企画しました。日本語の初級学習者でも歌を楽しみながら歌詞をタイピングできるウェブアプリで、J-POPの同期再生と平仮名/ローマ字の対応表示に対応しています。",
       role: "専攻者・非専攻者の3名チームです。各自が同じ機能を作って共有し、完成度の高いものを採用する進め方で取り組みました。<br><br>**① UI/UXプロトタイプ** — サイト全体の画面構成と遷移の流れをプロトタイプにして提案し、**チームで採用されました。**<br><br>**② 利用ガイド** — タイピング練習には案内が必要だと感じ、**自分から提案して作成**しました。初めて使う人が迷わないことを基準にしました。<br><br>**③ 機能の制作** — タイピング機能は自分の案が採用されませんでしたが、期限内に最後まで形にしました。",
       tools: "HTML5, CSS3, Vanilla JS, YouTube Player API, LocalStorage",
+      toolsTeam: "Python (FastAPI), SQLAlchemy, MySQL / SQLite, Redis, WebSocket, JWT",
       troubleTitles: ["利用ガイドの修正版が採用されるまで"],
       troubles: [
         "3名が同じ機能をそれぞれつくり、ミーティングで採用案を決める進め方だったため、自分の案が採用されないこともありました。それでも期限内に最後まで形にし、利用ガイドは自分から提案して作成して、6月19日のミーティングで修正版が採用されました。"
@@ -1587,6 +1588,7 @@ const projectDatabase = {
       reason: "일본 문화(J-POP·드라마·애니메이션 등)에 관심 있는 사람이 좋아하는 콘텐츠를 수동적이 아닌 능동적으로 즐길 수 있게 하고 싶어 기획했습니다. 일본어 기초 학습자도 노래를 즐기며 가사를 타자로 칠 수 있는 웹 앱으로, J-POP 싱크 재생과 히라가나/로마자 대응 표시를 지원합니다.",
       role: "전공자·비전공자 3명 팀입니다. 각자 같은 기능을 만들어 공유하고 완성도가 높은 것을 채택하는 방식으로 진행했습니다.<br><br>**① UI/UX 프로토타입** — 사이트 전체의 화면 구성과 이동 흐름을 프로토타입으로 만들어 제안했고, **팀에서 채택되었습니다.**<br><br>**② 이용 가이드** — 타이핑 연습에는 안내가 필요하다고 느껴 **직접 제안하고 작성**했습니다. 처음 쓰는 사람이 헤매지 않는 것을 기준으로 삼았습니다.<br><br>**③ 기능 제작** — 타이핑 기능은 제 안이 채택되지 않았지만, 기한 안에 끝까지 형태로 만들었습니다.",
       tools: "HTML5, CSS3, Vanilla JS, YouTube Player API, LocalStorage",
+      toolsTeam: "Python (FastAPI), SQLAlchemy, MySQL / SQLite, Redis, WebSocket, JWT",
       troubleTitles: ["이용 가이드 수정판이 채택되기까지"],
       troubles: [
         "3명이 같은 기능을 각자 만들고 회의에서 채택안을 정하는 방식이라, 제 안이 채택되지 않을 때도 있었습니다. 그래도 기한 안에 끝까지 형태로 만들었고, 이용 가이드는 직접 제안해 작성해서 6월 19일 회의에서 수정판이 채택되었습니다."
@@ -2978,12 +2980,24 @@ function renderProject(projectId) {
   const toolsEl = document.getElementById('project-tools-el');
   if (toolsEl) {
     toolsEl.innerHTML = '';
-    data.tools.split(',').forEach(tool => {
+    const addBadges = (list, cls, host) => list.split(',').forEach(tool => {
       const badge = document.createElement('span');
-      badge.className = 'project-tool-badge';
+      badge.className = 'project-tool-badge' + (cls ? ' ' + cls : '');
       badge.textContent = tool.trim();
-      toolsEl.appendChild(badge);
+      (host || toolsEl).appendChild(badge);
     });
+    if (data.toolsTeam) {
+      // 팀 프로젝트: 본인 담당에서 쓴 기술과 팀 전체 시스템의 기술을 줄을 나눠 보여 준다
+      const group = (label, list, cls) => {
+        const g = document.createElement('div'); g.className = 'tool-group';
+        const l = document.createElement('span'); l.className = 'tool-group-lb'; l.textContent = label;
+        g.appendChild(l); addBadges(list, cls, g); toolsEl.appendChild(g);
+      };
+      group(currentLanguage === 'ja' ? '担当' : '담당', data.tools);
+      group(currentLanguage === 'ja' ? 'チーム全体' : '팀 전체', data.toolsTeam, 'team');
+    } else {
+      addBadges(data.tools);
+    }
   }
 
   // 공개 중인 서비스 링크
