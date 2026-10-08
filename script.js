@@ -37,6 +37,8 @@ const i18n = {
     p_tab_typing: "タイピング練習プラットフォーム",
     p_tab_hospital: "健康診断予約",
     p_tab_golf: "ゴルフ予約",
+    log_code_title: "コード練習（日付別）",
+    log_code_sub: "授業の課題に自分で付けたコメントを、そのまま載せています。",
     p_label_kind: "案件区分",
     p_label_period: "開発期間",
     p_label_reason: "制作背景",
@@ -121,6 +123,8 @@ const i18n = {
     p_tab_typing: "타이핑 연습 플랫폼",
     p_tab_hospital: "건강검진 예약",
     p_tab_golf: "골프 예약",
+    log_code_title: "코드 연습 (날짜별)",
+    log_code_sub: "수업 과제에 직접 단 주석을 그대로 실었습니다.",
     p_label_kind: "안건 구분",
     p_label_period: "개발 기간",
     p_label_reason: "개발 이유",
@@ -674,6 +678,7 @@ async function renderLogPage() {
              ${imgCount(x, ja) > 1 ? `<i>${imgCount(x, ja)}</i>` : ''}</button>`
         : '';
       // 본문(상황·목표·결과)은 접어 두고, 카드는 제목 + 한 줄 흐름으로만 훑게 한다
+      // 썸네일은 제목 옆에만 두고, 한 줄 흐름은 카드 전체 폭을 쓴다 (좁게 접혀 다섯 줄로 갈라지던 문제)
       return `<article class="lg-card">
         <div class="lg-card-meta">
           <span class="lg-dno">${x.no}</span>
@@ -681,19 +686,18 @@ async function renderLogPage() {
           <span class="lg-card-tags">${tagBadges}</span>
         </div>
         <div class="lg-chead">
-          <div class="lg-ctext">
-            <div class="lg-dt">${escapeHTML(L.title)}</div>
-            <div class="lg-card-flow">${L.flow}</div>
-          </div>${thumb}
+          <div class="lg-dt">${escapeHTML(L.title)}</div>${thumb}
         </div>
+        <div class="lg-card-flow">${L.flow}</div>
         <div class="lg-cdetail">
           <div class="lg-drow"><span class="lg-dl">${ja ? '状況' : '상황'}</span><span class="lg-dtx">${L.sit}</span></div>
           <div class="lg-drow"><span class="lg-dl">${ja ? '目標' : '목표'}</span><span class="lg-dtx">${L.goal}</span></div>
           <div class="lg-drow res"><span class="lg-dl">${ja ? '結果' : '결과'}</span><span class="lg-dtx">${L.result}</span></div>
         </div>
+        <div class="lg-sks">${sk}</div>
         <div class="lg-dfoot">
           <button class="lg-cmore">${ja ? '詳しく ▾' : '자세히 ▾'}</button>
-          ${sk}<span class="lg-dopen" data-lg="${x.id}" role="button" tabindex="0">${ja ? '日誌をすべて見る →' : '일지 전체 보기 →'}</span>
+          <span class="lg-dopen" data-lg="${x.id}" role="button" tabindex="0">${ja ? '日誌をすべて見る →' : '일지 전체 보기 →'}</span>
         </div>
       </article>`;
     }).join('') + `</div>` : '';
@@ -760,6 +764,7 @@ async function renderLogPage() {
 
   renderLogRail(Object.assign({}, d, { months }), ja, dayCnt);
   bindLogEvents();
+  renderCodeLog();
 }
 
 /* 좌측 월 레일 — 6개월치를 스크롤할 때 현재 위치를 잃지 않도록 고정해 둔다.
@@ -1052,6 +1057,9 @@ function openLogDetail(id, backId) {
   body.querySelectorAll('[data-back-log]').forEach(btn => {
     btn.addEventListener('click', () => openLogDetail(btn.dataset.backLog));
   });
+  body.querySelectorAll('[data-open-code]').forEach(btn => {
+    btn.addEventListener('click', () => openCodeDay(btn.dataset.openCode));
+  });
   // 본문 캡처는 낮게 묶여 있어 슬라이드 글자가 안 읽힌다. 누르면 그 자리에서 원본 크기로 편다.
   body.querySelectorAll('.ifig img, .lg-fig img, .lg-flowbox svg.flow').forEach(im => {
     if (im.closest('.lg-gal')) return;  // 여러 장 묶음은 크게 보기 화면에서 넘겨 본다
@@ -1260,6 +1268,62 @@ function styleSheetTables(root) {
     if (!td || tr.classList.contains('imgrow') || td.querySelector('img, pre, table, figure')) return;
     if (/^\d{2}\.\d{2}\.\d{2}/.test(td.textContent.trim())) tr.classList.add('sh-date');
   });
+}
+
+
+/* ==========================
+   코드 연습 (날짜별) — 수업 과제에 본인이 단 주석을 그대로 싣는다 (codelog.json, tools/build_codelog.py)
+   ========================== */
+let codeLog = null;
+let codeLogFetch = null;
+async function renderCodeLog() {
+  const host = document.getElementById('lg-code');
+  if (!host) return;
+  const ja = currentLanguage === 'ja';
+  if (!codeLog) {
+    try {
+      codeLogFetch = codeLogFetch || fetch('./codelog.json').then(res => { if (!res.ok) throw new Error('load failed'); return res.json(); });
+      codeLog = await codeLogFetch;
+    } catch (e) { codeLogFetch = null; host.innerHTML = ''; return; }
+    if ((currentLanguage === 'ja') !== ja) return renderCodeLog();
+  }
+  const total = codeLog.reduce((n, d) => n + d.files.length, 0);
+  const cmts = codeLog.reduce((n, d) => n + d.files.reduce((m, f) => m + f.comments, 0), 0);
+  // 주석(#…)만 색을 달리해 눈에 띄게 한다. 문자열 안의 색상값(#fff 등)은 건드리지 않는다
+  const hl = src => escapeHTML(src).replace(/(^|\s)(#(?=\s|[가-힣ぁ-んァ-ヶ一-龠]).*)$/gm, (m, a, c) => `${a}<span class="cl-c">${c}</span>`);
+  host.innerHTML = `<div class="cl-why">
+      <div class="cl-why-head">${ja ? 'なぜコメントを載せるのか' : '왜 주석을 보여 주는가'}</div>
+      <ul class="lg-ul">${ja
+        ? `<li>授業や AI で得たコードを<b>そのまま使わず</b>、1行ずつ「何をしているか」を確かめてから<b>自分の言葉で</b>書き込んだ。</li>
+           <li>コメントを読めば、<b>その時点で自分がどこまで理解していたか</b>がそのまま残る（間違った理解も直さずに残している）。</li>
+           <li>コードは誰が書いても似るが、<b>説明できるかどうか</b>は本人にしか示せない。面接で「このコードを説明して」と言われたときの土台でもある。</li>`
+        : `<li>수업이나 AI로 얻은 코드를 <b>그대로 쓰지 않고</b>, 한 줄씩 "무엇을 하는지" 확인한 뒤 <b>내 말로</b> 적었다.</li>
+           <li>주석을 읽으면 <b>그 시점에 내가 어디까지 이해했는지</b>가 그대로 남는다 (잘못 이해한 것도 고치지 않고 남겨 두었다).</li>
+           <li>코드는 누가 짜도 비슷하지만, <b>설명할 수 있는지</b>는 본인만 보여 줄 수 있다. 면접에서 "이 코드 설명해 보라"는 질문의 바탕이기도 하다.</li>`}
+      </ul>
+      <div class="cl-stats"><span><b>${codeLog.length}</b>${ja ? '日' : '일'}</span><span><b>${total}</b>${ja ? 'ファイル' : '개 파일'}</span><span class="cl-stat-c"><b>${cmts}</b>${ja ? '行のコメント' : '줄의 주석'}</span></div>
+      <p class="lg-note">${ja
+        ? `日付を押すと開きます。<span class="cl-c cl-c-demo"># 青い行</span>が自分で書いたコメントです。MySQL のパスワードは伏せています。`
+        : `날짜를 누르면 열립니다. <span class="cl-c cl-c-demo"># 파란 줄</span>이 직접 쓴 주석입니다. MySQL 비밀번호는 가렸습니다.`}</p>
+    </div>`
+    + codeLog.map(day => `<details class="cl-day" id="cl-${day.dir}">
+        <summary><span class="cl-date">${day.date}</span>
+          <span class="cl-topics">${day.files.map(f => escapeHTML(ja ? f.title_ja : f.title_ko)).slice(0, 3).join(' · ')}${day.files.length > 3 ? ' …' : ''}</span>
+          <span class="cl-cnt">${day.files.length}${ja ? 'ファイル' : '개'}</span></summary>
+        ${day.files.map(f => `<details class="cl-file">
+          <summary><span class="cl-fn">${escapeHTML(f.name)}</span><span class="cl-ft">${escapeHTML(ja ? f.title_ja : f.title_ko)}</span>
+            <span class="cl-fm">${f.lines}${ja ? '行' : '줄'}${f.comments ? ` · <b>${ja ? 'コメント' : '주석'} ${f.comments}</b>` : ''}</span></summary>
+          <div class="lg-code cl-src"><span class="lg-clang">python</span><pre><code>${hl(ja ? f.code_ja : f.code_ko)}</code></pre></div>
+        </details>`).join('')}
+      </details>`).join('');
+}
+// 일지 상세 안의 「코드 연습 보기」 → 그 날짜를 펼쳐서 보여 준다
+function openCodeDay(dir) {
+  if (typeof closeLogDetail === 'function') closeLogDetail();
+  const el = document.getElementById('cl-' + dir);
+  if (!el) return;
+  el.open = true;
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function closeLogDetail() {

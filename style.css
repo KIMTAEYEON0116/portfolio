@@ -2834,7 +2834,9 @@ html[lang="ja"] {
    원문 인용으로 결과문이 길어져 카드가 500~700자가 됐다.
    기본은 제목 + 한 줄 흐름만 보여주고, 상황·목표·결과는 접어 둔다.
    ========================================================================== */
-.lg-chead { display: flex; gap: 12px; align-items: flex-start; }
+.lg-chead { display: flex; gap: 12px; align-items: center; justify-content: space-between; }
+.lg-chead .lg-dt { flex: 1; min-width: 0; }
+.lg-sks { display: flex; flex-wrap: wrap; gap: 5px; }
 .lg-ctext { flex: 1; min-width: 0; }
 
 .lg-cthumb {
@@ -3714,3 +3716,50 @@ details.lg-ai[open] > summary::before { content: '▾'; }
 details.lg-ai > summary .lg-ai-tag { margin-left: auto; font-weight: 500; font-size: .72rem; color: #8A96A8; }
 details.lg-ai[open] > summary .lg-ai-tag { visibility: hidden; }
 details.lg-ai > .lg-ai-body { padding: 4px 14px 12px; border-top: 1px dashed #D4DEEA; }
+
+/* ==========================================================================
+   코드 연습 (날짜별) — 일지 아래 (script.js renderCodeLog)
+   ========================================================================== */
+.lg-sect-code { margin-top: 36px; }
+.lg-codelog { display: flex; flex-direction: column; gap: 10px; }
+.cl-day { background: var(--white); border: var(--border-style); border-radius: var(--radius-sm); box-shadow: 3px 3px 0 var(--dark-color); overflow: hidden; }
+.cl-day > summary { display: flex; align-items: center; gap: 12px; padding: 11px 16px; min-height: 44px; cursor: pointer; list-style: none; }
+.cl-day > summary::-webkit-details-marker { display: none; }
+.cl-day > summary::before { content: '▸'; color: var(--blue-strong); font-weight: 700; }
+.cl-day[open] > summary::before { content: '▾'; }
+.cl-day > summary:hover { background: #F7FAFF; }
+.cl-date { font-family: var(--font-header); font-weight: 700; font-size: .9rem; color: var(--dark-color); white-space: nowrap; }
+.cl-topics { flex: 1; min-width: 0; font-size: .82rem; color: #334155; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cl-cnt { font-size: .7rem; font-weight: 700; color: var(--blue-text); background: var(--bg-color); border: 1px solid var(--light-blue); border-radius: 10px; padding: 2px 8px; white-space: nowrap; }
+.cl-file { border-top: 1px dashed #D4DEEA; }
+.cl-file > summary { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 9px 16px 9px 34px; min-height: 40px; cursor: pointer; list-style: none; }
+.cl-file > summary::-webkit-details-marker { display: none; }
+.cl-file > summary::before { content: '▸'; color: #8FA3BC; margin-left: -16px; }
+.cl-file[open] > summary::before { content: '▾'; }
+.cl-file > summary:hover { background: #F7FAFF; }
+.cl-fn { font-family: var(--font-header); font-size: .8rem; font-weight: 700; color: var(--blue-text); }
+.cl-ft { font-size: .84rem; color: var(--dark-color); }
+.cl-fm { margin-left: auto; font-size: .7rem; color: #646E7D; white-space: nowrap; }
+.cl-file > .lg-code { margin: 0 16px 14px 34px; }
+.lg-codelinks { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+@media (max-width: 600px) {
+  .cl-topics { white-space: normal; font-size: .78rem; }
+  .cl-file > .lg-code { margin: 0 10px 12px 10px; }
+  .cl-file > summary { padding-left: 28px; }
+}
+
+/* 코드 연습 — 주석 강조 */
+.cl-why { background: var(--white); border: var(--border-style); border-radius: var(--radius-sm); box-shadow: 4px 4px 0 var(--blue-strong); padding: 16px 20px 14px; margin-bottom: 6px; }
+.cl-why-head { font-family: var(--font-header); font-weight: 700; font-size: 1rem; color: var(--blue-strong); margin-bottom: 8px; }
+.cl-why .lg-ul { margin: 0 0 10px; }
+.cl-why .lg-ul b { color: var(--blue-strong); }
+.cl-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.cl-stats span { font-size: .78rem; color: #334155; background: var(--bg-color); border: 1px solid var(--light-blue); border-radius: 10px; padding: 3px 10px; }
+.cl-stats b { font-family: var(--font-header); font-size: .95rem; color: var(--dark-color); margin-right: 3px; }
+.cl-stats .cl-stat-c { background: #EAF2FF; border-color: var(--blue-strong); }
+.cl-stats .cl-stat-c b { color: var(--blue-strong); }
+.cl-why .lg-note { margin: 0; }
+.cl-src .cl-c { color: #BFE1FF; font-weight: 700; background: rgba(90, 150, 230, .18); border-radius: 3px; padding: 0 3px; }
+.cl-c-demo { color: var(--blue-strong); background: #EAF2FF; font-family: var(--font-mono, monospace); font-size: .85em; padding: 0 5px; border-radius: 3px; }
+.cl-fm b { color: var(--blue-strong); }
+@media (max-width: 600px) { .cl-why { padding: 13px 14px 12px; } }
