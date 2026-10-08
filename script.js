@@ -1234,6 +1234,35 @@ function styleSheetTables(root) {
     tb.insertAdjacentHTML('afterbegin', '<colgroup><col class="c-lbl"><col><col></colgroup>');
     tb.classList.add('lbl');
   });
+  // 원본 5열 표(직종): 긴 설명이 들어가는 소분류 열을 넓게 — 같은 폭이면 줄이 지나치게 길어졌다
+  root.querySelectorAll('table.sheet.wide').forEach(tb => {
+    if (tb.querySelector('colgroup') || (tb.rows[0] && tb.rows[0].cells.length !== 5)) return;
+    tb.insertAdjacentHTML('afterbegin', '<colgroup><col style="width:17%"><col style="width:16%"><col style="width:19.5%"><col style="width:28.5%"><col style="width:19%"></colgroup>');
+  });
+  // 원본 4열 표(이름·내용 두 묶음이 좌우로 나란함): 폰에서는 두 묶음을 위아래로 나눠 보인다
+  root.querySelectorAll('table.sheet.wide4').forEach(tb => {
+    if (tb.dataset.split) return;
+    tb.dataset.split = '1';
+    const rows = [...tb.rows].filter(r => r.cells.length === 4);
+    if (rows.length !== tb.rows.length) return;
+    const half = (a, b) => {
+      const t = document.createElement('table');
+      t.className = 'sheet sheet-half';
+      rows.forEach(r => {
+        const x = r.cells[a], y = r.cells[b];
+        if (!x.textContent.trim() && !y.textContent.trim()) return;
+        const tr = t.insertRow();
+        tr.append(x.cloneNode(true), y.cloneNode(true));
+      });
+      return t;
+    };
+    const box = document.createElement('div');
+    box.className = 'sheet-split';
+    box.append(half(0, 1), half(2, 3));
+    const host = tb.parentElement && tb.parentElement.classList.contains('tbwrap') ? tb.parentElement : tb;
+    host.classList.add('sheet-split-src');
+    host.after(box);
+  });
   root.querySelectorAll('table.sheet tr').forEach(tr => {
     const td = tr.children[0];
     if (!td || tr.classList.contains('imgrow') || td.querySelector('img, pre, table, figure')) return;

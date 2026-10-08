@@ -3394,8 +3394,15 @@ table.sheet td.k { white-space: normal; }
 table.sheet.lbl col.c-lbl { width: 24%; }
 @media (max-width: 640px) { table.sheet.lbl col.c-lbl { width: 30%; } }
 /* 원본 시트의 열이 4~5개인 표: 폰에서는 좁아지지 않게 가로로 밀어서 본다 */
-table.sheet.wide { min-width: 720px; }
+table.sheet.wide { min-width: 900px; }
 table.sheet.wide4 { min-width: 600px; }
+/* 4열 표를 폰에서 두 묶음으로 나눈 것 (script.js styleSheetTables) */
+.sheet-split { display: none; }
+@media (max-width: 640px) {
+  .sheet-split-src { display: none; }
+  .sheet-split { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+  table.sheet.sheet-half td:first-child { width: 38%; }
+}
 /* 원본 스프레드시트에서 배경색을 넣었던 제목 칸 (초록 → 사이트에 맞춘 하늘색, 나머지는 원본 색을 옅게) */
 table.sheet td.cg { background-color: #DCEBFA; color: #1D3A5C; font-weight: 700; box-shadow: inset 3px 0 0 var(--blue-color); }
 table.sheet td.ct { background-color: #DDEBEE; color: #1F3B44; font-weight: 700; }
@@ -3643,7 +3650,7 @@ body.intro-open .bd { visibility: hidden; }
 .it-opts button::before { content: '\203A  '; color: var(--blue-text); font-weight: 700; }
 .it-opts button:hover { background: #FFF3C2; }
 .it-hint { margin-top: 8px; font-size: 11px; color: #7A7350; display: flex; justify-content: space-between; gap: 8px; }
-.it-skip { border: 0; background: none; padding: 0; font: inherit; color: #7A7350; text-decoration: underline; cursor: pointer; }
+.it-skip { border: 0; background: none; padding: 0; min-height: 24px; font: inherit; color: #7A7350; text-decoration: underline; cursor: pointer; }
 
 .it-dog { position: relative; isolation: isolate; width: 144px; height: 138px; margin: 18px 0 0 90px; cursor: pointer; }
 .it-dog .px-dog { width: 100%; height: 100%; display: block; overflow: visible;
