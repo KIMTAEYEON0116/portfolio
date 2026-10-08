@@ -25,7 +25,7 @@
   <!-- Google Fonts & Bootstrap Icons CDN -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="style.css?v=23.2">
+  <link rel="stylesheet" href="style.css?v=24.0">
 </head>
 
 <body>
@@ -385,6 +385,7 @@
       <div class="project-tab-bar">
         <div class="project-tab active" id="p-tab-hospital" onclick="switchProjectTab('hospital')" role="button" tabindex="0"
           data-i18n="p_tab_hospital">건강검진 예약</div>
+        <div class="project-tab" id="p-tab-golf" onclick="switchProjectTab('golf')" role="button" tabindex="0" data-i18n="p_tab_golf">골프 예약</div>
         <div class="project-tab" id="p-tab-gakong" onclick="switchProjectTab('gakong')" role="button" tabindex="0" data-i18n="p_tab_gakong">가공독서회
         </div>
         <div class="project-tab" id="p-tab-typing" onclick="switchProjectTab('typing')" role="button" tabindex="0" data-i18n="p_tab_typing">타이핑 연습
@@ -463,6 +464,7 @@
               <h3 class="project-title-main" id="project-title-el">
                 포트폴리오 웹사이트를 소개합니다
               </h3>
+              <p class="project-status-note" id="project-status-note" hidden></p>
 
               <!-- 案件区分: kind 가 있는 프로젝트에서만 노출 -->
               <div class="project-info-row" id="project-kind-row" style="margin-top: 15px; display: none;">
@@ -676,9 +678,9 @@
     </p>
     <style>#loading-screen{display:none!important}</style>
   </noscript>
-  <script src="script.js?v=23.2"></script>
-  <script src="buddy.js?v=23.2"></script>
-  <script src="intro.js?v=23.2"></script>
+  <script src="script.js?v=24.0"></script>
+  <script src="buddy.js?v=24.0"></script>
+  <script src="intro.js?v=24.0"></script>
 </body>
 
 </html>

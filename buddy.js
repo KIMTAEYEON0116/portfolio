@@ -28,6 +28,8 @@
   };
 
   const ROUTES = [
+    { re: /ゴルフ|golf|골프|2件目|二件目|두 ?번째|2번째/i, hash: '#/project/golf/overview',
+      ja: '2件目の実案件「ゴルフ予約サービス」へ\nご案内します！', ko: '두 번째 실제 안건 「골프 예약 서비스」로\n안내할게요!' },
     { re: /病院|健診|健康診断|BtoB|B2B|実案件|案件|병원|건강검진|검진|안건/i, hash: '#/project/hospital/overview',
       ja: '実案件の「健康診断予約システム（BtoB）」へ\nご案内します！', ko: '실제 안건 「건강검진 예약 시스템(B2B)」으로\n안내할게요!' },
     { re: /読書|架空|가공|독서/i, hash: '#/project/gakong/overview',
