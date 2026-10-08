@@ -3288,15 +3288,20 @@ html:lang(ko) body { word-break: keep-all; }
 html:lang(ja) :is(h1, h2, h3, h4, h5, button, label, .project-title-main, .timeline-title, .tssym,
   .role-step-h, .info-label, .pl-k, .pl-v, .difficulty-card-header, .project-tab, .project-inner-tab,
   .welcome-desc, .welcome-text, .hobby-point-text, .hobby-intro-text, .edu-name, .badge, .tst,
-  .about-intro-desc p, .timeline-desc, .edu-value, .skill-note) { word-break: auto-phrase; }
-h1, h2, h3, h4, h5, .project-title-main, .timeline-title, .tssym { text-wrap: balance; }
-p, li, dd, .difficulty-text { text-wrap: pretty; }
+  .about-intro-desc p, .timeline-desc, .edu-value, .skill-note,
+  .pl-lead, .wf-note, .wf-ov, .media-client-note) { word-break: auto-phrase; }
+h1, h2, h3, h4, h5, .project-title-main, .timeline-title, .tssym, .difficulty-title, .welcome-desc p { text-wrap: balance; }
+p, li, dd, td, .difficulty-text, .pl-v, .tst, .wf-note, .media-client-note { text-wrap: pretty; }
 /* 긴 URL·영문 토큰이 칸을 밀어내지 않도록 */
 p, li, dd, td, .tst, .pl-v { overflow-wrap: anywhere; }
-.lg-tg, .lg-sc, .project-tool-badge { white-space: nowrap; }
+.lg-tg, .lg-sc, .project-tool-badge, .nb { white-space: nowrap; }
 /* 좁은 화면: 라벨을 위로 올려 본문 폭을 확보한다 (본문이 146px 로 눌려 한 줄에 7~8자만 들어갔다) */
 @media (max-width: 600px) {
   .project-info-row { flex-direction: column; gap: 6px; }
+  /* 어려웠던 점 카드: 좌우 30px 여백 때문에 카드가 258px 로 눌려 있었다 → 위 개요와 같은 폭으로 */
+  .project-lower-section { padding: 24px 0 4px; }
+  /* 학력: 이름이 짧은 줄만 날짜 옆에 붙어 모양이 달라지던 것 → 모두 날짜 아래로 */
+  .edu-item { flex-direction: column; align-items: flex-start; gap: 4px; }
   .info-label { width: auto; align-self: flex-start; }
   .info-value-box { width: 100%; box-sizing: border-box; }
 }

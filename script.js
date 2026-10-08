@@ -4,7 +4,7 @@ const i18n = {
     page_title: "金兌衍（キム・テヨン） | ポートフォリオ",
     welcome_title: "ようこそ！",
     welcome_desc1: "<span class='ph'>金兌衍（キム・テヨン）</span><span class='ph'>と申します。</span>",
-    welcome_desc2: "<span class='ph'>2026年3月から</span><span class='ph'>開発を学び始め、</span><span class='ph'>これまでに</span><span class='ph'>4つのプロジェクトを</span><span class='ph'>手がけ、</span><span class='ph'>11月までに</span><span class='ph'>2件目の</span><span class='ph'>企業案件に</span><span class='ph'>取り組みます。</span>",
+    welcome_desc2: "<span class='ph'>2026年3月から</span><span class='ph'>開発を学び始め、</span><span class='ph'>これまでに</span><span class='ph'>4つのプロジェクトを</span><span class='ph'>手がけ、</span><span class='ph'>11月まで</span><span class='ph'>2件目の</span><span class='ph'>企業案件に</span><span class='ph'>参加します。</span>",
     welcome_desc3: "<span class='ph'>利用者視点で</span><span class='ph'>課題を捉え、</span><span class='ph'>利用者体験を</span><span class='ph'>設計する</span><span class='ph'>ものづくりに</span><span class='ph'>携わりたいと</span><span class='ph'>考えています。</span>",
     welcome_desc4: "<span class='ph'>詳しい経歴や</span><span class='ph'>自己PRは、</span><span class='ph'>以下のボタンから</span><span class='ph'>ご確認ください。</span>",
     nav_about: "自己紹介",
@@ -24,7 +24,7 @@ const i18n = {
     about_intro_title: "<i class=\"bi bi-person-fill\" aria-hidden=\"true\"></i> 自己紹介（自己PR）",
     about_intro_desc1: "こんにちは。2026年3月から開発を学んでいる金兌衍（キム・テヨン）と申します。日本語通訳翻訳を専攻し、在学中に2回の交換留学を経験しました。JLPT N1も取得しています。",
     about_intro_desc2: "利用者に長く使われるサービスほど、多くの人に愛され、関心を持ち続けてもらえていると思います。そして、その関心があるからこそ、改善点も見えてきて、サービスがさらに良くなっていくのではないかと考えています。私は、そうした好循環を生み出せるサービス作りに携わりたいと考えています。",
-    about_intro_desc3: "転機は7月です。140文字制限のコメント欄にカウンターがなく、長く書いた人が何の案内もなく失敗していました。130文字から色が変わるように直して以来、UI/UX・モバイル対応の改善を<a href='#/project/gakong/trouble' class='inline-ev' data-go='gakong/trouble'>13件</a>記録しています。",
+    about_intro_desc3: "転機は7月でした。140文字制限のコメント欄にカウンターがなく、長く書いた人が何の案内もなく失敗していました。130文字から色が変わるように直して以来、UI/UX・モバイル対応の改善を<a href='#/project/gakong/trouble' class='inline-ev' data-go='gakong/trouble'>13件</a>記録しています。",
     about_intro_desc4: "もともと製品を見るたびに「どんな不便を解決するために生まれたのか」を考える習慣があり、同じことを画面でもやっているのだと後から気づきました。分からないことはそのままにせず、原因を最後まで突き止める姿勢を大切にしています。",
     card_edu: "学歴",
     card_certs: "資格",
@@ -65,7 +65,7 @@ const i18n = {
     exp_seigakusha: "セイガクシャコリア 日本就職IT研修",
     exp_seigakusha_desc: "日本のIT企業への就職を目標とした実務ベースのフルスタック開発およびビジネス日本語教育課程を履修しました。",
     exp_coupang: "株式会社 COUPANG",
-    exp_coupang_desc: "契約社員として勤務（契約満了に伴う退職）。リモート勤務で1日平均30件の対応を低いエラー率で維持し、入社4か月でメンターに抜擢。約10名を支援し、エラー率20%超のメンバーを4〜6%まで改善しました。",
+    exp_coupang_desc: "契約社員として勤務（契約満了に伴う退職）。リモート勤務で1日平均30件の処理を低いエラー率で維持し、入社4か月でメンターに抜擢。約10名を支援し、エラー率20%超のメンバーを4〜6%まで改善しました。",
     cert_jlpt_title: "JLPT N1（日本語能力試験）",
     skill_cat_jp: "日本語",
     cert_jlpt_date: "2025.08.12 取得",
@@ -74,7 +74,7 @@ const i18n = {
     edu_kokugakuin: "國學院大學栃木短期大学 交換留学",
     edu_hanyang: "漢陽女子大学 日本語通訳翻訳学科 卒業（現：実務日本語科）",
     edu_bulgok: "佛谷高等学校 卒業",
-    hobby_desc_intro: "新しい製品やお店、展示を実際に見て回るのが好きです。",
+    hobby_desc_intro: "新しい製品やお店、展示を<span class='ph'>実際に見て回るのが</span>好きです。",
     hobby_desc_p1: "文房具店めぐり",
     hobby_desc_p2: "ポップアップストア巡り",
     hobby_desc_p3: "文具フェア・ブックフェアなどの展示会訪問"
@@ -82,7 +82,7 @@ const i18n = {
   ko: {
     page_title: "김태연 | 포트폴리오",
     welcome_title: "환영합니다!",
-    welcome_desc1: "김태연 (金兌衍) 입니다.",
+    welcome_desc1: "김태연(金兌衍)입니다.",
     welcome_desc2: "2026년 3월부터 개발을 배우기 시작해 지금까지 4개의 프로젝트를 진행했고, 11월까지 두 번째 기업 안건에 참여합니다.",
     welcome_desc3: "사용자 관점에서 과제를 파악하고, 사용자 경험을 설계하는 제품 만들기에 참여하고 싶습니다.",
     welcome_desc4: "자세한 경력과 자기PR은 아래 버튼에서 확인해 주세요.",
@@ -157,79 +157,11 @@ const i18n = {
     gb_title_placeholder: "제목을 입력해 주세요",
     gb_author_placeholder: "이름 (선택)",
     gb_content_placeholder: "따뜻한 한마디를 남겨주세요!"
-  },
-  hobbies: {
-    ja: {
-      titleMain: "趣味",
-      titleSub: "好きなこと · 趣味",
-      details: [
-        { label: "紹介", value: "新しい製品を見ると「どんな課題を解決するために生まれたのか」を考えるのが習慣です。" },
-        { label: "1", value: "文房具店めぐり" },
-        { label: "2", value: "ポップアップストア巡り" },
-        { label: "3", value: "文具フェア・ブックフェアなどの展示会訪問" }
-      ]
-    },
-    ko: {
-      titleMain: "취미",
-      titleSub: "좋아하는 것 · 趣味",
-      details: [
-        { label: "소개", value: "새로운 제품을 보면 '어떤 문제를 해결하려고 만들어졌을까'를 생각하는 게 습관입니다." },
-        { label: "1", value: "문구점 탐방" },
-        { label: "2", value: "팝업스토어 방문" },
-        { label: "3", value: "문구 페어 · 북페어 등 전시회 방문" }
-      ]
-    }
-  },
-  experience: {
-    ja: {
-      titleMain: "経験",
-      titleSub: "職歴 · 経験",
-      details: [
-        { label: "2025.06 ~ 2026.02", value: "株式会社 COUPANG 入社（契約社員・契約終了により退社）" },
-        { label: "2026.03 ~ 2026.11", value: "セイガクシャコリア 日本就職IT研修" }
-      ]
-    },
-    ko: {
-      titleMain: "경험",
-      titleSub: "직력 · 経験",
-      details: [
-        { label: "2025.06 ~ 2026.02", value: "주식회사 쿠팡 입사 (계약직 · 계약 만료 퇴사)" },
-        { label: "2026.03 ~ 2026.11", value: "세이가쿠샤코리아 일본 취업 IT 연수" }
-      ]
-    }
   }
 };
 
-const defaultGuestbook = {
-  ja: [
-    {
-      title: "ポートフォリオの雰囲気がとても良いですね！",
-      author: "ゲスト",
-      content: "色合いも温かく、カードのデザインも本当に可愛いです。日系IT職への入社を応援しています！",
-      date: "2026.06.11"
-    },
-    {
-      title: "応援メッセージ送ります〜 頑張ってください！",
-      author: "先輩",
-      content: "非専攻から熱心に開発を学んで、完成度の高いポートフォリオを作り上げましたね！応援しています。",
-      date: "2026.06.10"
-    }
-  ],
-  ko: [
-    {
-      title: "포트폴리오 분위기가 너무 좋네요!",
-      author: "게스트",
-      content: "색감도 따뜻하고 카드 디자인도 정말 귀엽습니다. 일본계 IT 직무 입사를 응원합니다!",
-      date: "2026.06.11"
-    },
-    {
-      title: "응원 메시지 보냅니다~ 대박나세요!",
-      author: "선배",
-      content: "비전공자임에도 열정적으로 개발을 공부해서 완성도 높은 멋진 포트폴리오를 만들었네요! 화이팅입니다.",
-      date: "2026.06.10"
-    }
-  ]
-};
+// 서버에 닿지 못할 때 보여 줄 기본 방명록 — 지어낸 응원글은 두지 않는다
+const defaultGuestbook = { ja: [], ko: [] };
 
 // 캘린더 일지 데이터베이스 초기값 (다국어 지원)
 let currentYear = 2026;
@@ -533,7 +465,7 @@ async function renderGuestbook() {
   listContainer.innerHTML = '';
 
   if (messages.length === 0) {
-    const noMsg = currentLanguage === 'ja' ? '最初のゲストブックを残してみてください！' : '첫 방명록을 남겨보세요!';
+    const noMsg = currentLanguage === 'ja' ? '最初のメッセージを残してみてください！' : '첫 방명록을 남겨보세요!';
     listContainer.innerHTML = `<p style="font-size: 0.85rem; color:#888; text-align:center; padding: 20px 0;">${noMsg}</p>`;
     return;
   }
@@ -541,8 +473,8 @@ async function renderGuestbook() {
   messages.forEach(msg => {
     const item = document.createElement('div');
     item.className = 'guestbook-item';
-    const datePrefix = currentLanguage === 'ja' ? '作成日' : '작성일';
-    const authorPrefix = currentLanguage === 'ja' ? '作成者' : '작성자';
+    const datePrefix = currentLanguage === 'ja' ? '投稿日' : '작성일';
+    const authorPrefix = currentLanguage === 'ja' ? '投稿者' : '작성자';
     item.innerHTML = `
       <div class="guestbook-item-header">
         <span>${datePrefix}: ${escapeHTML(msg.date)}</span>
@@ -553,6 +485,11 @@ async function renderGuestbook() {
     `;
     listContainer.appendChild(item);
   });
+}
+
+// 숫자 범위(40〜74歳)와 「お問い合わせ」가 줄 끝에서 갈라지지 않게 묶는다 (escapeHTML 뒤에 쓴다)
+function keepTogether(html) {
+  return html.replace(/\d[\d,]*\s?[〜~]\s?\d[\d,]*(?:歳|代|세|대|件|건|名|명|回|회|秒|초|px|%)?|お問い合わせ/g, m => `<span class="nb">${m}</span>`);
 }
 
 // 6. XSS 방지를 위한 HTML Escape
@@ -1362,7 +1299,7 @@ const projectDatabase = {
       kind: ["個人開発", "自主企画"],
       title: "ポートフォリオウェブサイト",
       period: "2026.03 - 2026.11",
-      reason: "自己紹介とプロジェクトを整理するために制作しました。従来はPDF形式の履歴書のみを使用していましたが、ウェブサイトを通じてよりインタラクティブかつ視覚的に表現することで、自身の強みを効果的にアピールできるよう設計・制作しました。",
+      reason: "自己紹介とプロジェクトを整理するために制作しました。従来はPDF形式の履歴書のみを使用していましたが、ウェブサイトを通じてよりインタラクティブかつ視覚的に表現することで、自身の強みを効果的にアピールできるよう制作しました。",
       role: "企画から画面実装まで一人で進めています。<br><br>**① 企画・設計** — Figma でワイヤーフレームを描き、画面構成と遷移の流れを決めました。<br><br>**② フロントエンド** — フレームワークを使わず Vanilla HTML/CSS/JS でコンポーネント構造を設計し実装しました。<br><br>**③ データ連動** — LocalStorage をもとに、言語設定と画面の状態が再読み込み後も保持されるようにしました。<br><br>**④ サーバー** — FastAPI でゲストブックの API（SQLite に保存）をつくり、Notion の学習日誌を取り込んで日誌ページに表示しています。<br><br>**⑤ 公開** — AWS EC2（Ubuntu）に nginx と systemd で公開し、サーバーを再起動しても自動で立ち上がるようにしました。ゲストブックに投稿があるとメールで通知が届きます。",
       tools: "HTML5, CSS3, JavaScript (Vanilla JS), Python (FastAPI), SQLite, Notion API, AWS EC2, nginx, Figma, Git, GitHub, LocalStorage",
       troubleTitles: ["日誌ページの見せ方を変更", "ページ単位の画面遷移とホームボタン", "記録の載せ方を2つに分ける", "公開前の点検で見つかった漏えいのリスク"],
@@ -1422,12 +1359,12 @@ const projectDatabase = {
               ["when & where & how", "いつでもどこからでもアクセスできる Web サービス。AI がキーワードとジャンルの組み合わせで架空の本をその場で生成し、利用者は読書室に集まってコメント形式で読書会・議論を行う。"]
             ],
             summaryLabel: "一言でまとめると",
-            summary: "存在しない本を一緒に想像しながら、誰でも気軽に参加できる AI 発の創作型読書コミュニティ" },
+            summary: "存在しない本を一緒に想像しながら、誰でも気軽に参加できる、AI を活用した創作型読書コミュニティ" },
           { title: "コンセプト",
             rows: [
               ["読まなくてもいい読書会", "本を読んでいなければ参加できないのではなく、想像の読書会なので負担が少ない。"]
             ] },
-          {"title": "データ構成（現在のコード）", "rows": [["users", "会員 — メール・パスワード・ニックネーム、管理者／ボットの区別、パスワード再設定"], ["books", "公開中の本 — AI が生成した書籍情報・表紙・推薦文・出版社書評、読書室の締切日数、アーカイブ状態、日本語訳"], ["candidate_books", "公開前の候補の本 — 生成したユーザー（→ users）と状態"], ["chat_messages", "読書室のメッセージ（→ books・users）— 返信先、日本語訳"], ["chat_reactions", "誰がどのメッセージにどの反応を押したか（→ chat_messages・users）"], ["ratings", "星の評価（→ books・users）"], ["library", "私の書斎に保存した本（→ users・books）"], ["past_chat_messages", "締め切った読書室の会話 — アーカイブ用に、ニックネームや返信先の内容まで残す（→ books）"], ["nickname_i18n", "ニックネームと日本語表記の対応"]], "summaryLabel": "要約", "summary": "books と users を中心に、メッセージ・評価・書斎がその2つをつなぐ形。締め切った会話は別のテーブルに移して残します。"}
+          {"title": "データ構成（現在のコード）", "rows": [["users", "会員 — メール・パスワード・ニックネーム、管理者／ボットの区別、パスワード再設定"], ["books", "公開中の本 — AI が生成した書籍情報・表紙・推薦文・出版社書評、読書室の締切日数、アーカイブ状態、日本語訳"], ["candidate_books", "公開前の候補の本 — 生成したユーザー（→ users）と状態"], ["chat_messages", "読書室のメッセージ（→ books・users）— 返信先、日本語訳"], ["chat_reactions", "誰がどのメッセージにどの反応を押したか（→ chat_messages・users）"], ["ratings", "星評価（→ books・users）"], ["library", "私の書斎に保存した本（→ users・books）"], ["past_chat_messages", "締め切った読書室の会話 — アーカイブ用に、ニックネームや返信先の内容まで残す（→ books）"], ["nickname_i18n", "ニックネームと日本語表記の対応"]], "summaryLabel": "要約", "summary": "books と users を中心に、メッセージ・評価・書斎がその2つをつなぐ形。締め切った会話は別のテーブルに移して残します。"}
         ]
       }
     },
@@ -1453,7 +1390,7 @@ const projectDatabase = {
       troubles: [
         "AI による表紙の生成に最悪で数十秒かかり、「表紙を生成中…」の表示が長く続いていました。待ち時間の上限を短くし、候補3冊の表紙を同時につくるようにして、待ち時間をおよそ20秒以内に縮めました。",
         "ログイン失敗の回数をメールアドレス単位で数えていたため、他人のメールで5回失敗させるだけで、その人を15分間ログインできなくできる状態でした。会員登録とパスワード再設定には制限そのものがありませんでした。制限の仕組みを1か所にまとめ、ログインは IP（15分に10回）とアカウント（15分に20回）の2つの基準に分け、登録（1時間に5回）とパスワード再設定（1時間に3回）にも適用しました。",
-        "5,000行あまりの CSS にスマートフォン向けの指定が1つもなく、375px の画面では書籍カードの幅が78pxまで潰れ、メニューもヘッダーからはみ出していました。デスクトップの表示はそのままに、上書き専用のモバイル用 CSS を追加し、3段階の画面幅に合わせて調整しました。ホームや書籍詳細など11画面すべてで横スクロールが出ないことを確認しました。"
+        "5,000行を超える CSS にスマートフォン向けの指定が1つもなく、375px の画面では書籍カードの幅が78pxまで潰れ、メニューもヘッダーからはみ出していました。デスクトップの表示はそのままに、上書き専用のモバイル用 CSS を追加し、3段階の画面幅に合わせて調整しました。ホームや書籍詳細など11画面すべてで横スクロールが出ないことを確認しました。"
       ]
     },
     ko: {
@@ -1767,7 +1704,7 @@ const projectDatabase = {
       kind: ["チーム開発", "自主企画"],
       title: "日本語の歌の歌詞タイピング練習プラットフォーム（Enterping）",
       period: "2026.04 - 2026.07",
-      reason: "日本文化（J-POP・ドラマ・アニメなど）に関心のある人が、好きなコンテンツを受け身ではなく能動的に楽しめるようにしたいと考えて企画しました。日本語の初級学習者でも歌を楽しみながら歌詞をタイピングできるウェブアプリで、J-POPの同期再生と平仮名/ローマ字の対応表示に対応しています。",
+      reason: "日本文化（J-POP・ドラマ・アニメなど）に関心のある人が、好きなコンテンツを受け身ではなく能動的に楽しめるようにしたいと考えて企画しました。日本語の初級学習者でも歌を楽しみながら歌詞をタイピングできるウェブアプリで、J-POP の同期再生と、ひらがな／ローマ字の対応表示をサポートしています。",
       role: "専攻者・非専攻者の3名チームです。各自が同じ機能を作って共有し、完成度の高いものを採用する進め方で取り組みました。<br><br>**① UI/UXプロトタイプ** — サイト全体の画面構成と遷移の流れをプロトタイプにして提案し、**チームで採用されました。**<br><br>**② 利用ガイド** — タイピング練習には案内が必要だと感じ、**自分から提案して作成**しました。初めて使う人が迷わないことを基準にしました。<br><br>**③ 機能の制作** — タイピング機能は自分の案が採用されませんでしたが、期限内に最後まで形にしました。",
       tools: "HTML5, CSS3, Vanilla JS, YouTube Player API, LocalStorage",
       toolsTeam: "Python (FastAPI), SQLAlchemy, MySQL / SQLite, Redis, WebSocket, JWT",
@@ -2059,7 +1996,7 @@ const projectDatabase = {
       period: "2026.07 - 2026.09",
       result: "9月29日の最終発表で完了。成果物について「使いやすく仕上がっていて良かった」というフィードバックをいただきました。",
       reason: "日本の医療法人から提示された実案件で、法人のお客様の社内業務を置き換える BtoB の業務システムです。同法人の予防医療センターは毎年約2万人の健康診断予約を郵便で受け付けており、開封・定員照合・返信をすべて手作業で行っているため、現在の人員では処理が限界に近い状態でした。このアナログな予約プロセスをオンライン化することが目的です。",
-      role: "事前調査・企画からUIモックアップと画面実装までを担当しました。<br><br>**① 事前調査** — クライアントのサイトを調査して対象が予防医療センター（健診部）であることを特定し、日本の健康診断制度や公的医療保険、類似の予約システムもあわせて調べました。<br><br>**② 企画** — 利用者と病院の管理者という2つの視点に分けて整理しました。利用者「会社に指示された検診を数クリックで」/ 病院「郵便の開封・手作業の照合をシステムが代わるように」<br><br>**③ UIモックアップ** — 4ステップの申込フローを、Claude（生成AI）を使って作成しました。<br><br>**④ 利用者画面の実装** — FAQ・お問い合わせ案内、40〜74歳に合わせた生年月日入力の改善、狭い画面への対応。<br><br>**⑤ 管理画面の実装** — 担当者が**その日に対応すべきことを先に見られるよう**ダッシュボードを再構成。CSV出力は必要な表だけ選べるよう改修。予約キャンセルを事前・当日に分け、統計と一覧に同じ基準を適用。",
+      role: "事前調査・企画からUIモックアップと画面実装までを担当しました。<br><br>**① 事前調査** — クライアントのサイトを調査して対象が予防医療センター（健診部）であることを特定し、日本の健康診断制度や公的医療保険、類似の予約システムもあわせて調べました。<br><br>**② 企画** — 利用者と病院の管理者という2つの視点に分けて整理しました。利用者「会社に指示された健診を数クリックで」/ 病院「郵便の開封・手作業の照合をシステムが代わるように」<br><br>**③ UIモックアップ** — 4ステップの申込フローを、Claude（生成AI）を使って作成しました。<br><br>**④ 利用者画面の実装** — FAQ・お問い合わせ案内、40〜74歳に合わせた生年月日入力の改善、狭い画面への対応。<br><br>**⑤ 管理画面の実装** — 担当者が**その日に対応すべきことを先に見られるよう**ダッシュボードを再構成。CSV出力は必要な表だけ選べるよう改修。予約キャンセルを事前・当日に分け、統計と一覧に同じ基準を適用。",
       tools: "要件定義, 業務フロー設計, 市場・競合調査, UIモックアップ（Claude）, Python, FastAPI, SQLAlchemy, MySQL, Vanilla JS",
       troubleTitles: ["対象施設の特定", "保険証の確認方法を整理", "対象制度を先に判定する流れ", "会場の場所を地図で確認", "発表が「報告」になっていた", "CSVが一目で読めなかった"],
       troubles: [
@@ -3246,11 +3183,11 @@ function renderProject(projectId) {
       <div class="difficulty-card-header" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
         <div style="display: flex; align-items: center; gap: 8px;">
           <span class="difficulty-num">${idx + 1}</span>
-          <span style="font-weight: 700; font-size: 0.85rem; color: var(--dark-color);">${escapeHTML(titleText)}</span>
+          <span class="difficulty-title" style="font-weight: 700; font-size: 0.85rem; color: var(--dark-color);">${escapeHTML(titleText)}</span>
         </div>
         <i class="bi bi-wrench-adjustable difficulty-icon" aria-hidden="true"></i>
       </div>
-      <p class="difficulty-text">${escapeHTML(tb)}</p>
+      <p class="difficulty-text">${keepTogether(escapeHTML(tb))}</p>
     `;
     troubleContainer.appendChild(card);
   });
