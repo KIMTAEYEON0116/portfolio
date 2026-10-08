@@ -133,13 +133,14 @@
     root.querySelectorAll('.it-lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === lang()));
   }
 
-  async function speak(text, id) {
+  // ms: 글자 하나가 나오는 간격 — 첫인사는 천천히, 답변은 조금 빠르게
+  async function speak(text, id, ms = 60) {
     say.textContent = '';
     say.classList.add('typing');
     for (const ch of text) {
       if (id !== runId) return;
       say.textContent += ch;
-      await wait(50);
+      await wait(ms);
     }
     say.classList.remove('typing');
   }
@@ -149,14 +150,14 @@
     q.value = '';
     delete q.dataset.touched;
     await wait(350);
-    await speak(T[lang()].hello, id);
-    await wait(450);
-    await speak(T[lang()].ask, id);
+    await speak(T[lang()].hello, id, 95);
+    await wait(650);
+    await speak(T[lang()].ask, id, 65);
     await wait(250);
     for (const ch of T[lang()].auto) {
       if (id !== runId || q.dataset.touched) return;   // 직접 쓰기 시작하면 멈춘다
       q.value += ch;
-      await wait(70);
+      await wait(100);
     }
     if (id === runId) q.focus();
   }
