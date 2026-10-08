@@ -385,8 +385,9 @@ function setLanguage(lang) {
     if (typeof renderProject === 'function') renderProject('hospital');
   }
 
-  // 일지 페이지 재렌더링
-  if (typeof renderLogPage === 'function') renderLogPage();
+  // 일지 페이지 재렌더링 — 일지를 보고 있거나 이미 받아 둔 경우에만 (홈에서 344KB 를 미리 받지 않도록)
+  const logView = document.getElementById('log-view');
+  if (typeof renderLogPage === 'function' && (logData || (logView && getComputedStyle(logView).display !== 'none'))) renderLogPage();
 }
 
 
@@ -745,13 +746,13 @@ async function renderLogPage() {
         </div>
         <div class="lg-dfoot">
           <button class="lg-cmore">${ja ? '詳しく ▾' : '자세히 ▾'}</button>
-          ${sk}<span class="lg-dopen" data-lg="${x.id}">${ja ? '日誌をすべて見る →' : '일지 전체 보기 →'}</span>
+          ${sk}<span class="lg-dopen" data-lg="${x.id}" role="button" tabindex="0">${ja ? '日誌をすべて見る →' : '일지 전체 보기 →'}</span>
         </div>
       </article>`;
     }).join('') + `</div>` : '';
 
     const chipHtml = chips.length ? `<div class="lg-chiprow">` + chips.map(x =>
-      `<div class="lg-chip${x.slide ? ' slide' : ''}" data-lg="${x.id}">
+      `<div class="lg-chip${x.slide ? ' slide' : ''}" data-lg="${x.id}" role="button" tabindex="0">
          ${x.thumb
            ? `<img class="lg-cith" src="${escapeHTML((ja && x.thumb_ja) || x.thumb)}" alt="" loading="lazy" decoding="async">`
            : `<span class="lg-ci"><i class="bi ${x.slide ? 'bi-easel' : 'bi-file-earmark-text'}" aria-hidden="true"></i></span>`}
@@ -1094,7 +1095,7 @@ function openLogDetail(id, backId) {
         : `돌아가기: ${escapeHTML(logItemTitle(back, ja))}`}</button>`
     : '';
   const body = document.getElementById('lg-mo-body');
-  body.innerHTML = `${backBtn}<div class="lg-mo-t">${escapeHTML(title)}</div>
+  body.innerHTML = `${backBtn}<div class="lg-mo-t" id="lg-mo-title">${escapeHTML(title)}</div>
     <div class="lg-mo-w">${item.when}</div>${(ja && item.detail_ja) ? item.detail_ja : item.detail}`;
   styleSheetTables(body);
   buildLogGalleries(body);
@@ -1107,6 +1108,7 @@ function openLogDetail(id, backId) {
   // 본문 캡처는 낮게 묶여 있어 슬라이드 글자가 안 읽힌다. 누르면 그 자리에서 원본 크기로 편다.
   body.querySelectorAll('.ifig img, .lg-fig img, .lg-flowbox svg.flow').forEach(im => {
     if (im.closest('.lg-gal')) return;  // 여러 장 묶음은 크게 보기 화면에서 넘겨 본다
+    makeKeyClickable(im, '');
     im.addEventListener('click', () => {
       const fig = im.closest('.ifig, .lg-fig, .lg-flowbox');
       fig.classList.toggle('full');
@@ -1115,10 +1117,30 @@ function openLogDetail(id, backId) {
   });
 
   const ov = document.getElementById('lg-ov');
+  if (!ov.classList.contains('on')) lgLastFocus = document.activeElement;
   ov.classList.add('on');
   ov.querySelector('.lg-mo').scrollTop = 0;
   document.body.style.overflow = 'hidden';
+  const x = document.getElementById('lg-mo-x');
+  x.setAttribute('aria-label', ja ? '閉じる' : '닫기');
+  x.focus({ preventScroll: true });
 }
+
+// 팝업이 열려 있는 동안 Tab 이 팝업 밖으로 나가지 않게, 닫으면 연 자리로 포커스를 돌려준다
+let lgLastFocus = null;
+function trapFocus(container, e) {
+  if (e.key !== 'Tab') return;
+  const f = [...container.querySelectorAll('a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])')]
+    .filter(el => el.offsetParent !== null);
+  if (!f.length) return;
+  const first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+}
+document.addEventListener('keydown', e => {
+  const ov = document.getElementById('lg-ov');
+  if (ov && ov.classList.contains('on') && !(logLightbox && logLightbox.classList.contains('on'))) trapFocus(ov, e);
+});
 
 // 이어서 나오는 사진 2장 이상을 좌우로 나란히 놓는다.
 // 깊게 본 기록은 붙어 있는 <figure class="lg-fig">, 개념 노트는 붙어 있는 이미지 줄(tr.imgrow)을 한 묶음으로 본다.
@@ -1161,7 +1183,10 @@ function buildLogGalleries(root) {
       track.appendChild(f);
     });
     const imgs = figs.map(f => f.querySelector('img'));
-    imgs.forEach((im, i) => im.addEventListener('click', () => openLogLightbox(imgs, i)));
+    imgs.forEach((im, i) => {
+      im.addEventListener('click', () => openLogLightbox(imgs, i));
+      makeKeyClickable(im, `${i + 1} / ${imgs.length}`);
+    });
 
     const step = () => (track.firstElementChild ? track.firstElementChild.getBoundingClientRect().width + 12 : track.clientWidth);
     gal.querySelector('.prev').addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
@@ -1190,13 +1215,19 @@ function openLogLightbox(imgs, index) {
   if (!logLightbox) {
     logLightbox = document.createElement('div');
     logLightbox.className = 'lg-lb';
+    logLightbox.setAttribute('role', 'dialog');
+    logLightbox.setAttribute('aria-modal', 'true');
+    logLightbox.setAttribute('aria-label', '画像 / 이미지');
     logLightbox.innerHTML = `<button type="button" class="lg-lb-x" aria-label="閉じる / 닫기">&#10005;</button>
       <button type="button" class="lg-lb-nav prev" aria-label="前へ / 이전">&#8249;</button>
       <img alt="">
       <button type="button" class="lg-lb-nav next" aria-label="次へ / 다음">&#8250;</button>
       <div class="lg-lb-count"></div>`;
     document.body.appendChild(logLightbox);
-    const close = () => logLightbox.classList.remove('on');
+    const close = () => {
+      logLightbox.classList.remove('on');
+      if (logLightbox.opener && document.contains(logLightbox.opener)) logLightbox.opener.focus({ preventScroll: true });
+    };
     logLightbox.querySelector('.lg-lb-x').addEventListener('click', close);
     logLightbox.addEventListener('click', e => { if (e.target === logLightbox) close(); });
     logLightbox.querySelector('.prev').addEventListener('click', () => logLightbox.go(-1));
@@ -1206,6 +1237,7 @@ function openLogLightbox(imgs, index) {
       if (e.key === 'Escape') { close(); e.stopPropagation(); }
       else if (e.key === 'ArrowLeft') logLightbox.go(-1);
       else if (e.key === 'ArrowRight') logLightbox.go(1);
+      else trapFocus(logLightbox, e);
     }, true);
   }
   let i = index;
@@ -1217,7 +1249,20 @@ function openLogLightbox(imgs, index) {
   };
   logLightbox.go = d => { i = Math.min(imgs.length - 1, Math.max(0, i + d)); show(); };
   show();
+  logLightbox.opener = imgs[index];
   logLightbox.classList.add('on');
+  logLightbox.querySelector('.lg-lb-x').focus({ preventScroll: true });
+}
+
+// 그림을 키보드로도 열 수 있게 (Tab 으로 가서 Enter·Space)
+function makeKeyClickable(el, label) {
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('role', 'button');
+  const ja = currentLanguage === 'ja';
+  el.setAttribute('aria-label', (ja ? '画像を拡大' : '이미지 크게 보기') + (label ? ` ${label}` : ''));
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.dispatchEvent(new MouseEvent('click', { bubbles: true })); }
+  });
 }
 
 // 카드에 보이는 이미지 수 — 일본어 페이지는 한국어 전용 캡처를 빼므로 따로 센다
@@ -1243,8 +1288,11 @@ function styleSheetTables(root) {
 
 function closeLogDetail() {
   const ov = document.getElementById('lg-ov');
-  if (ov) ov.classList.remove('on');
+  if (!ov || !ov.classList.contains('on')) return;
+  ov.classList.remove('on');
   document.body.style.overflow = '';
+  if (lgLastFocus && document.contains(lgLastFocus)) lgLastFocus.focus({ preventScroll: true });
+  lgLastFocus = null;
 }
 
 /* ==========================

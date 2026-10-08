@@ -207,6 +207,8 @@
   document.addEventListener('keydown', function onKey(e) {
     if (!document.getElementById('intro')) { document.removeEventListener('keydown', onKey, true); return; }
     if (e.key === 'Escape') { e.stopPropagation(); skip(); }
+    // 입력칸에 포커스가 오기 전(타이핑 중)에 누른 Enter 도 입장으로
+    else if (e.key === 'Enter' && !e.isComposing && !e.target.closest('button, input')) { e.preventDefault(); send(); }
   }, true);
   dog.addEventListener('click', () => { dog.classList.remove('jump'); void dog.offsetWidth; dog.classList.add('jump'); });
   dog.addEventListener('animationend', () => { if (!busy) dog.classList.remove('jump'); });
