@@ -3481,6 +3481,12 @@ table.sheet tr.sh-date td * { color: inherit; }
 .bd-dog { position: relative; width: 96px; height: 92px; padding: 0; border: 0; background: none; cursor: pointer; }
 .bd-dog:focus-visible { outline: 2px dashed var(--blue-color); outline-offset: 2px; border-radius: 12px; }
 .px-dog { width: 100%; height: 100%; display: block; overflow: visible; }
+/* 깨어 있을 때 커서를 올리면 부리를 열었다 닫았다 (꽥꽥) — 자는 동안은 움직이지 않는다 */
+.px-beak-open { visibility: hidden; }
+.bd:not(.sleep) .bd-dog:hover .px-beak-open, .bd:not(.sleep) .bd-dog:focus-visible .px-beak-open,
+.it-dog:hover .px-beak-open { animation: px-quack .36s steps(1) infinite; }
+@keyframes px-quack { 0% { visibility: visible; } 50% { visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) { .px-beak-open { animation: none !important; } }
 /* 꼬리: 두 장면을 번갈아 (도트식 흔들기) */
 .px-tail-b { visibility: hidden; }
 .bd.awake .px-tail-a, .bd-dog:hover .px-tail-a { animation: px-tail-a .5s steps(1) infinite; }
