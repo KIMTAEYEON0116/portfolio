@@ -64,6 +64,7 @@ const i18n = {
     gb_list_title: "メッセージ一覧",
     hero_tag_bridge: "<i class=\"bi bi-translate\" aria-hidden=\"true\"></i> 日韓バイリンガル",
     hero_tag_it: "<i class=\"bi bi-code-slash\" aria-hidden=\"true\"></i> Web開発",
+    hero_tag_join: "<i class=\"bi bi-calendar-check\" aria-hidden=\"true\"></i> 2027年4月入社可能",
     skill_stack_title: "Tech Stack",
     skill_biz_ja: "ビジネス会話",
     skill_note_lang: "Python（FastAPI）と JavaScript でプロジェクトを制作。",
@@ -148,6 +149,7 @@ const i18n = {
     gb_list_title: "방명록 메시지",
     hero_tag_bridge: "<i class=\"bi bi-translate\" aria-hidden=\"true\"></i> 한일 이중언어",
     hero_tag_it: "<i class=\"bi bi-code-slash\" aria-hidden=\"true\"></i> 웹 개발",
+    hero_tag_join: "<i class=\"bi bi-calendar-check\" aria-hidden=\"true\"></i> 2027년 4월 입사 가능",
     skill_stack_title: "Tech Stack",
     skill_biz_ja: "비즈니스 회화",
     skill_note_lang: "Python(FastAPI)과 JavaScript로 프로젝트를 제작했습니다.",
@@ -481,7 +483,7 @@ async function renderGuestbook() {
   listContainer.innerHTML = '';
 
   if (messages.length === 0) {
-    const noMsg = currentLanguage === 'ja' ? '最初のメッセージを残してみてください！' : '첫 방명록을 남겨보세요!';
+    const noMsg = currentLanguage === 'ja' ? '最初のメッセージを残してみてください。' : '첫 방명록을 남겨보세요!';
     listContainer.innerHTML = `<p style="font-size: 0.85rem; color:#888; text-align:center; padding: 20px 0;">${noMsg}</p>`;
     return;
   }

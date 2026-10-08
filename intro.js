@@ -24,7 +24,7 @@
       opt: 'オプション(<u>O</u>)', find: '検索(<u>S</u>)',
       hint: 'Enter でも入場できます', skip: 'スキップ',
       note: '※ 入力したキーワードから該当ページへ案内します（AI による回答ではありません）',
-      chips: ['実案件（BtoB）を見たい', '日本語力は？', '学習の日誌', 'このサイトの作り方'],
+      chips: ['実案件（BtoB）を見たい', '日本で働きたい理由', '日本語力は？', '学習の日誌', 'このサイトの作り方'],
       label: '入場ガイド',
     },
     ko: {
@@ -35,7 +35,7 @@
       opt: '옵션(<u>O</u>)', find: '찾기(<u>S</u>)',
       hint: 'Enter로도 입장할 수 있습니다', skip: '건너뛰기',
       note: '※ 입력한 키워드로 해당 페이지를 안내합니다 (AI 답변이 아닙니다)',
-      chips: ['실제 안건(B2B) 보고 싶어', '일본어 실력은?', '학습 일지', '이 사이트 제작 과정'],
+      chips: ['실제 안건(B2B) 보고 싶어', '일본에서 일하고 싶은 이유', '일본어 실력은?', '학습 일지', '이 사이트 제작 과정'],
       label: '입장 안내',
     }
   };
@@ -59,6 +59,8 @@
       ja: 'このポートフォリオサイトの制作記録へ\nご案内します！', ko: '이 포트폴리오 사이트의 제작 기록으로\n안내할게요!' },
     { re: /日誌|ログ|学習|勉強|log|일지|학습|공부/i, hash: '#/log', first: null,
       ja: '2026年3月からの学習の日誌へ\nご案内します！', ko: '2026년 3월부터의 학습 일지로\n안내할게요!' },
+    { re: /志望|理由|なぜ日本|日本で働|働きたい|入社|지망|이유|왜 일본|일본에서|입사/i, hash: '#/about', first: null, scroll: '.about-why-section',
+      ja: '「日本で働きたい理由」へ\nご案内します！', ko: '「일본에서 일하고 싶은 이유」로\n안내할게요!' },
     { re: /日本語|JLPT|N1|自己|経歴|自己紹介|about|일본어|자기소개|경력/i, hash: '#/about', first: null,
       ja: '自己紹介（経歴・日本語・自己PR）へ\nご案内します！', ko: '자기소개(경력·일본어·자기 PR)로\n안내할게요!' },
     { re: /連絡|コンタクト|contact|メール|연락|메일/i, hash: '#/contact', first: null,
@@ -162,7 +164,7 @@
     await speak(r[lang()], id);
     await wait(500);
     await montage(r.first);
-    open(r.hash);
+    open(r.hash, r.scroll);
   }
 
   // 프로젝트 첫 화면을 차례로 (고른 프로젝트를 맨 앞에)
@@ -185,11 +187,14 @@
   }
 
   // 뒤의 실제 화면을 먼저 바꿔 두고 문을 연다
-  async function open(hash) {
+  async function open(hash, scrollSel) {
     if (hash && hash !== '#/' && location.hash !== hash) {
       history.pushState(null, '', hash);
       if (typeof applyRoute === 'function') applyRoute();
     }
+    // 문이 열리기 전에 뒤 화면을 해당 카드 위치로 옮겨 둔다
+    const target = scrollSel && document.querySelector(scrollSel);
+    if (target) target.scrollIntoView({ block: 'start' });
     await wait(150);
     root.classList.add('open');
     await wait(1100);

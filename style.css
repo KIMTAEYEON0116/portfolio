@@ -301,6 +301,10 @@ body {
   background-color: #FEF9E7;
   color: #926B08;
 }
+.tag-join {
+  background-color: #F3EEFB;
+  color: #5B3E99;
+}
 
 @media (max-width: 768px) {
   .hero-tagline {
@@ -3563,7 +3567,20 @@ table.sheet tr.sh-date td * { color: inherit; }
   .px-tail-a, .px-tail-b, .px-eyes-open, .px-eyes-shut, .px-sleep-body, .bd-z i, .bd-dog.jump, .bd-balloon { animation: none !important; }
   .bd-z i { opacity: 1; position: static; }
 }
-@media print { .bd { display: none; } }
+/* 인쇄·PDF 저장: 채용 담당자가 자기소개·프로젝트 화면을 그대로 출력해도 읽히도록 */
+@media print {
+  @page { margin: 12mm; }
+  html, body { background: #fff !important; }
+  .bd, #intro, .it, .lang-selector, .sub-header-right, .nav-icon-btn, #loading-screen, .loading-logo,
+  .media-nav-btn, .media-dot, video, iframe, .lg-lb, .guestbook-form, #guestbook-form { display: none !important; }
+  .view-section:not(.active) { display: none !important; }
+  *, *::before, *::after { box-shadow: none !important; text-shadow: none !important; animation: none !important; transition: none !important; }
+  .about-intro-section, .about-section-expanded, .skill-stack-section, .timeline-item, .edu-item,
+  .difficulty-card, .project-info-row, .pl-sec, table { break-inside: avoid; }
+  h1, h2, h3, h4 { break-after: avoid; }
+  a { color: inherit !important; text-decoration: none !important; }
+  .site-footer { border-top: 1px solid #999; }
+}
 
 /* 손가락으로 누르기 쉽게 — 보이는 크기는 그대로 두고 누르는 영역만 넓힌다 (WCAG 2.2 최소 24px) */
 .media-dot { position: relative; }

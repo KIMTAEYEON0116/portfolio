@@ -10,7 +10,7 @@
       ask: '見たいものを入力するか、\nオプションから選んでください。',
       placeholder: '例）実案件を見たい',
       opt: 'オプション(<u>O</u>)', find: '検索(<u>S</u>)', close: '閉じる',
-      chips: ['実案件（BtoB）を見たい', '日本語力は？', '学習の日誌', 'このサイトの作り方', '連絡先'],
+      chips: ['実案件（BtoB）を見たい', '日本で働きたい理由', '日本語力は？', '学習の日誌', 'このサイトの作り方', '連絡先'],
       miss: 'すみません、見つけられませんでした。\nオプションから選んでみてください。',
       note: 'キーワードで該当ページへ案内します\n（AI の回答ではありません）',
       dog: '案内犬（クリックで検索）',
@@ -20,7 +20,7 @@
       ask: '보고 싶은 것을 입력하거나,\n옵션에서 골라 주세요.',
       placeholder: '예) 실제 안건 보고 싶어',
       opt: '옵션(<u>O</u>)', find: '찾기(<u>S</u>)', close: '닫기',
-      chips: ['실제 안건(B2B) 보고 싶어', '일본어 실력은?', '학습 일지', '이 사이트 제작 과정', '연락처'],
+      chips: ['실제 안건(B2B) 보고 싶어', '일본에서 일하고 싶은 이유', '일본어 실력은?', '학습 일지', '이 사이트 제작 과정', '연락처'],
       miss: '죄송해요, 잘 찾지 못했어요.\n옵션에서 골라 보세요.',
       note: '키워드로 해당 페이지를 안내합니다\n(AI 답변이 아닙니다)',
       dog: '안내견 (누르면 검색)',
@@ -40,6 +40,8 @@
       ja: 'プロジェクトのページへ\nご案内します！', ko: '프로젝트 페이지로\n안내할게요!' },
     { re: /日誌|ログ|学習|勉強|log|일지|학습|공부/i, hash: '#/log',
       ja: '2026年3月からの学習の日誌へ\nご案内します！', ko: '2026년 3월부터의 학습 일지로\n안내할게요!' },
+    { re: /志望|理由|なぜ日本|日本で働|働きたい|入社|지망|이유|왜 일본|일본에서|입사/i, hash: '#/about', scroll: '.about-why-section',
+      ja: '「日本で働きたい理由」へ\nご案内します！', ko: '「일본에서 일하고 싶은 이유」로\n안내할게요!' },
     { re: /日本語|JLPT|N1|自己|経歴|自己紹介|資格|about|일본어|자기소개|경력|자격/i, hash: '#/about',
       ja: '自己紹介（経歴・日本語・自己PR）へ\nご案内します！', ko: '자기소개(경력·일본어·자기 PR)로\n안내할게요!' },
     { re: /連絡|コンタクト|contact|メール|ゲストブック|연락|메일|방명록/i, hash: '#/contact',
@@ -146,7 +148,10 @@
     if (id !== runId) return;
     if (location.hash !== r.hash) history.pushState(null, '', r.hash);
     if (typeof applyRoute === 'function') applyRoute();
-    window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+    // 같은 화면 안의 특정 카드(예: 日本で働きたい理由)로 바로 내려간다
+    const target = r.scroll && document.querySelector(r.scroll);
+    if (target) setTimeout(() => target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }), 120);
+    else window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
     close();
   }
 
