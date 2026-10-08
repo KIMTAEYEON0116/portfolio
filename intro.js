@@ -1,6 +1,6 @@
 /* ==========================================================================
-   첫 방문 입장 화면 — 안내견 말풍선에 보고 싶은 것을 적고 Enter →
-   프로젝트 캡처가 잠깐 지나가고 → 문이 좌우로 열리며 그 화면으로 들어간다.
+   첫 방문 입장 화면 — 안내 오리 말풍선에 보고 싶은 것을 적고 Enter →
+   프로젝트 캡처가 잠깐 지나가고 → 마지막 캡처가 화면 가득 커지며 그 화면으로 들어간다 (문 없음).
    · 같은 창에서는 한 번만, 홈 주소로 들어왔을 때만 보인다 (특정 페이지 링크로 오면 건너뜀)
    · ?intro 를 붙이면 다시 볼 수 있다
    · 키워드로 안내한다 (AI 답변이 아니다 — 화면 아래에도 밝힌다)
@@ -57,30 +57,37 @@
       ja: 'チームで作った\n「タイピング練習プラットフォーム」へ\nご案内します！', ko: '팀으로 만든 「타이핑 연습 플랫폼」으로\n안내할게요!' },
     { re: /作り方|制作|このサイト|ポートフォリオサイト|제작|이 사이트|만든 과정/i, hash: '#/project/portfolio/overview', first: 'portfolio',
       ja: 'このポートフォリオサイトの制作記録へ\nご案内します！', ko: '이 포트폴리오 사이트의 제작 기록으로\n안내할게요!' },
-    { re: /日誌|ログ|学習|勉強|log|일지|학습|공부/i, hash: '#/log', first: null,
+    { re: /日誌|ログ|学習|勉強|log|일지|학습|공부/i, hash: '#/log', first: null, icon: 'bi-journal-text', card: { ja: '学習日誌（2026年3月〜）', ko: '학습 일지 (2026년 3월~)' },
       ja: '2026年3月からの学習の日誌へ\nご案内します！', ko: '2026년 3월부터의 학습 일지로\n안내할게요!' },
-    { re: /志望|理由|なぜ日本|日本で働|働きたい|入社|지망|이유|왜 일본|일본에서|입사/i, hash: '#/about', first: null, scroll: '.about-why-section',
+    { re: /志望|理由|なぜ日本|日本で働|働きたい|入社|지망|이유|왜 일본|일본에서|입사/i, hash: '#/about', first: null, scroll: '.about-why-section', icon: 'bi-geo-alt', card: { ja: '日本で働きたい理由', ko: '일본에서 일하고 싶은 이유' },
       ja: '「日本で働きたい理由」へ\nご案内します！', ko: '「일본에서 일하고 싶은 이유」로\n안내할게요!' },
-    { re: /日本語|JLPT|N1|自己|経歴|自己紹介|about|일본어|자기소개|경력/i, hash: '#/about', first: null,
+    { re: /日本語|JLPT|N1|自己|経歴|自己紹介|about|일본어|자기소개|경력/i, hash: '#/about', first: null, icon: 'bi-person', card: { ja: '自己紹介（経歴・日本語・自己PR）', ko: '자기소개 (경력·일본어·자기PR)' },
       ja: '自己紹介（経歴・日本語・自己PR）へ\nご案内します！', ko: '자기소개(경력·일본어·자기 PR)로\n안내할게요!' },
-    { re: /連絡|コンタクト|contact|メール|연락|메일/i, hash: '#/contact', first: null,
+    { re: /連絡|コンタクト|contact|メール|연락|메일/i, hash: '#/contact', first: null, icon: 'bi-envelope', card: { ja: '連絡先', ko: '연락처' },
       ja: '連絡先のページへご案内します！', ko: '연락처 페이지로 안내할게요!' },
   ];
-  const HOME = { hash: '#/', first: null,
+  const HOME = { hash: '#/', first: null, icon: 'bi-house', card: { ja: 'ホーム（4つのプロジェクト）', ko: '홈 (4개의 프로젝트)' },
     ja: 'ホームへご案内します！\n4つのプロジェクトをご覧ください。', ko: '홈으로 안내할게요!\n4개의 프로젝트를 둘러봐 주세요.' };
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const wait = ms => new Promise(r => setTimeout(r, reduced ? 0 : ms));
-  const lang = () => (typeof currentLanguage !== 'undefined' && currentLanguage === 'ko') ? 'ko' : 'ja';
+  // 사이트(initPage)가 언어를 정하기 전에 그려질 수 있어, 같은 규칙(?lang → 저장된 값)으로 먼저 읽는다
+  let langReady = false;
+  const lang = () => {
+    if (langReady && typeof currentLanguage !== 'undefined') return currentLanguage === 'ko' ? 'ko' : 'ja';
+    const ql = params.get('lang');
+    let l = (ql === 'ja' || ql === 'ko') ? ql : null;
+    if (!l) { try { l = localStorage.getItem('portfolio_lang'); } catch (e) { /* 무시 */ } }
+    return l === 'ko' ? 'ko' : 'ja';
+  };
+  const markLangReady = () => { langReady = true; };
+  if (document.readyState === 'complete') markLangReady(); else window.addEventListener('load', markLangReady);
   const dogSvg = (document.querySelector('#bd-dog .px-dog') || {}).outerHTML || '';
 
   const root = document.createElement('div');
   root.id = 'intro';
   root.className = 'it';
   root.innerHTML = `
-    <div class="it-door left" aria-hidden="true"><span class="it-panel top"></span><span class="it-panel bottom"></span><span class="it-knob"></span></div>
-    <div class="it-door right" aria-hidden="true"><span class="it-panel top"></span><span class="it-panel bottom"></span><span class="it-knob"></span></div>
-    <div class="it-jamb" aria-hidden="true"></div>
     <div class="it-lang" role="group" aria-label="Language">
       <button type="button" data-lang="ja">日本語</button><button type="button" data-lang="ko">한국어</button>
     </div>
@@ -130,7 +137,7 @@
     for (const ch of text) {
       if (id !== runId) return;
       say.textContent += ch;
-      await wait(28);
+      await wait(50);
     }
     say.classList.remove('typing');
   }
@@ -167,10 +174,10 @@
     open(r.hash, r.scroll);
   }
 
-  // 프로젝트 첫 화면을 차례로 (고른 프로젝트를 맨 앞에)
+  // 프로젝트 첫 화면을 차례로 (고른 프로젝트를 맨 끝에 — 그 캡처가 커지며 실제 화면으로 이어진다)
   async function montage(first) {
     const order = ['hospital', 'gakong', 'typing', 'portfolio'];
-    if (first) { order.splice(order.indexOf(first), 1); order.unshift(first); }
+    if (first) { order.splice(order.indexOf(first), 1); order.push(first); }
     const frame = $('it-frame'), cap = $('it-cap'), dots = $('it-dots');
     frame.innerHTML = order.map(k => `<img src="${SHOTS[k].src}" alt="">`).join('');
     dots.innerHTML = order.map(() => '<i></i>').join('');
@@ -182,22 +189,29 @@
       imgs.forEach((im, j) => im.classList.toggle('on', j === i));
       ds.forEach((d, j) => d.classList.toggle('on', j <= i));
       cap.innerHTML = `${SHOTS[order[i]][lang()]}<small>${SHOTS[order[i]].en}</small>`;
-      await wait(i === 0 && first ? 900 : 520);
+      await wait(i === order.length - 1 ? 1000 : 520);
     }
   }
 
-  // 뒤의 실제 화면을 먼저 바꿔 두고 문을 연다
+  // 뒤의 실제 화면을 먼저 바꿔 두고, 마지막 캡처를 화면 가득 키우며 사라지게 한다
   async function open(hash, scrollSel) {
     if (hash && hash !== '#/' && location.hash !== hash) {
       history.pushState(null, '', hash);
       if (typeof applyRoute === 'function') applyRoute();
     }
-    // 문이 열리기 전에 뒤 화면을 해당 카드 위치로 옮겨 둔다
+    // 캡처가 커지기 전에 뒤 화면을 해당 카드 위치로 옮겨 둔다
     const target = scrollSel && document.querySelector(scrollSel);
     if (target) target.scrollIntoView({ block: 'start' });
     await wait(150);
+    const frame = $('it-frame');
+    if (root.classList.contains('montage-on') && frame) {
+      const b = frame.getBoundingClientRect();
+      const k = Math.max(innerWidth / b.width, innerHeight / b.height) * 1.02;
+      const dx = innerWidth / 2 - (b.left + b.width / 2), dy = innerHeight / 2 - (b.top + b.height / 2);
+      frame.style.transform = `translate(${dx}px, ${dy}px) scale(${k})`;
+    }
     root.classList.add('open');
-    await wait(1100);
+    await wait(950);
     root.remove();
     document.body.classList.remove('intro-open');
   }
