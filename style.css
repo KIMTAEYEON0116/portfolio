@@ -3489,7 +3489,7 @@ table.sheet tr.sh-date td * { color: inherit; }
 /* 넓은 화면에서는 화면 끝이 아니라 본문(최대 1200px) 오른쪽 모서리에 걸쳐 앉는다 */
 .bd { position: fixed; right: max(16px, calc((100vw - 1200px) / 2 - 64px)); bottom: 12px; z-index: 1100; display: flex; flex-direction: column; align-items: flex-end; pointer-events: none; }
 .bd > * { pointer-events: auto; }
-.bd-dog { position: relative; width: 96px; height: 92px; padding: 0; border: 0; background: none; cursor: pointer; }
+.bd-dog { position: relative; width: 96px; height: 90px; padding: 0; border: 0; background: none; cursor: pointer; }
 .bd-dog:focus-visible { outline: 2px dashed var(--blue-color); outline-offset: 2px; border-radius: 12px; }
 .px-dog { width: 100%; height: 100%; display: block; overflow: visible; }
 /* 깨어 있을 때 커서를 올리면 부리를 열었다 닫았다 하며 날갯짓 (꽥꽥) — 자는 동안은 움직이지 않는다 */
@@ -3516,7 +3516,7 @@ table.sheet tr.sh-date td * { color: inherit; }
 .bd.sleep .px-tail-b { visibility: visible; }
 .px-sleep { display: none; width: 100%; height: 100%; overflow: visible; }
 /* 잘 때: 앉은 그림 대신 엎드린 그림, 숨쉬듯 몸이 오르내린다 */
-.bd.sleep .bd-dog { width: 112px; height: 52px; }
+.bd.sleep .bd-dog { width: 112px; height: 53px; }
 .bd.sleep .px-dog { display: none; }
 .bd.sleep .px-sleep { display: block; }
 .bd.sleep .px-sleep-body { animation: px-breathe 2.4s steps(1) infinite; }
@@ -3656,7 +3656,7 @@ body.intro-open .bd { visibility: hidden; }
 .it-hint { margin-top: 8px; font-size: 11px; color: #7A7350; display: flex; justify-content: space-between; gap: 8px; }
 .it-skip { border: 0; background: none; padding: 0; min-height: 24px; font: inherit; color: #7A7350; text-decoration: underline; cursor: pointer; }
 
-.it-dog { position: relative; isolation: isolate; width: 144px; height: 138px; margin: 18px 0 0 90px; cursor: pointer; }
+.it-dog { position: relative; isolation: isolate; width: 144px; height: 135px; margin: 18px 0 0 90px; cursor: pointer; }
 .it-dog .px-dog { width: 100%; height: 100%; display: block; overflow: visible;
   filter: drop-shadow(2px 0 0 #C6D8EE) drop-shadow(-2px 0 0 #C6D8EE) drop-shadow(0 2px 0 #C6D8EE) drop-shadow(0 -2px 0 #C6D8EE); }
 .it-dog::before { content: ''; position: absolute; z-index: -1; left: 4%; right: 4%; bottom: -6px; height: 20px;
@@ -3686,7 +3686,7 @@ body.intro-open .bd { visibility: hidden; }
 .it-dots i.on { background: var(--light-blue); }
 .it-note { position: absolute; left: 0; right: 0; bottom: 10px; text-align: center; font-size: .7rem; color: rgba(198, 216, 238, .75); padding: 0 12px; }
 .it.open .it-note { opacity: 0; }
-@media (max-width: 480px) { .it-dog { width: 120px; height: 115px; margin-left: 70px; } }
+@media (max-width: 480px) { .it-dog { width: 120px; height: 113px; margin-left: 70px; } }
 @media (prefers-reduced-motion: reduce) {
   .it::before, .it-stage, .it-buddy, .it-montage, .it-frame, .it-frame img { transition: none !important; }
   .it-dog .px-tail-a, .it-dog .px-tail-b, .it-dog .px-eyes-open, .it-dog .px-eyes-shut, .it-dog.jump { animation: none !important; }
