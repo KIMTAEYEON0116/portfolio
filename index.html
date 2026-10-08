@@ -25,7 +25,7 @@
   <!-- Google Fonts & Bootstrap Icons CDN -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="style.css?v=20.2">
+  <link rel="stylesheet" href="style.css?v=21.0">
 </head>
 
 <body>
@@ -147,16 +147,36 @@
           <h3 class="about-intro-title" data-i18n="about_intro_title" style="margin-bottom: 0;">
             <i class="bi bi-person-fill"></i> 자기소개
           </h3>
+          <div class="about-badges">
           <span class="about-birthdate"
             style="font-family: var(--font-header); font-size: 0.95rem; font-weight: 600; color: var(--dark-color); border: 2px solid var(--dark-color); padding: 4px 10px; border-radius: var(--radius-sm); background-color: var(--bg-color); box-shadow: 2px 2px 0px var(--dark-color); display: inline-flex; align-items: center; gap: 6px;">
             <i class="bi bi-calendar3" style="color: var(--blue-color);"></i> <span data-i18n="about_birth_year">1998年生まれ</span>
           </span>
+          <span class="about-birthdate about-join">
+            <i class="bi bi-briefcase" aria-hidden="true"></i> <span data-i18n="about_join">入社可能時期：2027年4月〜</span>
+          </span>
+          </div>
         </div>
         <div class="about-intro-desc">
-          <p data-i18n="about_intro_desc1">こんにちは。2026年3月から開発を学んでいる金兌衍（キム・テヨン）と申します。日本語通訳翻訳を専攻し、在学中に2回の交換留学を経験しました。JLPT N1も取得しています。</p>
-          <p data-i18n="about_intro_desc2">利用者に長く使われるサービスほど、多くの人に愛され、関心を持ち続けてもらえていると思います。そして、その関心があるからこそ、改善点も見えてきて、サービスがさらに良くなっていくのではないかと考えています。私は、そうした好循環を生み出せるサービス作りに携わりたいと考えています。</p>
-          <p data-i18n="about_intro_desc3">転機は7月です。140文字制限のコメント欄にカウンターがなく、長く書いた人が何の案内もなく失敗していました。130文字から色が変わるように直して以来、UI/UX・モバイル対応の改善を13件記録しています。</p>
-          <p data-i18n="about_intro_desc4">もともと製品を見るたびに「どんな不便を解決するために生まれたのか」を考える習慣があり、同じことを画面でもやっているのだと後から気づきました。分からないことはそのままにせず、原因を最後まで突き止める姿勢を大切にしています。</p>
+          <p data-i18n="about_intro_desc1">2026年3月から開発を学んでいる金兌衍（キム・テヨン）と申します。日本語通訳翻訳を専攻し、在学中に2回の交換留学を経験しました。<span class="nb">JLPT N1</span>も取得しています。</p>
+          <p data-i18n="about_intro_desc2"><strong class="pr-lead">私の強みは、つくる前に誰がどんな場面で使うのかを思い描くことです。</strong>転機は7月でした。140文字制限のコメント欄にカウンターがなく、長く書いた人が何の案内もなく失敗していました。130文字から色が変わるように直して以来、UI/UX・モバイル対応の改善を13件記録しています。</p>
+          <p data-i18n="about_intro_desc3">もともと製品を見るたびに「どんな不便を解決するために生まれたのか」を考える習慣があり、同じことを画面でもやっているのだと後から気づきました。分からないことはそのままにせず、原因を最後まで突き止める姿勢を大切にしています。</p>
+          <p data-i18n="about_intro_desc4">利用者に長く使われるサービスほど、多くの人に愛され、関心を持ち続けてもらえていると思います。そして、その関心があるからこそ、改善点も見えてきて、サービスがさらに良くなっていくのではないかと考えています。私は、そうした好循環を生み出せるサービス作りに携わりたいと考えています。</p>
+          <p class="pr-close" data-i18n="about_intro_desc5">手を動かす前に使う人を思い描くこと、分からないことは確かめること。この二つは入社後も変えずに続けます。</p>
+        </div>
+      </div>
+
+      <!-- 일본에서 일하고 싶은 이유 (이력서 「日本就職を希望する理由」) -->
+      <div class="about-intro-section about-why-section">
+        <h3 class="about-intro-title">
+          <i class="bi bi-geo-alt-fill" aria-hidden="true"></i> <span data-i18n="about_why_title">日本で働きたい理由</span>
+        </h3>
+        <div class="about-intro-desc">
+          <p data-i18n="about_why1">日本で働きたい理由は、手順を踏んで確認しながら進める働き方が自分に合っており、その中でものづくりを続けたいと考えたからです。</p>
+          <p data-i18n="about_why2">日本語通訳翻訳を専攻し、旅行で10回以上訪れ、交換留学も二度経験してN1を取得しました。暮らす中で安心できたのは、なぜそうするのかを<span class="nb">一つひとつ</span>説明してもらえることで、時間がかかる場面でも納得して待つことができました。</p>
+          <p data-i18n="about_why3">一方で、思いついたことを形にしたい気持ちはあってもITは難しく、どこから手をつければよいか分かりませんでした。2026年3月から学び始め、ITはその考えを実現するための手段だと分かりました。</p>
+          <p data-i18n="about_why4">個人開発では、架空の読書会をテーマにしたサービスを企画から開発・デプロイまで一人で進めました。分からないことは調べながら一つずつ確かめて実装し、画面の文言は韓国語と日本語の両方で管理しています。想像していたものが形になり、目に見えることにやりがいを感じています。</p>
+          <p class="pr-close" data-i18n="about_why5">日本で、使う方にとって分かりやすいものづくりを続けていきたいと考えています。</p>
         </div>
       </div>
 
@@ -660,9 +680,9 @@
     </p>
     <style>#loading-screen{display:none!important}</style>
   </noscript>
-  <script src="script.js?v=20.2"></script>
-  <script src="buddy.js?v=20.2"></script>
-  <script src="intro.js?v=20.2"></script>
+  <script src="script.js?v=21.0"></script>
+  <script src="buddy.js?v=21.0"></script>
+  <script src="intro.js?v=21.0"></script>
 </body>
 
 </html>

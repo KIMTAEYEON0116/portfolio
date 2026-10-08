@@ -3675,3 +3675,13 @@ body.intro-open .bd { visibility: hidden; }
   .it-door, .it-stage, .it-buddy, .it-montage, .it-frame img, .it-jamb { transition: none !important; }
   .it-dog .px-tail-a, .it-dog .px-tail-b, .it-dog .px-eyes-open, .it-dog .px-eyes-shut, .it-dog.jump { animation: none !important; }
 }
+
+/* 자기PR: 결론(강점)을 먼저, 마무리는 입사 후 한 줄 */
+.about-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.about-join { font-size: 0.88rem; font-weight: 700; color: var(--dark-color); border: 2px solid var(--dark-color); padding: 4px 10px;
+  border-radius: var(--radius-sm); background-color: #FFF6CC; box-shadow: 2px 2px 0 var(--dark-color); display: inline-flex; align-items: center; gap: 6px; }
+.about-join i { color: #9A6B00; }
+.pr-lead { display: block; margin-bottom: 6px; font-size: 1.04em; color: var(--dark-color); }
+.about-intro-desc .pr-close { font-weight: 700; color: var(--dark-color); text-wrap: balance; }
+.about-why-section { margin-top: 0; }
+.about-why-section .about-intro-title { margin-bottom: 16px; }
