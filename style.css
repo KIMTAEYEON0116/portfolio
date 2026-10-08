@@ -3384,6 +3384,8 @@ p, li, dd, td, .tst, .pl-v { overflow-wrap: anywhere; }
 /* 일지 — 원본 노션 안에서만 열리던 링크(비공개 페이지) */
 .lg-deadlink { color: #66768A; font-size: 0.85em; border-bottom: 1px dashed #B8C4D3; cursor: help; }
 /* 원래 메모의 틀린 설명을 나중에 바로잡은 곳 */
+/* 일지 안의 하위 목록 (노션의 들여쓴 항목) */
+.lg-ul .lg-ul { margin: 4px 0 2px 14px; }
 .lg-fix { margin-left: 4px; font-size: 0.78em; font-weight: 500; color: #646E7D; white-space: nowrap; }
 
 /* 일지 노트 표 — 스프레드시트처럼 구역을 나눠 보이게 */
