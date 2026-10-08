@@ -3383,6 +3383,8 @@ p, li, dd, td, .tst, .pl-v { overflow-wrap: anywhere; }
 .project-tool-badge.team { opacity: 0.75; border-style: dashed; }
 /* 일지 — 원본 노션 안에서만 열리던 링크(비공개 페이지) */
 .lg-deadlink { color: #66768A; font-size: 0.85em; border-bottom: 1px dashed #B8C4D3; cursor: help; }
+/* 원래 메모의 틀린 설명을 나중에 바로잡은 곳 */
+.lg-fix { margin-left: 4px; font-size: 0.78em; font-weight: 500; color: #646E7D; white-space: nowrap; }
 
 /* 일지 노트 표 — 스프레드시트처럼 구역을 나눠 보이게 */
 table.sheet { border: 1.5px solid #C3CEDB; }
