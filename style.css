@@ -3703,3 +3703,14 @@ body.intro-open .bd { visibility: hidden; }
 .about-intro-desc .pr-close { font-weight: 700; color: var(--dark-color); text-wrap: balance; }
 .about-why-section { margin-top: 0; }
 .about-why-section .about-intro-title { margin-bottom: 16px; }
+
+/* 일지: AI에게 물어 정리한 블록은 접어 두고, 직접 쓴 메모만 펼쳐 보인다 */
+.lg-note { margin: 0 0 12px; padding: 7px 11px; border-left: 3px solid var(--blue-strong); background: #EEF3FB; border-radius: 0 8px 8px 0; font-size: .8rem; color: var(--blue-text); }
+details.lg-ai { margin: 8px 0 12px; border: 1.5px dashed #B8C4D3; border-radius: 10px; background: #F7F9FC; }
+details.lg-ai > summary { cursor: pointer; padding: 8px 12px; min-height: 24px; font-size: .8rem; font-weight: 700; color: #5B6A80; list-style: none; display: flex; align-items: center; gap: 8px; }
+details.lg-ai > summary::-webkit-details-marker { display: none; }
+details.lg-ai > summary::before { content: '▸'; color: var(--blue-strong); }
+details.lg-ai[open] > summary::before { content: '▾'; }
+details.lg-ai > summary .lg-ai-tag { margin-left: auto; font-weight: 500; font-size: .72rem; color: #8A96A8; }
+details.lg-ai[open] > summary .lg-ai-tag { visibility: hidden; }
+details.lg-ai > .lg-ai-body { padding: 4px 14px 12px; border-top: 1px dashed #D4DEEA; }
