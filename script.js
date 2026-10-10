@@ -1290,7 +1290,7 @@ async function renderCodeLog() {
   const total = codeLog.reduce((n, d) => n + d.files.length, 0);
   const cmts = codeLog.reduce((n, d) => n + d.files.reduce((m, f) => m + f.comments, 0), 0);
   // 주석(#…)만 색을 달리해 눈에 띄게 한다. 문자열 안의 색상값(#fff 등)은 건드리지 않는다
-  const hl = src => escapeHTML(src).replace(/(^|\s)(#(?=\s|[가-힣ぁ-んァ-ヶ一-龠]).*)$/gm, (m, a, c) => `${a}<span class="cl-c">${c}</span>`);
+  const hl = src => escapeHTML(src).replace(/(^|\s)(#(?![0-9a-fA-F]{3,6}).*)$/gm, (m, a, c) => `${a}<span class="cl-c">${c}</span>`);
   host.innerHTML = `<div class="cl-why">
       <div class="cl-why-head">${ja ? 'なぜコメントを載せるのか' : '왜 주석을 보여 주는가'}</div>
       <ul class="lg-ul">${ja

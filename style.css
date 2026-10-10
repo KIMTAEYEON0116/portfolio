@@ -3743,9 +3743,15 @@ details.lg-ai > .lg-ai-body { padding: 4px 14px 12px; border-top: 1px dashed #D4
 .cl-file > .lg-code { margin: 0 16px 14px 34px; }
 .lg-codelinks { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 @media (max-width: 600px) {
-  .cl-topics { white-space: normal; font-size: .78rem; }
-  .cl-file > .lg-code { margin: 0 10px 12px 10px; }
-  .cl-file > summary { padding-left: 28px; }
+  .cl-day > summary { flex-wrap: wrap; gap: 4px 10px; padding: 10px 14px; }
+  .cl-date { order: 1; }
+  .cl-cnt { order: 2; margin-left: auto; }
+  .cl-topics { order: 3; flex-basis: 100%; white-space: normal; font-size: .76rem; line-height: 1.45; color: #4B5563;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .cl-file > summary { padding: 9px 12px 9px 28px; gap: 6px 10px; }
+  .cl-fm { flex-basis: 100%; margin-left: 0; }
+  .cl-file > .lg-code { margin: 0 10px 12px 10px; padding: 12px 10px; }
+  .cl-file > .lg-code code { font-size: .7rem; }
 }
 
 /* 코드 연습 — 주석 강조 */
@@ -3757,9 +3763,9 @@ details.lg-ai > .lg-ai-body { padding: 4px 14px 12px; border-top: 1px dashed #D4
 .cl-stats span { font-size: .78rem; color: #334155; background: var(--bg-color); border: 1px solid var(--light-blue); border-radius: 10px; padding: 3px 10px; }
 .cl-stats b { font-family: var(--font-header); font-size: .95rem; color: var(--dark-color); margin-right: 3px; }
 .cl-stats .cl-stat-c { background: #EAF2FF; border-color: var(--blue-strong); }
-.cl-stats .cl-stat-c b { color: var(--blue-strong); }
+.cl-stats .cl-stat-c b { color: #2B4F80; }
 .cl-why .lg-note { margin: 0; }
 .cl-src .cl-c { color: #BFE1FF; font-weight: 700; background: rgba(90, 150, 230, .18); border-radius: 3px; padding: 0 3px; }
-.cl-c-demo { color: var(--blue-strong); background: #EAF2FF; font-family: var(--font-mono, monospace); font-size: .85em; padding: 0 5px; border-radius: 3px; }
+.cl-c-demo { color: #2B4F80; background: #EAF2FF; font-family: var(--font-mono, monospace); font-size: .85em; padding: 0 5px; border-radius: 3px; }
 .cl-fm b { color: var(--blue-strong); }
 @media (max-width: 600px) { .cl-why { padding: 13px 14px 12px; } }
