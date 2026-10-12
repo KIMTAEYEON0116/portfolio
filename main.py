@@ -685,7 +685,13 @@ async def security_headers(request: Request, call_next):
     # 불러올 수 있는 곳을 사이트가 실제로 쓰는 곳으로만 제한한다 (끼어든 스크립트가 외부로 보내거나 불러오지 못하게).
     # 인라인 onclick·style 을 쓰고 있어 'unsafe-inline' 은 남긴다.
     response.headers.setdefault("Content-Security-Policy", CSP)
-    response.headers.setdefault("Cross-Origin-Opener-Policy", "same-origin")
+    # COOP 는 https 에서만 의미가 있다. http 로 보내면 브라우저가 "origin untrustworthy" 라며
+    # 콘솔에 빨간 에러를 찍는다(기능 문제는 없지만 보기 안 좋다).
+    proto = request.url.scheme
+    if TRUST_PROXY:
+        proto = request.headers.get("x-forwarded-proto", proto).split(",")[0].strip()
+    if proto == "https":
+        response.headers.setdefault("Cross-Origin-Opener-Policy", "same-origin")
     return response
 
 SITE_URL = os.getenv("SITE_URL", "").rstrip("/")
@@ -736,6 +742,23 @@ def _file(request: Request, path: str, headers: dict):
 
 
 # HEAD 도 받는다: 링크 미리보기 봇·가동 감시 도구는 GET 전에 HEAD 를 보내는 경우가 있다 (예전엔 405)
+@app.get("/robots.txt", include_in_schema=False)
+def robots_txt(request: Request):
+    """검색 엔진 안내. API 는 긁지 않게 하고 sitemap 위치를 알린다."""
+    body = "\n".join(["User-agent: *", "Allow: /", "Disallow: /api/", f"Sitemap: {_site_origin(request)}/sitemap.xml", ""])
+    return Response(body, media_type="text/plain; charset=utf-8", headers=MEDIA_CACHE_HEADERS)
+
+
+@app.get("/sitemap.xml", include_in_schema=False)
+def sitemap_xml(request: Request):
+    """화면 전환이 해시(#/…) 라우트라 검색 엔진에 보이는 주소는 홈 하나다."""
+    body = "\n".join(['<?xml version="1.0" encoding="UTF-8"?>',
+                      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+                      f'  <url><loc>{_site_origin(request)}/</loc><changefreq>weekly</changefreq></url>',
+                      '</urlset>', ''])
+    return Response(body, media_type="application/xml; charset=utf-8", headers=MEDIA_CACHE_HEADERS)
+
+
 @app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
 @app.api_route("/{full_path:path}", methods=["GET", "HEAD"], include_in_schema=False)
 def serve_index(request: Request, full_path: str = ""):

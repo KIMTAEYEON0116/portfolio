@@ -192,6 +192,9 @@ const monthNamesEng = [
 
 function hideLoadingScreen() {
   const loadingEl = document.getElementById('loading-screen');
+  // 로딩 글귀도 언어에 맞춘다 (한국어 화면에 ようこそ 가 남아 있었다)
+  const logo = loadingEl && loadingEl.querySelector('.loading-logo');
+  if (logo && i18n[currentLanguage] && i18n[currentLanguage].welcome_title) logo.textContent = i18n[currentLanguage].welcome_title;
   if (loadingEl) loadingEl.classList.add('hidden');
 }
 
