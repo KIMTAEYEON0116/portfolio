@@ -789,6 +789,12 @@ def serve_index(request: Request, full_path: str = ""):
             return Response(NOT_FOUND_HTML, status_code=404, media_type="text/html; charset=utf-8")
         if ext and ext in STATIC_EXTENSIONS:
             raise HTTPException(status_code=404, detail=f"{full_path} 을(를) 찾을 수 없습니다.")
+        # 스캐너가 찔러보는 주소(/.env, /xmlrpc.php, /wp/…xml, /.git/config …)에 홈 화면을 200 으로
+        # 돌려주면 "뭔가 있다"고 보고 더 두드린다. 파일처럼 생긴 주소(확장자 있음)와 숨김 경로는 404.
+        # 화면 전환은 해시(#/…)라 서버에는 오지 않으니 실제 사용자 주소에는 영향이 없다.
+        last = full_path.rstrip("/").rsplit("/", 1)[-1]
+        if ext or last.startswith(".") or any(seg.startswith(".") for seg in full_path.split("/")):
+            raise HTTPException(status_code=404, detail="찾을 수 없습니다.")
 
     if os.path.exists(os.path.join(STATIC_DIR, "index.html")):
         return _index(request)
