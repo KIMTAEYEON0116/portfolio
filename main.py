@@ -19,7 +19,8 @@ import secrets
 import hashlib
 import pathlib
 import logging
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+from contextlib import asynccontextmanager
 import httpx
 from dotenv import load_dotenv
 
@@ -31,12 +32,26 @@ load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))  #
 # ──────────────────────────────────────────────
 # 앱 초기화
 # ──────────────────────────────────────────────
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 logger = logging.getLogger("portfolio")
+
+# 방명록 날짜의 기준 시간대. EC2 는 UTC 라서 그대로 쓰면 일본의 0〜9시 글이 전날 날짜로 찍힌다.
+# 일본은 서머타임이 없어 고정 오프셋(+9)으로 충분하다 (zoneinfo 는 Windows 에 tz 데이터가 없어 쓰지 않는다).
+SITE_TZ = timezone(timedelta(hours=int(os.getenv("SITE_TZ_OFFSET", "9"))), "JST")
 
 # API 문서(/docs)는 기본 비공개. 필요할 때만 ENABLE_DOCS=1 로 켠다.
 ENABLE_DOCS = os.getenv("ENABLE_DOCS", "0") == "1"
 
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    """서버 시작 시 1회: 테이블 준비 (on_event("startup") 은 폐기 예정 API 라 lifespan 으로)"""
+    init_db()
+    logger.info("DB 초기화 완료 | 서버 시작")
+    yield
+
+
 app = FastAPI(
+    lifespan=lifespan,
     title="포트폴리오 자기소개 사이트 API",
     description="개인 포트폴리오 사이트의 방명록 데이터를 관리하는 API입니다.",
     version="1.0.0",
@@ -210,11 +225,6 @@ def init_db():
     conn.commit()
     conn.close()
 
-@app.on_event("startup")
-def startup():
-    init_db()
-    print("✅ DB 초기화 완료 | 서버 시작")
-
 # ──────────────────────────────────────────────
 # Pydantic 스키마
 # ──────────────────────────────────────────────
@@ -270,14 +280,16 @@ def post_guestbook(entry: GuestbookEntry, background: BackgroundTasks):
         raise HTTPException(status_code=422, detail="제목과 내용은 필수입니다.")
 
     author = entry.author.strip() if entry.author and entry.author.strip() else "匿名"
-    now = datetime.now().strftime("%Y.%m.%d")
+    now_dt = datetime.now(SITE_TZ)
+    now = now_dt.strftime("%Y.%m.%d")
 
     conn = get_db()
     try:
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO guestbook (title, author, content, date, lang) VALUES (?, ?, ?, ?, ?)",
-            (entry.title.strip(), author, entry.content.strip(), now, entry.lang)
+            "INSERT INTO guestbook (title, author, content, date, lang, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+            (entry.title.strip(), author, entry.content.strip(), now, entry.lang,
+             now_dt.strftime("%Y-%m-%d %H:%M:%S"))
         )
         new_id = cursor.lastrowid
         conn.commit()
@@ -657,9 +669,12 @@ MEDIA_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".webp",
                     ".woff", ".woff2", ".ttf", ".mp4", ".webm", ".pdf"}
 
 
+# 사이트 본체: 인라인 onclick 을 전부 없앴으므로 script-src 에 'unsafe-inline' 이 없다
+# (CSP 를 걸어 두고 'unsafe-inline' 을 열어 두면 XSS 방어 효과가 거의 사라진다).
+# 인라인 style 속성은 아직 남아 있어 style-src 에는 둔다.
 CSP = "; ".join([
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline'",
+    "script-src 'self'",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net",
     "font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net",
     "img-src 'self' data: blob: https://img.youtube.com",
@@ -672,6 +687,9 @@ CSP = "; ".join([
     "form-action 'self'",
     "frame-ancestors 'self'",
 ])
+# 병원 목업(projects/hospital/mockup/*.html) 은 화면 시연용 정적 페이지라 인라인 스크립트·onclick 이 남아 있다.
+# 그 경로만 예전 정책으로 보낸다.
+CSP_MOCKUP = CSP.replace("script-src 'self'", "script-src 'self' 'unsafe-inline'")
 
 
 @app.middleware("http")
@@ -683,8 +701,8 @@ async def security_headers(request: Request, call_next):
     response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
     response.headers.setdefault("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
     # 불러올 수 있는 곳을 사이트가 실제로 쓰는 곳으로만 제한한다 (끼어든 스크립트가 외부로 보내거나 불러오지 못하게).
-    # 인라인 onclick·style 을 쓰고 있어 'unsafe-inline' 은 남긴다.
-    response.headers.setdefault("Content-Security-Policy", CSP)
+    response.headers.setdefault("Content-Security-Policy",
+                                CSP_MOCKUP if request.url.path.startswith("/projects/") else CSP)
     # COOP 는 https 에서만 의미가 있다. http 로 보내면 브라우저가 "origin untrustworthy" 라며
     # 콘솔에 빨간 에러를 찍는다(기능 문제는 없지만 보기 안 좋다).
     proto = request.url.scheme
@@ -717,11 +735,23 @@ def _site_origin(request: Request) -> str:
     return f"{proto}://{host}" if host else ""
 
 
+_index_cache = {"mtime": None, "html": ""}
+
+
+def _index_html() -> str:
+    """index.html 본문. 요청마다 디스크를 읽지 않고, 파일이 바뀌었을 때(mtime)만 다시 읽는다."""
+    index_path = os.path.join(STATIC_DIR, "index.html")
+    mtime = os.stat(index_path).st_mtime
+    if _index_cache["mtime"] != mtime:
+        _index_cache["html"] = open(index_path, encoding="utf-8").read()
+        _index_cache["mtime"] = mtime
+    return _index_cache["html"]
+
+
 def _index(request: Request):
     """index.html 의 공유 미리보기 이미지(og:image)를 절대 URL 로 바꿔 내보낸다.
     (SNS·메신저 미리보기는 상대 경로 이미지를 읽지 못한다)"""
-    index_path = os.path.join(STATIC_DIR, "index.html")
-    html = open(index_path, encoding="utf-8").read()
+    html = _index_html()
     origin = _site_origin(request)
     if origin:
         html = html.replace('content="og-image.png"', f'content="{origin}/og-image.png"')

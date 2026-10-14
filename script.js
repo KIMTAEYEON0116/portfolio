@@ -238,6 +238,10 @@ function initPage() {
       ? (t.log_unfold_all || '전체 펼치기')
       : (t.log_fold_all || '전체 접기');
   });
+  // 방명록 제출 (index.html 의 onsubmit 을 없애고 여기서 건다)
+  const gbForm = document.getElementById('guestbook-form');
+  if (gbForm) gbForm.addEventListener('submit', handleGuestbookSubmit);
+
   const lgOv = document.getElementById('lg-ov');
   if (lgOv) lgOv.addEventListener('click', e => { if (e.target === lgOv) closeLogDetail(); });
   const lgX = document.getElementById('lg-mo-x');
@@ -2898,7 +2902,7 @@ function renderEmbedArea() {
       ? '※ ログインなしで閲覧できます。タブを切り替えるとシート全体を確認できます。'
       : '※ 로그인 없이 열람 가능합니다. 하단 탭을 클릭해 시트 전체를 확인하세요.';
 
-    embedArea.innerHTML += `
+    embedArea.insertAdjacentHTML('beforeend', `
       <div class="embed-header">
         <i class="bi bi-table embed-header-icon" aria-hidden="true"></i>
         <span class="embed-header-title">${currentLanguage === 'ja' ? '設計ドキュメント (Google スプレッドシート)' : '기획 문서 (Google Spreadsheet)'}</span>
@@ -2917,7 +2921,7 @@ function renderEmbedArea() {
         ></iframe>
       </div>
       <p class="embed-note">${note}</p>
-    `;
+    `);
   } else if (isSlides) {
     // Google Slides → iframe 임베드
     const slideId = db.planningUrl.match(/\/d\/([a-zA-Z0-9_-]+)/)?.[1];
@@ -2929,7 +2933,7 @@ function renderEmbedArea() {
       ? '※ スライドを左右キーまたはクリックでめくることができます。'
       : '※ 슬라이드를 좌우 방향키나 클릭으로 넘겨볼 수 있습니다.';
 
-    embedArea.innerHTML += `
+    embedArea.insertAdjacentHTML('beforeend', `
       <div class="embed-header">
         <i class="bi bi-window embed-header-icon" aria-hidden="true"></i>
         <span class="embed-header-title">${currentLanguage === 'ja' ? '企画発表書 (Google スライド)' : '기획 발표서 (Google Slides)'}</span>
@@ -2951,7 +2955,7 @@ function renderEmbedArea() {
         ></iframe>
       </div>
       <p class="embed-note">${note}</p>
-    `;
+    `);
   }
 
   // Notion 기획서 임베드 (notionEmbedUrl 속성이 있거나 planningUrl이 notion인 경우)
@@ -2965,7 +2969,7 @@ function renderEmbedArea() {
       : '※ 마우스 휠이나 드래그로 Notion 기획서를 자유롭게 탐색할 수 있습니다.';
 
     if (isEbd) {
-      embedArea.innerHTML += `
+      embedArea.insertAdjacentHTML('beforeend', `
         <div class="embed-header" style="${isSheets || isSlides ? 'margin-top: 35px;' : ''}">
           <i class="bi bi-clipboard-check embed-header-icon" aria-hidden="true"></i>
           <span class="embed-header-title">${title}</span>
@@ -2986,14 +2990,14 @@ function renderEmbedArea() {
           ></iframe>
         </div>
         <p class="embed-note">${note}</p>
-      `;
+      `);
     } else {
       const desc = currentLanguage === 'ja'
         ? 'Notionはセキュリティ上、外部サイトへの埋め込みを制限しているため、直接表示はできません。下のボタンからNotion ページを開いてご確認ください。'
         : 'Notion은 보안상 외부 사이트 임베드를 차단하여 직접 표시할 수 없습니다. 아래 버튼으로 Notion 페이지를 열어 확인하세요.';
       const btnLabel = currentLanguage === 'ja' ? 'Notionで企画書を開く' : 'Notion에서 기획서 열기';
 
-      embedArea.innerHTML += `
+      embedArea.insertAdjacentHTML('beforeend', `
         <div class="embed-header" style="${isSheets || isSlides ? 'margin-top: 35px;' : ''}">
           <i class="bi bi-clipboard-check embed-header-icon" aria-hidden="true"></i>
           <span class="embed-header-title">${title}</span>
@@ -3010,7 +3014,7 @@ function renderEmbedArea() {
             </a>
           </div>
         </div>
-      `;
+      `);
     }
   }
 
@@ -3023,7 +3027,7 @@ function renderEmbedArea() {
       ? '※ マウスのドラッグやホイールでFigmaキャンバスを自由に移動・拡大縮小できます。'
       : '※ 마우스 드래그 및 휠로 Figma 보드를 자유롭게 탐색 및 확대/축소할 수 있습니다.';
 
-    embedArea.innerHTML += `
+    embedArea.insertAdjacentHTML('beforeend', `
       <div class="embed-header" style="margin-top: 35px;">
         <i class="bi bi-palette embed-header-icon" aria-hidden="true"></i>
         <span class="embed-header-title">${figmaTitle}</span>
@@ -3043,7 +3047,7 @@ function renderEmbedArea() {
         ></iframe>
       </div>
       <p class="embed-note">${figmaNote}</p>
-    `;
+    `);
   }
 
 }
@@ -3129,7 +3133,7 @@ function renderDemoArea() {
     ? '実際のタイピング練習プレイ画面とJ-POPの歌詞シンク動作をご確認いただけます。'
     : '실제 타이핑 연습 플레이 방식과 J-POP 가사 싱크 동작을 확인할 수 있는 데모 영상입니다.';
 
-  demoArea.innerHTML += `
+  demoArea.insertAdjacentHTML('beforeend', `
     <div class="embed-header">
       <i class="bi bi-play-circle embed-header-icon" aria-hidden="true"></i>
       <span class="embed-header-title">${title}</span>
@@ -3139,7 +3143,7 @@ function renderDemoArea() {
         <div class="demo-thumb-wrapper">
           <img
             src="${thumbnailUrl}"
-            onerror="this.src='${fallbackThumb}'"
+            data-fallback="${fallbackThumb}"
             alt="${title} 썸네일"
             class="demo-thumb-img"
           >
@@ -3163,7 +3167,7 @@ function renderDemoArea() {
         </a>
       </div>
     </div>
-  `;
+  `);
   }  // end if (db.demoVideoUrl)
 
   // 발표 영상 (presentationVideoUrl 속성이 있는 경우 아래 추가 렌더링)
@@ -3194,7 +3198,7 @@ function renderDemoArea() {
         <div class="demo-video-card">
           <a href="${presUrl}" target="_blank" rel="noopener" class="demo-thumb-link">
             <div class="demo-thumb-wrapper">
-              <img src="${pThumb}" onerror="this.src='${pFallback}'" alt="${presTitle}" class="demo-thumb-img">
+              <img src="${pThumb}" data-fallback="${pFallback}" alt="${presTitle}" class="demo-thumb-img">
               <div class="demo-play-overlay">
                 <div class="demo-play-icon">
                   <svg viewBox="0 0 68 48" width="68" height="48">
@@ -3213,13 +3217,13 @@ function renderDemoArea() {
     // 데모 영상 아래에 이어질 때만 간격을 둔다. 발표 영상만 있는 프로젝트(병원)는
     // 이것이 첫 항목이라, 60px 를 그대로 두면 탭 바로 아래가 크게 비어 보였다.
     const presGap = demoArea.innerHTML.trim() ? 48 : 0;
-    demoArea.innerHTML += `
+    demoArea.insertAdjacentHTML('beforeend', `
       <div class="embed-header" style="margin-top: ${presGap}px;">
         <i class="bi bi-mic embed-header-icon" aria-hidden="true"></i>
         <span class="embed-header-title">${presTitle}</span>
       </div>
       ${presBodyHtml}
-    `;
+    `);
   }
 }
 
@@ -3901,7 +3905,7 @@ function updateDocTitle() {
   document.title = sub ? sub + ' | ' + base : base;
   // 화면 읽기 프로그램용 이름도 화면 언어에 맞춘다
   document.querySelectorAll('.nav-icon-btn').forEach(el => {
-    const back = (el.getAttribute('onclick') || '').includes('goBack');
+    const back = el.dataset.nav === 'back';
     el.setAttribute('aria-label', back ? (ja ? '前のページへ戻る' : '이전 페이지') : (ja ? 'ホームへ' : '홈으로'));
   });
 }
@@ -3967,3 +3971,26 @@ document.addEventListener('click', e => {
   const [pid, tab] = a.dataset.go.split('/');
   goProject(pid, tab || 'overview');
 });
+
+// 인라인 onclick 을 전부 없앴다 (CSP 의 script-src 에서 'unsafe-inline' 을 빼기 위해).
+// 버튼·탭·링크는 data-* 속성만 갖고, 여기 한곳에서 받아 기존 함수를 부른다.
+document.addEventListener('click', e => {
+  const el = e.target.closest && e.target.closest('[data-nav],[data-ptab],[data-itab],[data-setlang],[data-media]');
+  if (!el) return;
+  const d = el.dataset;
+  if (d.nav !== undefined) { e.preventDefault(); if (d.nav === 'back') goBack(); else navigateTo(d.nav); }
+  else if (d.ptab) switchProjectTab(d.ptab);
+  else if (d.itab) switchProjectInnerTab(d.itab);
+  else if (d.setlang) setLanguage(d.setlang);
+  else if (d.media) moveProjectMedia(Number(d.media));
+});
+
+// 이미지 로드 실패 처리 (error 이벤트는 버블링하지 않으므로 캡처 단계에서 받는다)
+//   data-fallback="대체 이미지"      → 그 이미지로 바꿔 끼운다
+//   data-hide-on-error=".selector"   → 가장 가까운 그 요소를 통째로 숨긴다
+document.addEventListener('error', e => {
+  const img = e.target;
+  if (!img || img.tagName !== 'IMG') return;
+  if (img.dataset.fallback && img.getAttribute('src') !== img.dataset.fallback) img.src = img.dataset.fallback;
+  else if (img.dataset.hideOnError) { const box = img.closest(img.dataset.hideOnError); if (box) box.hidden = true; }
+}, true);

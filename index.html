@@ -25,7 +25,7 @@
   <!-- Google Fonts & Bootstrap Icons CDN -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="style.css?v=25.4">
+  <link rel="stylesheet" href="style.css?v=25.5">
 </head>
 
 <body>
@@ -46,8 +46,8 @@
     <!-- ====== 상단 바 (다국어 선택) ====== -->
     <div class="top-bar">
       <div class="lang-selector">
-        <button class="lang-btn" id="btn-lang-ja" onclick="setLanguage('ja')">日本語</button>
-        <button class="lang-btn" id="btn-lang-ko" onclick="setLanguage('ko')">한국어</button>
+        <button class="lang-btn" id="btn-lang-ja" data-setlang="ja">日本語</button>
+        <button class="lang-btn" id="btn-lang-ko" data-setlang="ko">한국어</button>
       </div>
     </div>
 
@@ -79,7 +79,7 @@
           </div>
 
           <!-- 가장 강한 프로젝트(실제 기업 안건)로 바로 가는 버튼 -->
-          <a href="#/project/hospital" class="featured-link" onclick="goProject('hospital','overview'); return false;">
+          <a href="#/project/hospital" class="featured-link" data-go="hospital/overview">
             <span class="featured-tag" data-i18n="featured_tag">注目</span>
             <span data-i18n="featured_text"><span class="ph">実案件：</span><span class="ph">健康診断予約システム</span><span class="ph">（BtoB）</span></span>
             <i class="bi bi-arrow-right" aria-hidden="true"></i>
@@ -87,7 +87,7 @@
 
           <!-- 메인 바로가기 4개 넓은 카드 버튼 -->
           <div class="main-nav-cards">
-            <a href="#/about" class="nav-card nav-card-about" onclick="navigateTo('about-view'); return false;">
+            <a href="#/about" class="nav-card nav-card-about" data-nav="about-view">
               <div class="nav-card-icon"><i class="bi bi-person-vcard-fill"></i></div>
               <div class="nav-card-info">
                 <span class="eng-text">ABOUT ME</span>
@@ -95,7 +95,7 @@
               </div>
               <div class="nav-card-arrow"><i class="bi bi-arrow-right-short"></i></div>
             </a>
-            <a href="#/project" class="nav-card nav-card-project" onclick="navigateTo('project-view'); return false;">
+            <a href="#/project" class="nav-card nav-card-project" data-nav="project-view">
               <div class="nav-card-icon"><i class="bi bi-code-square"></i></div>
               <div class="nav-card-info">
                 <span class="eng-text">PROJECT</span>
@@ -103,7 +103,7 @@
               </div>
               <div class="nav-card-arrow"><i class="bi bi-arrow-right-short"></i></div>
             </a>
-            <a href="#/log" class="nav-card nav-card-log" onclick="navigateTo('log-view'); return false;">
+            <a href="#/log" class="nav-card nav-card-log" data-nav="log-view">
               <div class="nav-card-icon"><i class="bi bi-journal-bookmark-fill"></i></div>
               <div class="nav-card-info">
                 <span class="eng-text">LOG</span>
@@ -111,7 +111,7 @@
               </div>
               <div class="nav-card-arrow"><i class="bi bi-arrow-right-short"></i></div>
             </a>
-            <a href="#/contact" class="nav-card nav-card-contact" onclick="navigateTo('contact-view'); return false;">
+            <a href="#/contact" class="nav-card nav-card-contact" data-nav="contact-view">
               <div class="nav-card-icon"><i class="bi bi-envelope-paper-fill"></i></div>
               <div class="nav-card-info">
                 <span class="eng-text">CONTACT</span>
@@ -136,8 +136,8 @@
         </div>
         <div class="sub-header-right">
           <!-- 뒤로가기 및 홈 아이콘 -->
-          <a href="#" class="nav-icon-btn" onclick="goBack(); return false;" aria-label="이전 페이지"><i class="bi bi-arrow-left"></i></a>
-          <a href="#/" class="nav-icon-btn" onclick="navigateTo('main-view'); return false;" aria-label="홈으로"><i class="bi bi-house-door"></i></a>
+          <a href="#" class="nav-icon-btn" data-nav="back" aria-label="이전 페이지"><i class="bi bi-arrow-left"></i></a>
+          <a href="#/" class="nav-icon-btn" data-nav="main-view" aria-label="홈으로"><i class="bi bi-house-door"></i></a>
         </div>
       </div>
 
@@ -338,8 +338,8 @@
           <span class="sub-title-sub" data-i18n="log_sub_title">学習日誌 · 2026.03 – 11</span>
         </div>
         <div class="sub-header-right">
-          <a href="#" class="nav-icon-btn" onclick="goBack(); return false;" aria-label="이전 페이지"><i class="bi bi-arrow-left"></i></a>
-          <a href="#/" class="nav-icon-btn" onclick="navigateTo('main-view'); return false;" aria-label="홈으로"><i class="bi bi-house-door"></i></a>
+          <a href="#" class="nav-icon-btn" data-nav="back" aria-label="이전 페이지"><i class="bi bi-arrow-left"></i></a>
+          <a href="#/" class="nav-icon-btn" data-nav="main-view" aria-label="홈으로"><i class="bi bi-house-door"></i></a>
         </div>
       </div>
 
@@ -384,21 +384,21 @@
             style="font-family: var(--font-header); font-size: 2rem; font-weight: 700; margin: 0;">Project</h2>
         </div>
         <div class="sub-header-right">
-          <a href="#" class="nav-icon-btn" onclick="goBack(); return false;" aria-label="이전 페이지"><i class="bi bi-arrow-left"></i></a>
-          <a href="#/" class="nav-icon-btn" onclick="navigateTo('main-view'); return false;" aria-label="홈으로"><i class="bi bi-house-door"></i></a>
+          <a href="#" class="nav-icon-btn" data-nav="back" aria-label="이전 페이지"><i class="bi bi-arrow-left"></i></a>
+          <a href="#/" class="nav-icon-btn" data-nav="main-view" aria-label="홈으로"><i class="bi bi-house-door"></i></a>
         </div>
       </div>
 
       <!-- 프로젝트 전환용 상단 탭바 -->
       <div class="project-tab-bar">
-        <div class="project-tab active" id="p-tab-hospital" onclick="switchProjectTab('hospital')" role="button" tabindex="0"
+        <div class="project-tab active" id="p-tab-hospital" data-ptab="hospital" role="button" tabindex="0"
           data-i18n="p_tab_hospital">건강검진 예약</div>
-        <div class="project-tab" id="p-tab-golf" onclick="switchProjectTab('golf')" role="button" tabindex="0" data-i18n="p_tab_golf">골프 예약</div>
-        <div class="project-tab" id="p-tab-gakong" onclick="switchProjectTab('gakong')" role="button" tabindex="0" data-i18n="p_tab_gakong">가공독서회
+        <div class="project-tab" id="p-tab-golf" data-ptab="golf" role="button" tabindex="0" data-i18n="p_tab_golf">골프 예약</div>
+        <div class="project-tab" id="p-tab-gakong" data-ptab="gakong" role="button" tabindex="0" data-i18n="p_tab_gakong">가공독서회
         </div>
-        <div class="project-tab" id="p-tab-typing" onclick="switchProjectTab('typing')" role="button" tabindex="0" data-i18n="p_tab_typing">타이핑 연습
+        <div class="project-tab" id="p-tab-typing" data-ptab="typing" role="button" tabindex="0" data-i18n="p_tab_typing">타이핑 연습
           플랫폼</div>
-        <div class="project-tab" id="p-tab-portfolio" onclick="switchProjectTab('portfolio')" role="button" tabindex="0"
+        <div class="project-tab" id="p-tab-portfolio" data-ptab="portfolio" role="button" tabindex="0"
           data-i18n="p_tab_portfolio">포트폴리오 웹사이트</div>
       </div>
 
@@ -407,30 +407,30 @@
 
         <!-- [추가] 내부 탭바 (기획 문서가 있는 프로젝트에서 JS로 노출) -->
         <div class="project-inner-tab-bar" id="project-inner-tab-bar" style="display: none;">
-          <button class="project-inner-tab active" id="inner-tab-overview" onclick="switchProjectInnerTab('overview')">
+          <button class="project-inner-tab active" id="inner-tab-overview" data-itab="overview">
             <i class="bi bi-grid-3x2-gap-fill"></i>
             <span id="inner-tab-overview-label">概要</span>
           </button>
-          <button class="project-inner-tab" id="inner-tab-docs" onclick="switchProjectInnerTab('docs')">
+          <button class="project-inner-tab" id="inner-tab-docs" data-itab="docs">
             <i class="bi bi-file-earmark-text-fill"></i>
             <span id="inner-tab-docs-label">企画書</span>
           </button>
-          <button class="project-inner-tab" id="inner-tab-structure" onclick="switchProjectInnerTab('structure')"
+          <button class="project-inner-tab" id="inner-tab-structure" data-itab="structure"
             style="display:none;">
             <i class="bi bi-diagram-3-fill"></i>
             <span id="inner-tab-structure-label">ページ構成 (画像)</span>
           </button>
-          <button class="project-inner-tab" id="inner-tab-prototype" onclick="switchProjectInnerTab('prototype')"
+          <button class="project-inner-tab" id="inner-tab-prototype" data-itab="prototype"
             style="display:none;">
             <i class="bi bi-window-fullscreen"></i>
             <span id="inner-tab-prototype-label">UI プロトタイプ</span>
           </button>
-          <button class="project-inner-tab" id="inner-tab-demo" onclick="switchProjectInnerTab('demo')"
+          <button class="project-inner-tab" id="inner-tab-demo" data-itab="demo"
             style="display:none;">
             <i class="bi bi-play-circle-fill"></i>
             <span id="inner-tab-demo-label">デモ動画</span>
           </button>
-          <button class="project-inner-tab" id="inner-tab-trouble" onclick="switchProjectInnerTab('trouble')" style="display: none;"><i class="bi bi-wrench-adjustable"></i> <span id="inner-tab-trouble-label">개발 로그</span></button>
+          <button class="project-inner-tab" id="inner-tab-trouble" data-itab="trouble" style="display: none;"><i class="bi bi-wrench-adjustable"></i> <span id="inner-tab-trouble-label">개발 로그</span></button>
         </div>
 
         <!-- 개요 영역 (탭 전환 대상) -->
@@ -444,11 +444,11 @@
                 <!-- JS 동적 렌더링: 이미지 또는 영상 -->
               </div>
               <button type="button" class="media-nav-btn media-nav-prev" id="media-prev-btn"
-                onclick="moveProjectMedia(-1)" aria-label="이전 이미지">
+                data-media="-1" aria-label="이전 이미지">
                 <i class="bi bi-chevron-left"></i>
               </button>
               <button type="button" class="media-nav-btn media-nav-next" id="media-next-btn"
-                onclick="moveProjectMedia(1)" aria-label="다음 이미지">
+                data-media="1" aria-label="다음 이미지">
                 <i class="bi bi-chevron-right"></i>
               </button>
               <div class="media-dots" id="media-dots"></div>
@@ -573,8 +573,8 @@
         </div>
         <div class="sub-header-right">
           <!-- 뒤로가기 및 홈 아이콘 -->
-          <a href="#" class="nav-icon-btn" onclick="goBack(); return false;" aria-label="이전 페이지"><i class="bi bi-arrow-left"></i></a>
-          <a href="#/" class="nav-icon-btn" onclick="navigateTo('main-view'); return false;" aria-label="홈으로"><i class="bi bi-house-door"></i></a>
+          <a href="#" class="nav-icon-btn" data-nav="back" aria-label="이전 페이지"><i class="bi bi-arrow-left"></i></a>
+          <a href="#/" class="nav-icon-btn" data-nav="main-view" aria-label="홈으로"><i class="bi bi-house-door"></i></a>
         </div>
       </div>
 
@@ -606,7 +606,7 @@
           <figure class="contact-photo">
             <p class="contact-photo-msg" data-i18n="contact_photo_msg">写真は私の好きな花です。</p>
             <img src="contact_flower.jpg" alt="" loading="lazy" decoding="async"
-              onerror="this.closest('.contact-photo').hidden = true">
+              data-hide-on-error=".contact-photo">
             <figcaption>
               Photo by <a href="https://unsplash.com/@vannexp" target="_blank" rel="noopener">Van Peng</a>
               on <a href="https://unsplash.com/photos/ydd6e5HF2xw" target="_blank" rel="noopener">Unsplash</a>
@@ -618,7 +618,7 @@
         <div class="guestbook-box">
           <h3 class="guestbook-title" data-i18n="guestbook_title">방명록</h3>
 
-          <form class="guestbook-form" id="guestbook-form" onsubmit="handleGuestbookSubmit(event)">
+          <form class="guestbook-form" id="guestbook-form">
             <div class="form-group">
               <input type="text" id="gb-title" class="form-input" placeholder="제목" required maxlength="100"
                 data-i18n-placeholder="gb_title_placeholder">
@@ -686,9 +686,9 @@
     </p>
     <style>#loading-screen{display:none!important}</style>
   </noscript>
-  <script src="script.js?v=25.4"></script>
-  <script src="buddy.js?v=25.4"></script>
-  <script src="intro.js?v=25.4"></script>
+  <script src="script.js?v=25.5"></script>
+  <script src="buddy.js?v=25.5"></script>
+  <script src="intro.js?v=25.5"></script>
 </body>
 
 </html>
