@@ -3774,3 +3774,6 @@ details.lg-ai > .lg-ai-body { padding: 4px 14px 12px; border-top: 1px dashed #D4
 .cl-c-demo { color: #2B4F80; background: #EAF2FF; font-family: var(--font-mono, monospace); font-size: .85em; padding: 0 5px; border-radius: 3px; }
 .cl-fm b { color: var(--blue-strong); }
 @media (max-width: 600px) { .cl-why { padding: 13px 14px 12px; } }
+
+/* 기획 메모 안의 본인 메모 인용 */
+.pl-quote { color: var(--blue-text); font-style: normal; }
