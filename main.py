@@ -818,7 +818,7 @@ def serve_index(request: Request, full_path: str = ""):
             # 스타일이 다 빠진 홈 화면이 보였다. 안내 페이지로 404 를 돌려준다.
             return Response(NOT_FOUND_HTML, status_code=404, media_type="text/html; charset=utf-8")
         if ext and ext in STATIC_EXTENSIONS:
-            raise HTTPException(status_code=404, detail=f"{full_path} 을(를) 찾을 수 없습니다.")
+            raise HTTPException(status_code=404, detail="찾을 수 없습니다.")   # 요청 경로를 되돌려 주지 않는다
         # 스캐너가 찔러보는 주소(/.env, /xmlrpc.php, /wp/…xml, /.git/config …)에 홈 화면을 200 으로
         # 돌려주면 "뭔가 있다"고 보고 더 두드린다. 파일처럼 생긴 주소(확장자 있음)와 숨김 경로는 404.
         # 화면 전환은 해시(#/…)라 서버에는 오지 않으니 실제 사용자 주소에는 영향이 없다.

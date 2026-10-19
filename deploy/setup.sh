@@ -6,16 +6,16 @@ set -euo pipefail
 APP=/home/ubuntu/portfolio
 cd "$APP"
 
-echo "[1/5] 패키지 설치 (python, nginx)"
+echo "[1/6] 패키지 설치 (python, nginx, sqlite3)"
 sudo apt-get update -y
-sudo apt-get install -y python3-venv python3-pip nginx
+sudo apt-get install -y python3-venv python3-pip nginx sqlite3
 
-echo "[2/5] 가상환경 + 라이브러리"
+echo "[2/6] 가상환경 + 라이브러리"
 [ -d .venv ] || python3 -m venv .venv
 .venv/bin/pip install --upgrade pip
 .venv/bin/pip install -r requirements.txt
 
-echo "[3/5] .env 확인"
+echo "[3/6] .env 확인"
 if [ ! -f .env ]; then
   cp .env.example .env
   # 배포 기본값: 외부에는 nginx 만 열고, 앱은 내부(127.0.0.1)에서만 받는다
@@ -24,18 +24,22 @@ if [ ! -f .env ]; then
 fi
 chmod 600 .env
 
-echo "[4/5] 자동 실행 서비스 등록"
+echo "[4/6] 자동 실행 서비스 등록"
 sudo cp deploy/portfolio.service /etc/systemd/system/portfolio.service
 sudo systemctl daemon-reload
 sudo systemctl enable --now portfolio
 sudo systemctl restart portfolio
 
-echo "[5/5] nginx 연결"
+echo "[5/6] nginx 연결"
 sudo cp deploy/nginx-portfolio.conf /etc/nginx/sites-available/portfolio
 sudo ln -sf /etc/nginx/sites-available/portfolio /etc/nginx/sites-enabled/portfolio
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t
 sudo systemctl reload nginx
+
+echo "[6/6] 방명록 DB 하루 1회 백업 (03:20 JST, 14일 보관)"
+chmod +x "$APP/deploy/backup_db.sh"
+( crontab -l 2>/dev/null | grep -v "backup_db.sh"; echo "20 18 * * * bash $APP/deploy/backup_db.sh >> $APP/backups/backup.log 2>&1" ) | crontab -
 
 sleep 2
 if curl -fs http://127.0.0.1/api/health >/dev/null; then
