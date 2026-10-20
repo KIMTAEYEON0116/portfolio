@@ -3100,6 +3100,7 @@ html[lang="ja"] {
   overflow: hidden;
 }
 .wf-ov.bold { font-weight: 700; }
+.wf-ov.nw { white-space: nowrap; overflow: visible; }   /* 짧은 번역 라벨은 상자 밖으로 흘러도 잘리지 않게 */
 
 /* 구상과 결과물이 달라진 이유 */
 .wf-note {
@@ -3777,3 +3778,8 @@ details.lg-ai > .lg-ai-body { padding: 4px 14px 12px; border-top: 1px dashed #D4
 
 /* 기획 메모 안의 본인 메모 인용 */
 .pl-quote { color: var(--blue-text); font-style: normal; }
+
+/* 기획서 아래 와이어프레임 — 본문보다 한 단계 작게 */
+.wf-under-head { margin-top: 34px; }
+.wf-under { max-width: 860px; margin: 8px auto 0; }
+.wf-under .wf-cap { font-size: .85rem; }

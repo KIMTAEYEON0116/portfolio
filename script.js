@@ -2100,6 +2100,69 @@ const projectDatabase = {
       { type: "image", src: "./project_images/gakong_ec95ade939a7.webp" },
       { type: "image", src: "./project_images/gakong_7a758a01950a.png" },
     ],
+    // 화면 구상(5월 초안) — 노션 「페이지 구성」에서 가져옴. 완성 화면과 구조가 거의 같다
+    docsWireframes: [
+      { src: "./project_images/gakong_wf_00.webp", ko: "메인 + 독서방 안", ja: "メイン＋部屋の中", fs: 1.2,
+        overlays: [
+          {"x": 3, "y": 0.8, "w": 9, "h": 3, "ja": "架空読書会", "b": 1, "fs": 1.5},
+          {"x": 78.5, "y": 1, "w": 8, "h": 2.5, "ja": "読書部屋一覧", "fs": 1.0, "b": 1},
+          {"x": 87.3, "y": 1, "w": 5.5, "h": 2.5, "ja": "私の本棚", "fs": 1.0},
+          {"x": 93.5, "y": 1, "w": 6, "h": 2.5, "ja": "ご利用案内", "fs": 1.0},
+          {"x": 2.5, "y": 6.3, "w": 40, "h": 5.2, "ja": "存在しない本を一緒に読む", "b": 1, "fs": 2.6},
+          {"x": 2.5, "y": 11, "w": 76, "h": 2.6, "ja": "AI が作った架空の本のあらすじを読み、その本がどんな内容かを想像しながら他の読者と語り合います。一度も読んだことのない本について、いちばん深い感想を交わしてみましょう。", "fs": 1.1},
+          {"x": 3.5, "y": 16.7, "w": 13, "h": 2.5, "ja": "今にぎわっている読書部屋", "b": 1, "fs": 1.15},
+          {"x": 84.5, "y": 16.7, "w": 15, "h": 2.6, "ja": "3部屋・28名が参加中", "b": 1, "fs": 1.2},
+          {"x": 8, "y": 23.1, "w": 5, "h": 2, "ja": "心理小説", "fs": 1.0},
+          {"x": 29.2, "y": 23.1, "w": 5, "h": 2, "ja": "生態文学", "fs": 1.0},
+          {"x": 50.3, "y": 23.1, "w": 5, "h": 2, "ja": "風刺小説", "fs": 1.0},
+          {"x": 4.5, "y": 27, "w": 8, "h": 2.2, "ja": "表紙（AI 生成）", "fs": 1.0, "bg": "#e4e4e4"},
+          {"x": 25.7, "y": 27, "w": 8, "h": 2.2, "ja": "表紙（AI 生成）", "fs": 1.0, "bg": "#e4e4e4"},
+          {"x": 46.8, "y": 27, "w": 8, "h": 2.2, "ja": "表紙（AI 生成）", "fs": 1.0, "bg": "#e4e4e4"},
+          {"x": 4, "y": 33.4, "w": 14, "h": 2.3, "ja": "午後三時の解剖学", "b": 1, "fs": 1.2},
+          {"x": 25.2, "y": 33.4, "w": 15, "h": 2.3, "ja": "北緯41度の植物たち", "b": 1, "fs": 1.2},
+          {"x": 46.3, "y": 33.4, "w": 12, "h": 2.3, "ja": "夫たちの島", "b": 1, "fs": 1.2},
+          {"x": 4, "y": 36, "w": 17, "h": 3.6, "ja": "あらすじ（AI 生成、2〜3行で省略）", "fs": 1.0},
+          {"x": 4, "y": 39.5, "w": 6, "h": 2, "ja": "架空の価格", "fs": 1.0},
+          {"x": 16.5, "y": 39.5, "w": 4.5, "h": 2, "ja": "参加人数", "fs": 1.0},
+          {"x": 66, "y": 22.5, "w": 32, "h": 9, "ko": "메모: 카드 하나 = 독서방 하나. 표지도 책도 AI가 만든 가상. 하트 숫자는 참여 인원이라 어느 방이 활발한지 바로 보인다", "ja": "メモ：カード1枚＝読書部屋1つ。表紙も本も AI が作った架空のもの。ハートの数字は参加人数で、どの部屋がにぎわっているか一目で分かる", "fs": 1.15, "bg": "#FFF3C2", "c": "#4A3F00"},
+          {"x": 2.5, "y": 45.2, "w": 11, "h": 2.4, "ja": "新しい本を召喚する", "b": 1, "fs": 1.2},
+          {"x": 2.5, "y": 47.3, "w": 50, "h": 3.4, "ja": "AI がキーワードを無作為に組み合わせ、この世にない本を作ります。生成された本で新しい読書部屋が開きます。", "fs": 1.0},
+          {"x": 2.8, "y": 50.2, "w": 10.5, "h": 2.9, "ja": "＋ 新しい本を生成", "fs": 1.05, "bg": "#222", "c": "#fff"},
+          {"x": 55, "y": 45, "w": 43, "h": 6, "ko": "메모: 이 서비스의 핵심 버튼. 누르면 AI가 없는 책을 만들고, 그 책의 독서방이 바로 열린다", "ja": "メモ：このサービスの核になるボタン。押すと AI が存在しない本を作り、その本の読書部屋がすぐ開く", "fs": 1.15, "bg": "#FFF3C2", "c": "#4A3F00"},
+          {"x": 3, "y": 56.5, "w": 4.5, "h": 2, "ja": "表紙", "fs": 1.0, "bg": "#e4e4e4"},
+          {"x": 12.5, "y": 55.7, "w": 16, "h": 2.6, "ja": "午後三時の解剖学", "b": 1, "fs": 1.7},
+          {"x": 12.5, "y": 58.2, "w": 72, "h": 2.3, "ja": "あらすじ（AI 生成）：元外科医カンミンがある日、自分が解剖した遺体が昔の恋人だと気づく。記憶の中だけに生きていた彼女の内臓に収められた手紙。死者が送った最後の告白が外科医の人生を再編する。", "fs": 1.0},
+          {"x": 12.5, "y": 60.4, "w": 20, "h": 2, "ja": "#記憶  #喪失  #医学  #ミステリー", "fs": 1.0},
+          {"x": 12.5, "y": 62.5, "w": 13, "h": 2.2, "ja": "¥14,800（架空の価格）", "fs": 1.05, "b": 1},
+          {"x": 60, "y": 61.5, "w": 38, "h": 6, "ko": "메모: 메인에서 방을 고르면 같은 페이지 아래로 그 책 정보와 감상이 이어진다. 페이지 이동 없이 한 화면", "ja": "メモ：メインで部屋を選ぶと、同じページの下にその本の情報と感想が続く。ページ移動なしの1画面", "fs": 1.15, "bg": "#FFF3C2", "c": "#4A3F00"},
+          {"x": 2.5, "y": 69.7, "w": 6, "h": 2.3, "ja": "感想 3件", "b": 1, "fs": 1.2},
+          {"x": 5.5, "y": 71.9, "w": 7, "h": 2, "ja": "月明かりの読者", "fs": 1.0, "b": 1},
+          {"x": 13, "y": 72, "w": 4, "h": 1.8, "ja": "23分前", "fs": 0.9},
+          {"x": 5.5, "y": 73.9, "w": 70, "h": 2.1, "ja": "タイトルに「午後三時」という具体的な時間があるのが面白い。手術がいちばん多い時間帯だからでは？ カンミンがその時間に特に集中する場面が多そう。", "fs": 1.0},
+          {"x": 5.5, "y": 76.9, "w": 6, "h": 2, "ja": "本の虫", "fs": 1.0, "b": 1},
+          {"x": 12, "y": 77, "w": 4, "h": 1.8, "ja": "15分前", "fs": 0.9},
+          {"x": 5.5, "y": 78.9, "w": 70, "h": 2.1, "ja": "内臓の中に手紙があるという設定が強烈。外科的な描写と感情の物語を交差させる書き方で、医学用語で感情を表す文体なのでは？", "fs": 1.0},
+          {"x": 5.5, "y": 82.1, "w": 6.5, "h": 2, "ja": "夜の活字", "fs": 1.0, "b": 1},
+          {"x": 12.5, "y": 82.2, "w": 4, "h": 1.8, "ja": "8分前", "fs": 0.9},
+          {"x": 5.5, "y": 84.1, "w": 70, "h": 2.1, "ja": "あらすじだけでも手紙の中身が気になる。何通あるのか、どんな言葉で書かれたのか…結末が和解なのか諦めなのか、考えてしまう。", "fs": 1.0},
+          {"x": 77, "y": 69.3, "w": 21, "h": 9, "ko": "메모: 감상은 실제 독후감이 아니라 줄거리만 보고 '읽은 척' 상상한 이야기. 이게 이 서비스의 놀이", "ja": "メモ：感想は本物の読書感想ではなく、あらすじだけを見て「読んだふり」で想像した話。これがこのサービスの遊び", "fs": 1.15, "bg": "#FFF3C2", "c": "#4A3F00"},
+          {"x": 2.5, "y": 86.9, "w": 8, "h": 2.3, "ja": "感想を残す", "b": 1, "fs": 1.2},
+          {"x": 3, "y": 90, "w": 55, "h": 2.2, "ja": "この本を「読んだとしたら」どんな感想でしたか？ 自由に想像してみてください。", "fs": 1.0, "c": "#888"},
+          {"x": 91.5, "y": 95.2, "w": 6.5, "h": 2.9, "ja": "投稿する", "fs": 1.05, "bg": "#222", "c": "#fff"}
+        ] },
+    ],
+    wfTabLabel: { ko: "화면 구상", ja: "画面構想" },
+    wfLabel: { ko: "화면 구상 (5월 초안)", ja: "画面構想（5月の下書き）" },
+    wfNote: {
+      ko: "5월에 노션에 그려 둔 화면 구상입니다. 완성 화면과 거의 같아서, 구상 단계에서 정한 구조(독서방 목록 → 독서방 안의 감상 → 내 서재)가 그대로 구현됐습니다. 구상하면서 더 생각해 본 것: 장르별 모아보기와 #태그 검색, 마감이 얼마 안 남은 독서방(D-6·D-3), 도서 상세의 평점·분포. 5/15 메모: D-day 기능 넣기, 추천사·출판사 서평 추가.",
+      ja: "5月に Notion に描いた画面構想です。完成画面とほぼ同じで、構想の段階で決めた構成（読書部屋の一覧 → 部屋の中の感想 → 私の本棚）がそのまま実装されました。構想しながら考えていたこと：ジャンル別に見る・#タグ検索、締切が近い読書部屋（D-6・D-3）、本の詳細の評価と分布。5/15 のメモ：D-day 機能を入れる、推薦文・出版社の書評を追加。"
+    },
+    wireframes: [
+      { src: "./project_images/gakong_wf_01.webp", final: "./project_images/gakong_01_top.webp", ko: "메인 — 지금 활발한 독서방 · 새 책 생성 · 독서방 안", ja: "メイン — にぎわっている読書部屋・新しい本の生成・部屋の中" },
+      { src: "./project_images/gakong_wf_02.webp", ko: "장르별 모아보기 (구상)", ja: "ジャンル別に見る（構想）" },
+      { src: "./project_images/gakong_wf_03.webp", ko: "마감 임박 순서로 보기 (구상)", ja: "締切が近い順に見る（構想）" },
+      { src: "./project_images/gakong_wf_04.webp", final: "./project_images/gakong_03_book.webp", ko: "도서 상세 — 평점·분포 (구상)", ja: "本の詳細 — 評価・分布（構想）" },
+    ],
     ja: {
       kind: ["個人開発", "自主企画"],
       title: "架空読書会 (Gakong Reading Club)",
@@ -3052,7 +3115,7 @@ function renderEmbedArea() {
   const projectId = activeTabEl.id.replace('p-tab-', '');
   const db = projectDatabase[projectId];
   if (!db || (!db.planningUrl && !db.notionEmbedUrl && !db.planning)) return;
-  if (db.planning && !db.planningUrl) { embedArea.innerHTML = renderPlanning(db.planning, db.planningSrc, db.planningLabel); if (db.planning.gallery) bindWfCarousel(embedArea); return; }
+  if (db.planning && !db.planningUrl) { embedArea.innerHTML = renderPlanning(db.planning, db.planningSrc, db.planningLabel) + docsWireframesHtml(db); if (db.planning.gallery) bindWfCarousel(embedArea); return; }
 
   const isNotion = db.planningUrl ? db.planningUrl.includes('notion') : false;
   const isSheets = db.planningUrl ? db.planningUrl.includes('docs.google.com/spreadsheets') : false;
@@ -3399,6 +3462,20 @@ function renderDemoArea() {
 
 // UI 프로토타입 영역 렌더링
 // 기획서를 임베드 대신 사이트 안에서 직접 보여준다 (원문 구조 그대로, 양 언어)
+// 기획서 아래에 살짝 붙이는 와이어프레임 (db.docsWireframes)
+function docsWireframesHtml(db) {
+  if (!db.docsWireframes || !db.docsWireframes.length) return '';
+  const ja = currentLanguage === 'ja';
+  return `
+    <div class="embed-header wf-under-head">
+      <i class="bi bi-pencil embed-header-icon" aria-hidden="true"></i>
+      <span class="embed-header-title">${ja ? '画面ワイヤーフレーム（下書き）' : '화면 와이어프레임 (초안)'}</span>
+    </div>
+    <p class="embed-note">${ja ? '※ 企画書を書きながら描いた最初の下書きです。日本語訳と、各部分が何のためにあるかのメモを重ねています。'
+                               : '※ 기획서를 쓰면서 그린 첫 밑그림입니다. 각 부분이 무엇을 위한 것인지 메모를 얹었습니다 (일본어 화면에서는 번역도).'}</p>
+    <div class="wf-under">${db.docsWireframes.map((w, i) => wfFigure(w, i, ja)).join('')}</div>`;
+}
+
 function renderPlanning(pl, src, label) {
   const ja = currentLanguage === 'ja';
   const d = ja ? pl.ja : pl.ko;
@@ -3442,12 +3519,11 @@ function renderPlanning(pl, src, label) {
 
 // 설계 단계의 와이어프레임을 보여준다.
 // 한국어로 그린 그림이라, 일본어로 볼 때는 글자 위에 번역을 덮어 읽히게 한다.
-function renderWireframes(area, db) {
-  const ja = currentLanguage === 'ja';
-  const fig = (w, i) => {
-    const ovs = ja ? (w.overlays || []).map(o => `
-      <span class="wf-ov${o.b ? ' bold' : ''}"
-            style="left:${o.x}%;top:${o.y}%;width:${o.w}%;height:${o.h}%;font-size:${o.fs || w.fs || 1.7}cqi${o.bg ? ';background:' + o.bg : ''}${o.c ? ';color:' + o.c : ''}">${o.ja}</span>`).join('') : '';
+// 와이어프레임 한 장(번역·메모 오버레이, 완성 화면, 바꾼 이유). 프로토타입 탭과 기획서 아래에서 같이 쓴다
+function wfFigure(w, i, ja) {
+    const ovs = (w.overlays || []).filter(o => ja ? o.ja : o.ko).map(o => `
+      <span class="wf-ov${o.b ? ' bold' : ''}${(ja ? o.ja : o.ko).length < 18 && !/<br>/.test(ja ? o.ja : o.ko) ? ' nw' : ''}"
+            style="left:${o.x}%;top:${o.y}%;width:${o.w}%;height:${o.h}%;font-size:${o.fs || w.fs || 1.7}cqi${o.bg ? ';background:' + o.bg : ''}${o.c ? ';color:' + o.c : ''}">${ja ? o.ja : o.ko}</span>`).join('');
     return `
       <figure class="wf-item${w.wide ? ' wide' : ''}">
         <figcaption class="wf-cap"><span class="wf-no">${i + 1}</span>${ja ? w.ja : w.ko}</figcaption>
@@ -3464,7 +3540,11 @@ function renderWireframes(area, db) {
           ${ja ? w.note.ja : w.note.ko}
         </p>` : ''}
       </figure>`;
-  };
+}
+
+function renderWireframes(area, db) {
+  const ja = currentLanguage === 'ja';
+  const fig = (w, i) => wfFigure(w, i, ja);
   const items = db.wireframes.map(fig).join('');
   // 직접 조작할 수 있는 프로토타입을 먼저, 그 아래에 화면 구성 캡처
   const live = db.prototypeLink ? `
