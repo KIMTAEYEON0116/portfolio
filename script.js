@@ -426,7 +426,8 @@ async function handleGuestbookSubmit(event) {
     res = await fetch('/api/guestbook', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, author, content, lang: currentLanguage })
+      body: JSON.stringify({ title, author, content, lang: currentLanguage,
+        website: (document.getElementById('gb-website') || {}).value || '' })
     });
   } catch (err) {
     res = null;   // 서버에 닿지 못함 → 아래 localStorage 폴백

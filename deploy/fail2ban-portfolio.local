@@ -1,0 +1,17 @@
+# /etc/fail2ban/jail.d/portfolio.local
+[DEFAULT]
+# 사람도 404·429 를 몇 번은 낼 수 있으니 2분 안에 30번 넘을 때만 (스캐너는 5분에 수백 번)
+findtime = 120
+maxretry = 30
+bantime  = 3600
+backend  = auto
+
+[sshd]
+enabled = true
+maxretry = 5
+
+[portfolio-abuse]
+enabled  = true
+port     = http,https
+filter   = portfolio-abuse
+logpath  = /var/log/nginx/access.log

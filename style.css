@@ -3783,3 +3783,6 @@ details.lg-ai > .lg-ai-body { padding: 4px 14px 12px; border-top: 1px dashed #D4
 .wf-under-head { margin-top: 34px; }
 .wf-under { max-width: 860px; margin: 8px auto 0; }
 .wf-under .wf-cap { font-size: .85rem; }
+
+/* 방명록 허니팟 칸 — 화면 밖 */
+.gb-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }

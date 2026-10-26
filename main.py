@@ -233,6 +233,8 @@ class GuestbookEntry(BaseModel):
     author: Optional[str] = Field(None, max_length=40)
     content: str = Field(..., min_length=1, max_length=2000)
     lang: Optional[str] = Field("ja", pattern="^(ja|ko)$")
+    # 허니팟: 화면에서는 보이지 않는 칸. 사람은 비워 두고, 폼을 긁어 채우는 봇만 값을 넣는다
+    website: Optional[str] = Field(None, max_length=200)
 
 class GuestbookUpdateEntry(BaseModel):
     """PATCH 요청용 - 모든 필드 선택적"""
@@ -259,12 +261,12 @@ def get_guestbook(lang: Optional[str] = None):
         cursor = conn.cursor()
         if lang:
             cursor.execute(
-                "SELECT id, title, author, content, date, lang FROM guestbook WHERE lang = ? ORDER BY id DESC",
+                "SELECT id, title, author, content, date, lang FROM guestbook WHERE lang = ? ORDER BY id DESC LIMIT 300",
                 (lang,)
             )
         else:
             cursor.execute(
-                "SELECT id, title, author, content, date, lang FROM guestbook ORDER BY id DESC"
+                "SELECT id, title, author, content, date, lang FROM guestbook ORDER BY id DESC LIMIT 300"
             )
         rows = cursor.fetchall()
         return [dict(row) for row in rows]
@@ -274,10 +276,15 @@ def get_guestbook(lang: Optional[str] = None):
 
 @app.post("/api/guestbook", response_model=GuestbookResponse, status_code=201, summary="방명록 등록",
           dependencies=[Depends(check_rate_limit)])
-def post_guestbook(entry: GuestbookEntry, background: BackgroundTasks):
+def post_guestbook(entry: GuestbookEntry, background: BackgroundTasks, request: Request):
     """새 방명록 항목을 등록합니다. 등록 후 알림 메일을 백그라운드로 보냅니다."""
     if not entry.title.strip() or not entry.content.strip():
         raise HTTPException(status_code=422, detail="제목과 내용은 필수입니다.")
+    if entry.website:
+        # 봇이 눈치채지 못하게 '성공'처럼 답하되 저장하지 않는다
+        logger.info("방명록 허니팟 걸림 (ip=%s)", client_ip(request))
+        return {"id": 0, "title": entry.title.strip()[:100], "author": "匿名", "content": entry.content.strip()[:2000],
+                "date": datetime.now(SITE_TZ).strftime("%Y.%m.%d"), "lang": entry.lang or "ja"}
 
     author = entry.author.strip() if entry.author and entry.author.strip() else "匿名"
     now_dt = datetime.now(SITE_TZ)
