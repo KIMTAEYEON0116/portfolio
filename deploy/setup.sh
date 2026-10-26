@@ -39,7 +39,10 @@ sudo systemctl reload nginx
 
 echo "[6/6] 방명록 DB 하루 1회 백업 (03:20 JST, 14일 보관)"
 chmod +x "$APP/deploy/backup_db.sh"
-( crontab -l 2>/dev/null | grep -v "backup_db.sh"; echo "20 18 * * * bash $APP/deploy/backup_db.sh >> $APP/backups/backup.log 2>&1" ) | crontab -
+# crontab 이 아직 없으면 crontab -l 이 실패하는데, set -e 때문에 서브셸이 거기서 끝나 빈 목록이 등록되던 문제가 있었다
+( crontab -l 2>/dev/null || true ) | grep -v "backup_db.sh" > /tmp/portfolio_cron.txt || true
+echo "20 18 * * * bash $APP/deploy/backup_db.sh >> $APP/backups/backup.log 2>&1" >> /tmp/portfolio_cron.txt
+crontab /tmp/portfolio_cron.txt && rm -f /tmp/portfolio_cron.txt
 
 sleep 2
 if curl -fs http://127.0.0.1/api/health >/dev/null; then
