@@ -3786,3 +3786,7 @@ details.lg-ai > .lg-ai-body { padding: 4px 14px 12px; border-top: 1px dashed #D4
 
 /* 방명록 허니팟 칸 — 화면 밖 */
 .gb-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* 개요 링크 행의 글자 값(테스트 계정) */
+.link-list .link-v code { font-family: Consolas, Menlo, monospace; font-size: .82rem; background: #EEF3FA; border: 1px solid #D4DEEA; border-radius: 4px; padding: 1px 6px; }
+.link-list .link-v small { color: #64748B; font-size: .74rem; margin-left: 4px; }

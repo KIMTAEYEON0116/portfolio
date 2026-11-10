@@ -48,8 +48,6 @@ const i18n = {
     p_label_links: "公開・ソース",
     about_birth_year: "1998年生まれ",
     about_join: "入社時期：応相談（いつでも可）",
-    featured_tag: "注目",
-    featured_text: "<span class='ph'>実案件：</span><span class='ph'>健康診断予約システム</span><span class='ph'>（BtoB）</span>",
     p_label_role: "担当業務",
     p_label_tools: "使用技術・ツール",
     p_label_troubles: "苦労した点・改善したこと",
@@ -138,8 +136,6 @@ const i18n = {
     p_label_links: "공개·소스",
     about_birth_year: "1998년생",
     about_join: "입사 시기: 협의 가능 (언제든지)",
-    featured_tag: "주목",
-    featured_text: "실제 기업 안건: 건강검진 예약 시스템 (B2B)",
     p_label_role: "담당 업무",
     p_label_tools: "사용 기술 · 툴",
     p_label_troubles: "어려웠던 점 · 오류 개선",
@@ -2051,8 +2047,7 @@ const projectDatabase = {
     },
     "ja": {
       "kind": [
-        "BtoB 業務システム",
-        "実企業の案件（2件目）",
+        "企業案件プロジェクト（2件目）",
         "チーム開発",
         "開発中"
       ],
@@ -2066,8 +2061,7 @@ const projectDatabase = {
     },
     "ko": {
       "kind": [
-        "B2B 업무 시스템",
-        "실제 기업 안건 (2번째)",
+        "기업 안건 프로젝트 (2번째)",
         "팀 개발",
         "개발 중"
       ],
@@ -2171,6 +2165,7 @@ const projectDatabase = {
   gakong: {
     // 공개 중인 AWS 서버 (docx 하이퍼링크와 같은 주소, 2026-10-02 응답 확인)
     liveUrl: "http://43.200.22.235",
+    testAccount: { id: "test@example.com", pw: "test1234" },
     githubUrl: "https://github.com/KIMTAEYEON0116/-Gakongbooks-",
     // 노션 「기획서」를 원문 구조 그대로 옮긴 것 (원본: planningSrc)
     planningSrc: "https://magical-germanium-dad.notion.site/358c5bcba2b3802a8ce9eb6fe4e082e0",
@@ -2865,6 +2860,10 @@ const projectDatabase = {
         ]
       }
     },
+    liveUrl: "http://52.194.229.48:8000/",            // 팀 테스트 환경 (고객사 서버 아님)
+    liveLabel: { ja: "テスト環境を見る", ko: "테스트 환경 보기" },
+    showLinkRow: true,
+    testAccount: { id: "0928test", pw: "0928test" },
     githubUrl: "https://github.com/seou-cyubic/Japanese-Ningendokku",
     presentationVideoUrl: "./hospital_presentation.mp4",   // 서버 업로드 시 한글 파일명이 깨지지 않도록 영문 이름
     // 화면은 프로토타입 단계. 공개 가능한 캡처가 나오면 아래에 추가.
@@ -2896,7 +2895,7 @@ const projectDatabase = {
       ko: "본 안건은 고객사의 실제 프로젝트이므로 시설명·지역·연락처를 모두 샘플로 바꿔 게재합니다."
     },
     ja: {
-      kind: ["BtoB 業務システム", "実企業の案件", "チーム開発", "要件定義から実装まで"],
+      kind: ["企業案件プロジェクト", "チーム開発", "要件定義から実装まで"],
       title: "病院予約 — 健康診断予約システム",
       period: "2026.07 - 2026.09",
       result: "9月29日、お客様への日本語での最終発表で完了。成果物について「使いやすく仕上がっていて良かった」というフィードバックをいただきました。途中、同じ言葉を違う意味で使って手戻りしたことがあり、それからはお客様と用語をそろえ、自分で判断せずその都度確認するようにしました。",
@@ -2914,7 +2913,7 @@ const projectDatabase = {
       ]
     },
     ko: {
-      kind: ["B2B 업무 시스템", "실제 기업 안건", "팀 개발", "요구사항 정의부터 구현까지"],
+      kind: ["기업 안건 프로젝트", "팀 개발", "요구사항 정의부터 구현까지"],
       title: "병원 예약 — 건강검진 예약 시스템",
       period: "2026.07 - 2026.09",
       result: "9월 29일, 고객사 앞에서 일본어로 진행한 최종 발표로 마무리했습니다. 결과물에 대해 「사용하기 쉽게 만들어져서 좋았다」는 피드백을 받았습니다. 도중에 같은 말을 다른 뜻으로 써서 작업을 되돌린 일이 있어, 그 뒤로는 고객사와 용어를 맞추고 스스로 판단하지 않고 그때그때 확인했습니다.",
@@ -4019,9 +4018,13 @@ function renderProject(projectId) {
     const rows = [];
     if (db.showLinkRow && db.liveUrl) rows.push([currentLanguage === 'ja' ? 'サイト' : '사이트', db.liveUrl]);
     if (db.showLinkRow && db.githubUrl) rows.push(['GitHub', db.githubUrl]);
+    // 데모용 테스트 계정은 로그인 화면이 아니라 여기(포트폴리오)에만 적어 둔다
+    if (db.testAccount) rows.push([currentLanguage === 'ja' ? 'テスト用アカウント' : '테스트 계정', null,
+      `<code>${escapeHTML(db.testAccount.id)}</code> / <code>${escapeHTML(db.testAccount.pw)}</code> <small>${currentLanguage === 'ja' ? '（デモ用・閲覧専用にお使いください）' : '(데모용 · 둘러보기 전용)'}</small>`]);
     linkRow.style.display = rows.length ? '' : 'none';
-    linkEl.innerHTML = rows.map(([k, u]) =>
-      `<span class="link-k">${k}</span><a href="${escapeHTML(u)}" target="_blank" rel="noopener">${escapeHTML(u.replace(/^https?:\/\//, '').replace(/\/$/, ''))}</a>`).join('<br>');
+    linkEl.innerHTML = rows.map(([k, u, html]) => html
+      ? `<span class="link-k">${k}</span><span class="link-v">${html}</span>`
+      : `<span class="link-k">${k}</span><a href="${escapeHTML(u)}" target="_blank" rel="noopener">${escapeHTML(u.replace(/^https?:\/\//, '').replace(/\/$/, ''))}</a>`).join('<br>');
   }
 
   // 안건 구분 배지 — 개인/팀, 자체 기획인지 실제 클라이언트 안건인지 한눈에
@@ -4076,7 +4079,7 @@ function renderProject(projectId) {
       const a = document.getElementById('project-live-link');
       const t = document.getElementById('project-live-text');
       if (a) a.href = db.liveUrl;
-      if (t) t.textContent = currentLanguage === 'ja' ? 'サイトを見る' : '사이트 보기';
+      if (t) t.textContent = db.liveLabel ? (currentLanguage === 'ja' ? db.liveLabel.ja : db.liveLabel.ko) : (currentLanguage === 'ja' ? 'サイトを見る' : '사이트 보기');
       liveRow.style.display = '';
     } else {
       liveRow.style.display = 'none';
