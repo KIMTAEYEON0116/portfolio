@@ -564,11 +564,11 @@ let logPageFetch = null;   // 동시 진입 시 fetch 1회만
 let logTag = 'all';
 
 const LOG_TAG_ORDER = ['개인', '팀', 'B2B', '디버그', '개념', '플로우차트',
-                       'Python', 'JavaScript', 'FastAPI', 'DB', 'AWS', 'AI', '설계', '일본어'];
+                       'Python', 'JavaScript', 'FastAPI', 'DB', 'AWS', 'AI', '설계', '일본어', '면접'];
 const LOG_TAG_JA = {
   '개인': '個人', '팀': 'チーム', 'B2B': 'BtoB', '디버그': 'デバッグ', '개념': '概念',
   '플로우차트': 'フローチャート', 'Python': 'Python', 'JavaScript': 'JavaScript',
-  'FastAPI': 'FastAPI', 'DB': 'DB', 'AWS': 'AWS', 'AI': 'AI',
+  'FastAPI': 'FastAPI', 'DB': 'DB', 'AWS': 'AWS', 'AI': 'AI', '면접': '面接',
   '설계': '設計', '일본어': '日本語'
 };
 
