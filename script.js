@@ -669,10 +669,11 @@ async function renderLogPage() {
       </div></div><div class="lg-mrest"></div></div></section>`;
     }
     const first = (rv || '').split('\n')[0];
+    const openRev = mo === months[0];   // 첫 달(3월)의 회고는 펼친 채로 보여 준다
     const review = rv
-      ? `<div class="lg-rev"><div class="lg-rvh"><span class="lg-rvl">${ja ? '振り返り' : '회고'}</span>
+      ? `<div class="lg-rev${openRev ? ' on' : ''}"><div class="lg-rvh"><span class="lg-rvl">${ja ? '振り返り' : '회고'}</span>
            <span class="lg-rvp">${escapeHTML(first.slice(0, 62))}${first.length > 62 ? '…' : ''}</span>
-           <span class="lg-rvt">▾</span></div>
+           <span class="lg-rvt">${openRev ? '▴' : '▾'}</span></div>
            <div class="lg-rvb">${escapeHTML(rv).replace(/\n/g, '<br>')}</div></div>`
       : `<div class="lg-rev empty"><div class="lg-rvh"><span class="lg-rvl">${ja ? '進行中' : '진행 중'}</span>
            <span class="lg-rvp">${ja ? '当月分の振り返りは月末にまとめます。' : '이번 달 회고는 월말에 정리합니다.'}</span></div></div>`;
