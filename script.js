@@ -669,7 +669,7 @@ async function renderLogPage() {
       </div></div><div class="lg-mrest"></div></div></section>`;
     }
     const first = (rv || '').split('\n')[0];
-    const openRev = mo === months[0];   // 첫 달(3월)의 회고는 펼친 채로 보여 준다
+    const openRev = false;   // 회고는 모두 접힌 채로 (달 자체는 3월을 펼쳐 둔다)
     const review = rv
       ? `<div class="lg-rev${openRev ? ' on' : ''}"><div class="lg-rvh"><span class="lg-rvl">${ja ? '振り返り' : '회고'}</span>
            <span class="lg-rvp">${escapeHTML(first.slice(0, 62))}${first.length > 62 ? '…' : ''}</span>
@@ -757,7 +757,8 @@ async function renderLogPage() {
 
     // 성장 흐름(3월→9월)은 그대로 두고, 처음 열 때는 3~6월을 접어 최근 실전 프로젝트가 먼저 보이게 한다.
     // 태그로 걸러 볼 때는 결과를 숨기지 않도록 모두 펼친다.
-    const folded = logTag === 'all' && parseInt(mo.m, 10) <= 6;
+    // 3월(시작점)은 펼쳐 두고, 4~6월만 접는다
+    const folded = logTag === 'all' && parseInt(mo.m, 10) <= 6 && parseInt(mo.m, 10) !== 3;
     return `<section class="lg-mo-sec${folded ? ' fold' : ''}" id="lg-m-${parseInt(mo.m, 10)}">
       <div class="lg-mh"><span class="lg-mn">${ja ? mo.mj : mo.m}</span>
         <span class="lg-mlb">${ja ? mo.lb_ja : mo.lb}</span>
