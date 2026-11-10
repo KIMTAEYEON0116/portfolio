@@ -3794,3 +3794,10 @@ details.lg-ai > .lg-ai-body { padding: 4px 14px 12px; border-top: 1px dashed #D4
 /* 개요 링크 행의 글자 값(테스트 계정) */
 .link-list .link-v code { font-family: Consolas, Menlo, monospace; font-size: .82rem; background: #EEF3FA; border: 1px solid #D4DEEA; border-radius: 4px; padding: 1px 6px; }
 .link-list .link-v small { color: #64748B; font-size: .74rem; margin-left: 4px; }
+
+/* 기획 메모 타임라인 (開発ログ 틀 재사용) */
+.pltl .tssym { font-size: .95rem; }
+.pltl .tsdetail .pl-rows { margin: 10px 0 0; }
+.pltl .tsdetail .pl-lead { margin: 12px 0 0; }
+.pltl-list .tsdsec { margin-top: 18px; }
+.tsf.pltl-all { margin-left: auto; }

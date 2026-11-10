@@ -1362,6 +1362,13 @@ const projectDatabase = {
       "ja": "事前調査・企画メモ",
       "ko": "사전 조사·기획 메모"
     },
+    // 기획 메모를 開発ログ처럼 날짜별로 묶어 보여 준다: 섹션 순서대로 [날짜, 분류]. split 에 든 섹션은 행(10/12 …)마다 따로 카드를 만든다
+    planningTimeline: {
+      map: [["2026-10-07", "案件"], ["2026-10-07", "調査"], ["2026-10-07", "企画"], ["2026-10-07", "企画"], ["2026-10-07", "調査"],
+            ["2026-10-07", "企画"], ["2026-10-07", "企画"], ["2026-10-08", "質問"], ["2026-10-07", "調査"], ["2026-10-12", "記録"],
+            ["2026-10-13", "質問"], ["2026-10-15", "設計"], ["2026-10-19", "記録"], ["2026-10-30", "記録"]],
+      split: [9, 12]
+    },
     "planning": {
       "ja": {
         "sections": [
@@ -3238,7 +3245,12 @@ function renderEmbedArea() {
   const projectId = activeTabEl.id.replace('p-tab-', '');
   const db = projectDatabase[projectId];
   if (!db || (!db.planningUrl && !db.notionEmbedUrl && !db.planning)) return;
-  if (db.planning && !db.planningUrl) { embedArea.innerHTML = renderPlanning(db.planning, db.planningSrc, db.planningLabel) + docsWireframesHtml(db); if (db.planning.gallery) bindWfCarousel(embedArea); return; }
+  if (db.planning && !db.planningUrl) {
+    if (db.planningTimeline) db.planning.timeline = db.planningTimeline;
+    embedArea.innerHTML = renderPlanning(db.planning, db.planningSrc, db.planningLabel) + docsWireframesHtml(db);
+    if (db.planning.timeline) bindPlanningTimeline(embedArea);
+    if (db.planning.gallery) bindWfCarousel(embedArea); return;
+  }
 
   const isNotion = db.planningUrl ? db.planningUrl.includes('notion') : false;
   const isSheets = db.planningUrl ? db.planningUrl.includes('docs.google.com/spreadsheets') : false;
@@ -3599,7 +3611,94 @@ function docsWireframesHtml(db) {
     <div class="wf-under">${db.docsWireframes.map((w, i) => wfFigure(w, i, ja)).join('')}</div>`;
 }
 
+// 기획 메모 타임라인 (開発ログ 틀): 날짜별 묶음, 분류 필터, 접힘 카드
+const PL_THEME = { '案件': { ja: '案件', ko: '안건' }, '調査': { ja: '調査', ko: '조사' }, '企画': { ja: '企画', ko: '기획' },
+                   '質問': { ja: '質問', ko: '질문' }, '設計': { ja: '設計', ko: '설계' }, '記録': { ja: '記録', ko: '기록' } };
+function planningEntries(pl, tl, ja) {
+  const d = ja ? pl.ja : pl.ko;
+  const out = [];
+  d.sections.forEach((sec, i) => {
+    const [date, th] = tl.map[i] || [tl.map[tl.map.length - 1][0], '記録'];
+    if (tl.split.includes(i)) {
+      // 「10/12」「10/28〜29」 같은 행 제목에서 날짜를 뽑아 카드마다 날짜를 매긴다
+      sec.rows.forEach(([k, v]) => {
+        const m = String(k).match(/(\d{1,2})\/(\d{1,2})(?:\D+(\d{1,2}))?/);
+        const day = m ? (m[3] || m[2]) : date.slice(8);
+        const mon = m ? m[1] : date.slice(5, 7);
+        out.push({ d: `2026-${String(mon).padStart(2, '0')}-${String(day).padStart(2, '0')}`, th, title: `${sec.title.replace(/[（(].*$/, '').trim()} · ${k}`, rows: [[ja ? '内容' : '내용', v]] });
+      });
+    } else {
+      out.push({ d: date, th, title: sec.title, rows: sec.rows, summaryLabel: sec.summaryLabel, summary: sec.summary });
+    }
+  });
+  return out;
+}
+function renderPlanningTimeline(pl, src, label) {
+  const ja = currentLanguage === 'ja';
+  const items = planningEntries(pl, pl.timeline, ja);
+  const byDate = {};
+  items.forEach(b => { (byDate[b.d] = byDate[b.d] || []).push(b); });
+  const themes = [...new Set(items.map(b => b.th))];
+  const tname = t => (PL_THEME[t] || { ja: t, ko: t })[ja ? 'ja' : 'ko'];
+  const card = b => `
+    <div class="tscard pltl" data-th="${b.th}">
+      <div class="tsmeta"><span class="tsd">${b.d.replace(/-/g, '.')}</span><span class="tstheme">${tname(b.th)}</span></div>
+      <div class="tssym">${b.title}</div>
+      <div class="tsdetail">
+        <div class="pl-rows">${b.rows.map(([k, v]) => `<div class="pl-row"><div class="pl-k">${k}</div><div class="pl-v">${v}</div></div>`).join('')}</div>
+        ${b.summary ? `<p class="pl-lead"><span>${b.summaryLabel}</span>${b.summary}</p>` : ''}
+      </div>
+      <button class="tsmore">${ja ? '詳しく ▾' : '자세히 ▾'}</button>
+    </div>`;
+  const dates = Object.keys(byDate).sort();
+  return `
+    <div class="embed-header">
+      <i class="bi bi-file-earmark-text embed-header-icon" aria-hidden="true"></i>
+      <span class="embed-header-title">${label ? (ja ? label.ja : label.ko) : (ja ? '企画書' : '기획서')}</span>
+      ${src ? `<a href="${src}" target="_blank" rel="noopener" class="embed-open-btn"><i class="bi bi-box-arrow-up-right"></i>${ja ? '元の資料' : '원본 자료'}</a>` : ''}
+    </div>
+    <div class="tshero">
+      <div class="tsstats">
+        <div><b>${items.length}</b><span>${ja ? 'メモ' : '메모'}</span></div>
+        <div><b>${dates.length}</b><span>${ja ? '日' : '일'}</span></div>
+        <div><b>${themes.length}</b><span>${ja ? '分類' : '분류'}</span></div>
+      </div>
+      <p class="tsnote">${dates[0].replace(/-/g, '.')} – ${dates[dates.length - 1].slice(5).replace('-', '.')} · ${ja ? '日付ごとにまとめています。分類を押すと絞り込めます。' : '날짜별로 묶었습니다. 분류를 누르면 걸러 볼 수 있습니다.'}</p>
+    </div>
+    <div class="tsfilters"><span class="tsf active" data-th="all" role="button" tabindex="0">${ja ? 'すべて' : '전체'}</span>
+      ${themes.map(t => `<span class="tsf" data-th="${t}" role="button" tabindex="0">${tname(t)} ${items.filter(b => b.th === t).length}</span>`).join('')}
+      <button type="button" class="tsf pltl-all">${ja ? 'すべて開く' : '전부 펼치기'}</button></div>
+    <div class="pltl-list">${dates.map(d => `
+      <div class="tsdsec"><div class="tsdh"><span class="tsdn">${d.replace(/-/g, '.')}</span><span class="tsdline"></span><span class="tsdc">${byDate[d].length}</span></div>
+        ${byDate[d].map(card).join('')}</div>`).join('')}</div>`;
+}
+function bindPlanningTimeline(area) {
+  const ja = currentLanguage === 'ja';
+  area.querySelectorAll('.pltl .tsmore').forEach(btn => btn.addEventListener('click', () => {
+    const c = btn.closest('.tscard'); c.classList.toggle('open');
+    btn.textContent = c.classList.contains('open') ? (ja ? '閉じる ▴' : '접기 ▴') : (ja ? '詳しく ▾' : '자세히 ▾');
+  }));
+  const allBtn = area.querySelector('.pltl-all');
+  if (allBtn) allBtn.addEventListener('click', () => {
+    const cards = [...area.querySelectorAll('.pltl')];
+    const open = cards.some(c => !c.classList.contains('open'));
+    cards.forEach(c => { c.classList.toggle('open', open); const b = c.querySelector('.tsmore'); if (b) b.textContent = open ? (ja ? '閉じる ▴' : '접기 ▴') : (ja ? '詳しく ▾' : '자세히 ▾'); });
+    allBtn.textContent = open ? (ja ? 'すべて閉じる' : '전부 접기') : (ja ? 'すべて開く' : '전부 펼치기');
+  });
+  area.querySelectorAll('.tsfilters .tsf[data-th]').forEach(ch => {
+    const go = () => {
+      area.querySelectorAll('.tsfilters .tsf[data-th]').forEach(x => x.classList.toggle('active', x === ch));
+      const th = ch.dataset.th;
+      area.querySelectorAll('.pltl').forEach(c => { c.style.display = (th === 'all' || c.dataset.th === th) ? '' : 'none'; });
+      area.querySelectorAll('.tsdsec').forEach(sec => { sec.style.display = [...sec.querySelectorAll('.pltl')].some(c => c.style.display !== 'none') ? '' : 'none'; });
+    };
+    ch.addEventListener('click', go);
+    ch.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+  });
+}
+
 function renderPlanning(pl, src, label) {
+  if (pl.timeline) return renderPlanningTimeline(pl, src, label);
   const ja = currentLanguage === 'ja';
   const d = ja ? pl.ja : pl.ko;
   // pl.foldFirst: 앞쪽 N개 섹션(긴 5W1H 상세)은 접어 두고 제목만 보인다
